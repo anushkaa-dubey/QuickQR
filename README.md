@@ -23,13 +23,13 @@ A lightweight and easy-to-use web-based QR Code Generator that enables users to 
 ## 📂 Project Structure
 QR-Code-Generator
 
-├── index.html # Main HTML file for the app 
+├── index.html     # Main HTML file for the app 
 
-├── style.css # CSS for styling the app 
+├── style.css      # CSS for styling the app 
 
-├── script.js # JavaScript for QR code generation
+├── script.js      # JavaScript for QR code generation
 
-├── README.md # Documentation
+├── README.md      # Documentation
 
 
 ## 🤝 Contributing
