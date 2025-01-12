@@ -1,4 +1,4 @@
-# Qr-Code-Generator
+# Quick QR
 
 A lightweight and easy-to-use web-based QR Code Generator that enables users to create and download QR codes instantly. This project is part of the **Android Club: Your Open Source AcWoC'25!** initiative at VIT Bhopal.
 
