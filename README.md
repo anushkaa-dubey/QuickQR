@@ -21,8 +21,11 @@ JavaScript: QR code generation logic.
 <h2>📂 Project Structure</h2>
 QR-Code-Generator/
 ├── index.html     # Main HTML file for the app
+
 ├── style.css      # CSS for styling the app
+
 ├── script.js      # JavaScript for QR code generation
+
 ├── README.md      # Documentation
 
 
