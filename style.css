@@ -98,3 +98,58 @@ body{
         font-size: 16px;
     }
 }
+/* updates */
+
+.container {
+    background-color: var(--primary-color);
+    padding: 30px;
+    width: 400px;
+    border-radius: var(--border-radius);
+}
+
+.header h1 {
+    font-size: 26px;
+    text-align: center;
+    color: var(--secondary-color);
+    margin-bottom: 24px;
+    text-transform: uppercase;
+}
+
+.input-section input,
+select {
+    width: 100%;
+    padding: 8px;
+    border-radius: var(--border-radius);
+    font-size: 18px;
+    outline: none;
+    border: 2px solid var(--border-color);
+    margin-bottom: 12px;
+}
+
+
+.qr-body canvas {
+    max-width: 100%;
+    max-height: 100%;
+    border: 0.5px solid var(--border-color);
+    border-radius: var(--border-radius);
+}
+
+.action-section {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+button {
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    font-size: 18px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: var(--border-color);
+}

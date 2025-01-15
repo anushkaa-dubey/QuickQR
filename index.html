@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <title>QuickQR</title>
+    /* qr library */
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+
 </head>
 <body>
     <header class="header">
@@ -27,6 +30,7 @@
                     <option value="900">900x900</option>
                     <option value="1000">1000x1000</option>
                 </select>
+                <input type="file" id="logo-input" accept="image/*" style="margin: 10px;">
             </section>
             <section class="qr-body"></section>
             <section class="action-section">
