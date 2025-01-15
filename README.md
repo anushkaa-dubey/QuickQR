@@ -32,7 +32,7 @@ QR-Code-Generator
 ├── README.md      # Documentation
 
 ## Repository Under: AcWoC'25
-##Club: Notion Community, VIT Bhopal University
+Club: Notion Community, VIT Bhopal University
 
 
 ## 🤝 Contributing
