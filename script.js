@@ -1,89 +1,246 @@
-const qrText = document.getElementById('qr-text');
-const sizes = document.getElementById('sizes');
-const generateBtn = document.getElementById('generateBtn');
-const downloadBtn = document.getElementById('downloadBtn');
-const qrContainer = document.querySelector('.qr-body');
-const logoInput = document.getElementById('logo-input');
-
-let size = sizes.value;
-
-generateBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    qrContainer.classList.add('fade-animation');
-    if (qrText.value.trim().length > 0) {
-        generateQRCode();
-    } else {
-        alert("Enter the text or URL to generate your QR code");
+class QRCodeGenerator {
+    constructor() {
+        this.initializeElements();
+        this.setupEventListeners();
+        this.currentTab = 'url';
+        this.logoFile = null;
     }
-});
 
-sizes.addEventListener('change', (e) => {
-    size = e.target.value;
-    if (qrText.value.trim().length > 0) {
-        generateQRCode();
+    initializeElements() {
+        this.qrText = document.getElementById('qr-text');
+        this.textContent = document.getElementById('text-content');
+        this.contactName = document.getElementById('contact-name');
+        this.contactPhone = document.getElementById('contact-phone');
+        this.contactEmail = document.getElementById('contact-email');
+        this.sizes = document.getElementById('sizes');
+        this.qrColor = document.getElementById('qr-color');
+        this.bgColor = document.getElementById('bg-color');
+        this.errorCorrection = document.getElementById('error-correction');
+        this.logoInput = document.getElementById('logo-input');
+        this.removeLogoBtn = document.getElementById('remove-logo');
+        this.generateBtn = document.getElementById('generateBtn');
+        this.downloadBtn = document.getElementById('downloadBtn');
+        this.qrContainer = document.querySelector('.qr-body');
+        this.loadingSpinner = document.querySelector('.loading-spinner');
+        this.tabButtons = document.querySelectorAll('.tab-btn');
+        this.tabContents = document.querySelectorAll('.tab-content');
     }
-});
 
-downloadBtn.addEventListener('click', () => {
-    const qrCanvas = document.querySelector('.qr-body canvas'); // Get the canvas
-    if (qrCanvas) {
-        const imageData = qrCanvas.toDataURL("image/png"); // Convert canvas to PNG data URL
-
-        // Create a temporary link and trigger download
-        const tempLink = document.createElement('a');
-        tempLink.href = imageData;
-        tempLink.download = "QR_Code.png";
-        document.body.appendChild(tempLink); // Append to the DOM
-        tempLink.click(); // Trigger download
-        document.body.removeChild(tempLink); // Remove from the DOM
-    } else {
-        alert("Please generate a QR code first.");
+    setupEventListeners() {
+        this.generateBtn.addEventListener('click', () => this.generateQRCode());
+        this.downloadBtn.addEventListener('click', () => this.downloadQRCode());
+        this.logoInput.addEventListener('change', (e) => this.handleLogoUpload(e));
+        this.removeLogoBtn.addEventListener('click', () => this.removeLogo());
+        
+        this.tabButtons.forEach(button => {
+            button.addEventListener('click', () => this.switchTab(button.dataset.tab));
+        });
+        
+        this.qrText.addEventListener('input', () => this.validateInput());
+        this.textContent.addEventListener('input', () => this.validateInput());
+        this.contactName.addEventListener('input', () => this.validateInput());
+        this.contactPhone.addEventListener('input', () => this.validateInput());
+        this.contactEmail.addEventListener('input', () => this.validateInput());
+        
+        this.qrColor.addEventListener('change', () => this.generateQRCode());
+        this.bgColor.addEventListener('change', () => this.generateQRCode());
+        this.errorCorrection.addEventListener('change', () => this.generateQRCode());
+        this.sizes.addEventListener('change', () => this.generateQRCode());
     }
-});
 
-function generateQRCode() {
-    qrContainer.innerHTML = ""; // Clear previous QR code
-    const qrCanvas = document.createElement('canvas'); // Create a new canvas
-    qrCanvas.width = size;
-    qrCanvas.height = size;
-    const ctx = qrCanvas.getContext('2d');
+    switchTab(tabName) {
+        this.currentTab = tabName;
+        
+        this.tabButtons.forEach(button => {
+            button.classList.toggle('active', button.dataset.tab === tabName);
+        });
+        
+        this.tabContents.forEach(content => {
+            content.classList.toggle('active', content.id === `${tabName}-tab`);
+        });
+        
+        this.validateInput();
+    }
 
-    // Generate QR code data
-    QRCode.toCanvas(
-        qrCanvas,
-        qrText.value,
-        {
-            width: size,
-            height: size,
-            color: {
-                dark: "#000", // QR code color
-                light: "#fff", // Background color
-            },
-        },
-        (error) => {
-            if (error) {
-                alert("Failed to generate QR code: " + error.message);
-                return;
-            }
-
-            const logoFile = logoInput.files[0];
-            if (logoFile) {
-                const logoImg = new Image();
-                const reader = new FileReader();
-
-                reader.onload = (e) => {
-                    logoImg.src = e.target.result;
-                    logoImg.onload = () => {
-                        const logoSize = size / 5; // Logo size is 1/5th of the QR code size
-                        const x = (qrCanvas.width - logoSize) / 2;
-                        const y = (qrCanvas.height - logoSize) / 2;
-                        ctx.drawImage(logoImg, x, y, logoSize, logoSize); // Draw logo on the QR code
-                    };
-                };
-                reader.readAsDataURL(logoFile);
-            }
+    validateInput() {
+        let isValid = false;
+        
+        switch (this.currentTab) {
+            case 'url':
+                isValid = this.isValidUrl(this.qrText.value);
+                break;
+            case 'text':
+                isValid = this.textContent.value.trim().length > 0;
+                break;
+            case 'contact':
+                isValid = this.contactName.value.trim().length > 0 &&
+                         this.isValidEmail(this.contactEmail.value) &&
+                         this.isValidPhone(this.contactPhone.value);
+                break;
         }
-    );
+        
+        this.generateBtn.disabled = !isValid;
+        return isValid;
+    }
 
-    qrContainer.appendChild(qrCanvas); // Append the canvas to the container
+    isValidUrl(url) {
+        try {
+            new URL(url);
+            return true;
+        } catch {
+            return false;
+        }
+    }
+
+    isValidEmail(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    isValidPhone(phone) {
+        return /^[\d\s\-+()]{10,}$/.test(phone);
+    }
+
+    async generateQRCode() {
+        if (!this.validateInput()) {
+            this.showToast('Please fill in all required fields correctly', 'error');
+            return;
+        }
+
+        this.showLoading(true);
+        
+        try {
+            const qrData = this.getQRData();
+            const canvas = document.createElement('canvas');
+            const size = parseInt(this.sizes.value);
+            
+            canvas.width = size;
+            canvas.height = size;
+            
+            await QRCode.toCanvas(canvas, qrData, {
+                width: size,
+                height: size,
+                color: {
+                    dark: this.qrColor.value,
+                    light: this.bgColor.value
+                },
+                errorCorrectionLevel: this.errorCorrection.value
+            });
+
+            const ctx = canvas.getContext('2d');
+            
+            if (this.logoFile) {
+                await this.addLogoToQR(ctx, canvas);
+            }
+
+            this.qrContainer.innerHTML = '';
+            this.qrContainer.appendChild(canvas);
+            
+            this.downloadBtn.disabled = false;
+            this.showToast('QR Code generated successfully', 'success');
+        } catch (error) {
+            console.error('QR Code generation error:', error);
+            this.showToast('Failed to generate QR Code', 'error');
+        } finally {
+            this.showLoading(false);
+        }
+    }
+
+    getQRData() {
+        switch (this.currentTab) {
+            case 'url':
+                return this.qrText.value;
+            case 'text':
+                return this.textContent.value;
+            case 'contact':
+                return this.generateVCard();
+            default:
+                return '';
+        }
+    }
+
+    generateVCard() {
+        return `BEGIN:VCARD
+VERSION:3.0
+FN:${this.contactName.value}
+TEL:${this.contactPhone.value}
+EMAIL:${this.contactEmail.value}
+END:VCARD`;
+    }
+
+    async addLogoToQR(ctx, canvas) {
+        return new Promise((resolve, reject) => {
+            const logo = new Image();
+            logo.onload = () => {
+                const logoSize = canvas.width * 0.2;
+                const x = (canvas.width - logoSize) / 2;
+                const y = (canvas.height - logoSize) / 2;
+                
+                ctx.fillStyle = 'white';
+                ctx.fillRect(x, y, logoSize, logoSize);
+                
+                ctx.drawImage(logo, x, y, logoSize, logoSize);
+                resolve();
+            };
+            logo.onerror = reject;
+            logo.src = URL.createObjectURL(this.logoFile);
+        });
+    }
+
+    async handleLogoUpload(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        if (!file.type.startsWith('image/')) {
+            this.showToast('Please upload an image file', 'error');
+            return;
+        }
+
+        if (file.size > 2 * 1024 * 1024) {
+            this.showToast('Logo file size should be less than 2MB', 'error');
+            return;
+        }
+
+        this.logoFile = file;
+        this.removeLogoBtn.style.display = 'inline-block';
+        await this.generateQRCode();
+    }
+
+    removeLogo() {
+        this.logoFile = null;
+        this.logoInput.value = '';
+        this.removeLogoBtn.style.display = 'none';
+        this.generateQRCode();
+    }
+
+    downloadQRCode() {
+        const canvas = this.qrContainer.querySelector('canvas');
+        if (!canvas) return;
+
+        const link = document.createElement('a');
+        link.download = 'QR_Code.png';
+        link.href = canvas.toDataURL('image/png');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
+    showLoading(show) {
+        this.loadingSpinner.style.display = show ? 'block' : 'none';
+        this.generateBtn.disabled = show;
+    }
+
+    showToast(message, type = 'info') {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.className = `toast ${type}`;
+        toast.style.display = 'block';
+
+        setTimeout(() => {
+            toast.style.display = 'none';
+        }, 3000);
+    }
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    new QRCodeGenerator();
+});
