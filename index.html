@@ -3,42 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Professional QR Code Generator with customization options">
     <link rel="stylesheet" href="style.css">
     <title>QuickQR</title>
-
     <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <header class="header">
-        <h1>QuickQR</h1>
-    </header>
-    <main>
-        <div class="container">
-            <section class="input-section">
-                <input type="text" placeholder="Type your text or URL" id="qr-text">
-                <label for="sizes">Select Size:</label>
-                <select id="sizes">
-                    <option value="100">100x100</option>
-                    <option value="200">200x200</option>
-                    <option value="300">300x300</option>
-                    <option value="400">400x400</option>
-                    <option value="500">500x500</option>
-                    <option value="600">600x600</option>
-                    <option value="700">700x700</option>
-                    <option value="800">800x800</option>
-                    <option value="900">900x900</option>
-                    <option value="1000">1000x1000</option>
-                </select>
-                <input type="file" id="logo-input" accept="image/*" style="margin: 10px;">
-            </section>
-            <section class="qr-body"></section>
-            <section class="action-section">
-                <button id="generateBtn">Generate</button>
-                <button id="downloadBtn" download="QR_Code.png">Download</button>
-            </section>
-        </div>
-    </main>
+    <div class="app-container">
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-qrcode"></i>
+                <h1>QuickQR</h1>
+            </div>
+        </header>
+        
+        <main class="main-content">
+            <div class="container">
+                <section class="input-section">
+                    <div class="tabs">
+                        <button class="tab-btn active" data-tab="url">URL</button>
+                        <button class="tab-btn" data-tab="text">Text</button>
+                        <button class="tab-btn" data-tab="contact">Contact Card</button>
+                    </div>
+
+                    <div class="tab-content active" id="url-tab">
+                        <input type="url" placeholder="Enter URL (e.g., https://example.com)" id="qr-text" class="input-field">
+                    </div>
+
+                    <div class="tab-content" id="text-tab">
+                        <textarea placeholder="Enter your text message" id="text-content" class="input-field"></textarea>
+                    </div>
+
+                    <div class="tab-content" id="contact-tab">
+                        <input type="text" placeholder="Full Name" id="contact-name" class="input-field">
+                        <input type="tel" placeholder="Phone Number" id="contact-phone" class="input-field">
+                        <input type="email" placeholder="Email" id="contact-email" class="input-field">
+                    </div>
+
+                    <div class="customization-section">
+                        <div class="option-group">
+                            <label for="sizes">QR Code Size:</label>
+                            <select id="sizes" class="select-field">
+                                <option value="200">Small (200x200)</option>
+                                <option value="300" selected>Medium (300x300)</option>
+                                <option value="400">Large (400x400)</option>
+                                <option value="500">Extra Large (500x500)</option>
+                            </select>
+                        </div>
+
+                        <div class="option-group">
+                            <label for="qr-color">QR Code Color:</label>
+                            <input type="color" id="qr-color" value="#000000" class="color-picker">
+                        </div>
+
+                        <div class="option-group">
+                            <label for="bg-color">Background Color:</label>
+                            <input type="color" id="bg-color" value="#FFFFFF" class="color-picker">
+                        </div>
+
+                        <div class="option-group">
+                            <label for="error-correction">Error Correction:</label>
+                            <select id="error-correction" class="select-field">
+                                <option value="L">Low (7%)</option>
+                                <option value="M" selected>Medium (15%)</option>
+                                <option value="Q">Quartile (25%)</option>
+                                <option value="H">High (30%)</option>
+                            </select>
+                        </div>
+
+                        <div class="option-group">
+                            <label for="logo-input" class="custom-file-upload">
+                                <i class="fas fa-image"></i> Upload Logo
+                            </label>
+                            <input type="file" id="logo-input" accept="image/*" class="file-input">
+                            <button id="remove-logo" class="icon-button" style="display: none;">
+                                <i class="fas fa-trash"></i> Remove Logo
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="preview-section">
+                    <div class="qr-body">
+                        <div class="loading-spinner" style="display: none;">
+                            <i class="fas fa-spinner fa-spin"></i>
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <button id="generateBtn" class="primary-button">
+                            <i class="fas fa-sync-alt"></i> Generate QR
+                        </button>
+                        <button id="downloadBtn" class="secondary-button" disabled>
+                            <i class="fas fa-download"></i> Download
+                        </button>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>Made with <i class="fas fa-heart"></i> by QuickQR Pro</p>
+        </footer>
+    </div>
+
+    <div id="toast" class="toast"></div>
     <script src="script.js"></script>
 </body>
 </html>
