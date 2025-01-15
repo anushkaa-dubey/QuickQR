@@ -4,37 +4,88 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>QuickQR</title>
+    <title>QuickQR - Modern QR Code Generator</title>
 </head>
 <body>
-    <header class="header">
-        <h1>QuickQR</h1>
-    </header>
-    <main>
-        <div class="container">
-            <section class="input-section">
-                <input type="text" placeholder="Type your text or URL" id="qr-text">
-                <label for="sizes">Select Size:</label>
-                <select id="sizes">
-                    <option value="100">100x100</option>
-                    <option value="200">200x200</option>
-                    <option value="300">300x300</option>
-                    <option value="400">400x400</option>
-                    <option value="500">500x500</option>
-                    <option value="600">600x600</option>
-                    <option value="700">700x700</option>
-                    <option value="800">800x800</option>
-                    <option value="900">900x900</option>
-                    <option value="1000">1000x1000</option>
-                </select>
-            </section>
-            <section class="qr-body"></section>
-            <section class="action-section">
-                <button id="generateBtn">Generate</button>
-                <button id="downloadBtn" download="QR_Code.png">Download</button>
-            </section>
+    <div class="box">
+        <div class="qr-content">
+            <div class="qr-header">
+                <h1>QuickQR</h1>
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="single">Single QR</button>
+                    <button class="tab-btn" data-tab="batch">Batch QR</button>
+                </div>
+                <div id="single-qr" class="tab-content active">
+                    <input type="text" id="qr-text" placeholder="Enter text or URL" maxlength="2950">
+                    <div class="char-counter"><span id="char-count">0</span>/2950</div>
+                    <div class="qr-options">
+                        <div class="option-group">
+                            <label for="qr-width">Width:</label>
+                            <input type="number" id="qr-width" value="330" min="100" max="1000">
+                        </div>
+                        <div class="option-group">
+                            <label for="qr-height">Height:</label>
+                            <input type="number" id="qr-height" value="330" min="100" max="1000">
+                        </div>
+                        <div class="option-group">
+                            <label>Foreground Color:</label>
+                            <div id="fg-color-btn" class="color-btn"></div>
+                            <input type="color" id="fg-color" value="#000000" class="hidden-color-input">
+                        </div>
+                        <div class="option-group">
+                            <label>Background Color:</label>
+                            <div id="bg-color-btn" class="color-btn"></div>
+                            <input type="color" id="bg-color" value="#ffffff" class="hidden-color-input">
+                        </div>
+                        <div class="option-group">
+                            <label for="error-correction">Error Correction:</label>
+                            <select id="error-correction">
+                                <option value="L">Low</option>
+                                <option value="M">Medium</option>
+                                <option value="Q">Quartile</option>
+                                <option value="H">High</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="qr-actions">
+                        <button id="generateBtn">Generate</button>
+                        <button id="downloadBtn">Download</button>
+                    </div>
+                </div>
+                <div id="batch-qr" class="tab-content">
+                    <textarea id="batch-input" placeholder="Enter multiple texts or URLs, one per line"></textarea>
+                    <div class="qr-options">
+                        <div class="option-group">
+                            <label for="batch-qr-width">Width:</label>
+                            <input type="number" id="batch-qr-width" value="330" min="100" max="1000">
+                        </div>
+                        <div class="option-group">
+                            <label for="batch-qr-height">Height:</label>
+                            <input type="number" id="batch-qr-height" value="330" min="100" max="1000">
+                        </div>
+                        <div class="option-group">
+                            <label>Foreground Color:</label>
+                            <div id="batch-fg-color-btn" class="color-btn"></div>
+                            <input type="color" id="batch-fg-color" value="#000000" class="hidden-color-input">
+                        </div>
+                        <div class="option-group">
+                            <label>Background Color:</label>
+                            <div id="batch-bg-color-btn" class="color-btn"></div>
+                            <input type="color" id="batch-bg-color" value="#ffffff" class="hidden-color-input">
+                        </div>
+                    </div>
+                    <div class="qr-actions">
+                        <button id="batchGenerateBtn">Generate Batch</button>
+                        <button id="batchDownloadBtn">Download All</button>
+                    </div>
+                </div>
+            </div>
+            <div class="qr-body" id="qr-code"></div>
         </div>
-    </main>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
+
