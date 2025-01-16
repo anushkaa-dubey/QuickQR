@@ -292,7 +292,7 @@ textarea.input-field {
 
 .toast {
     position: fixed;
-    bottom: 2rem;
+    top: 2rem;
     right: 2rem;
     padding: 1rem;
     border-radius: var(--border-radius);
