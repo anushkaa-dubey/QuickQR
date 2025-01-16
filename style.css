@@ -7,7 +7,7 @@
     --surface-color: #ffffff;
     --error-color: #ef4444;
     --success-color: #22c55e;
-    --border-radius: 8px;
+    --border-radius: 10px;
     --box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
     --transition: all 0.3s ease;
     
@@ -26,14 +26,16 @@ body {
     animation: rainbowAnimation 10s ease infinite;
     color: var(--secondary-color);
     line-height: 1.5;
-    background-size: 400% 400%;
+    background: url('https://www.overflow.design/src/assets/img/covers/oc.png') no-repeat center center/cover;
+    backdrop-filter: blur(2px);
+    /* background-size: 400% 400%;
     background-attachment: fixed;
     background-image: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #00ff00, #0000ff, #8b00ff);
     background-position: 0% 50%;
-    background-size: 400% 400%;
+    background-size: 400% 400%; */
 }
 
-@keyframes rainbowAnimation {
+/* @keyframes rainbowAnimation {
     0% {
         background-position: 0% 50%;
     }
@@ -49,7 +51,7 @@ body {
     100% {
         background-position: 0% 50%;
     }
-}
+} */
 
 .app-container {
     min-height: 100vh;
@@ -92,7 +94,7 @@ body {
 .container {
     background-color: var(--surface-color);
     border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
+    box-shadow: -2px 8px 12px -1px rgb(0 0 0 / 0.2), -1px 4px 8px -2px rgb(0 0 0 / 0.2);
     width: 100%;
     max-width: 800px;
     padding: 2rem;
