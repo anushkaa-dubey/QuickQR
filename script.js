@@ -244,3 +244,22 @@ END:VCARD`;
 document.addEventListener('DOMContentLoaded', () => {
     new QRCodeGenerator();
 });
+
+const scrollBtn = document.getElementById('scrollToTopBtn');
+
+// Show button on scroll
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 30) {
+        scrollBtn.classList.add('show');
+    } else {
+        scrollBtn.classList.remove('show');
+    }
+});
+
+// Scroll to top functionality
+scrollBtn.addEventListener('click', () => {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+});
