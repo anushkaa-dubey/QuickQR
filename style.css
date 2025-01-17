@@ -139,6 +139,7 @@ body.dark-mode {
     align-items: center;
     justify-content: center;
     position: relative;
+    flex-wrap: wrap;
 }
 
 body.dark-mode .header {
@@ -181,6 +182,12 @@ body.dark-mode .header {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 2rem;
+    width: 100%;
+    max-width: 100%;
+    padding: 2rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
 }
 
 .tabs {
@@ -206,6 +213,7 @@ body.dark-mode .header {
 
 .tab-content {
     display: none;
+    width: 100%;
 }
 
 .tab-content.active {
@@ -364,13 +372,14 @@ textarea.input-field {
     padding: 20px;
     background-color: rgb(204, 242, 255);
     font-family: Arial, sans-serif;
+    padding: 10px;
 }
 
 /* Social Links Container */
 .social-links {
     margin-top: 10px;
     display: inline-flex; /* Align links horizontally */
-    gap: 20px; /* Add space between the social links */
+    gap: 10px; /* Add space between the social links */
 }
 
 /* Social Links Styling */
