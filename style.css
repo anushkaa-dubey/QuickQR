@@ -603,3 +603,90 @@ a {
 .dropdown-item:hover {
     background-color: #f1f1f1;
 }
+
+/* Share Button Styles */
+.share-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    width: 100%;
+}
+
+.share-btn {
+    flex: 1;
+    padding: 0.75rem;
+    border: none;
+    border-radius: var(--border-radius);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    transition: var(--transition);
+}
+
+.share-btn.whatsapp {
+    background-color: #25D366;
+}
+
+.share-btn.twitter {
+    background-color: #1DA1F2;
+}
+
+.share-btn.copy {
+    background-color: #6366f1;
+}
+
+.share-btn:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+/* Share Page Layout Styles */
+.share-container {
+    grid-template-columns: 1fr !important;
+}
+
+.share-layout {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+    align-items: start;
+}
+
+.qr-content {
+    width: 100%;
+}
+
+.actions-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.action-buttons.vertical, 
+.share-buttons.vertical {
+    flex-direction: column;
+    width: 100%;
+}
+
+.share-buttons.vertical .share-btn {
+    padding: 1rem;
+}
+
+@media (max-width: 768px) {
+    .share-layout {
+        grid-template-columns: 1fr;
+    }
+    
+    .actions-panel {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+    
+    .action-buttons.vertical, 
+    .share-buttons.vertical {
+        flex-direction: row;
+    }
+}
