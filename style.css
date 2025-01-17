@@ -1,26 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
 :root {
     --primary-color: #2563eb;
     --primary-dark: #1d4ed8;
     --secondary-color: #64748b;
     --accent-color: #3b82f6;
-    --background-color: #f1f5f9;
     --surface-color: #ffffff;
     --error-color: #ef4444;
     --success-color: #22c55e;
-    --border-radius: 8px;
+    --border-radius: 10px;
     --box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
     --transition: all 0.3s ease;
+    
 }
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-family: "Playfair Display", serif;
+  font-optical-sizing: auto;
+  
 }
 /* Default Light Mode Styles */
 body {
-    background-color: var(--background-color);
+    animation: rainbowAnimation 10s ease infinite;
     color: var(--secondary-color);
     line-height: 1.5;
     transition: var(--transition);
@@ -96,6 +99,32 @@ body.dark-mode {
     background-color: #121212;
     color: #ffffff;
   }
+    background: url('https://www.overflow.design/src/assets/img/covers/oc.png') no-repeat center center/cover;
+    backdrop-filter: blur(2px);
+    /* background-size: 400% 400%;
+    background-attachment: fixed;
+    background-image: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #00ff00, #0000ff, #8b00ff);
+    background-position: 0% 50%;
+    background-size: 400% 400%; */
+}
+
+/* @keyframes rainbowAnimation {
+    0% {
+        background-position: 0% 50%;
+    }
+    25% {
+        background-position: 100% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    75% {
+        background-position: 0% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+} */
 
 .app-container {
     min-height: 100vh;
@@ -104,7 +133,7 @@ body.dark-mode {
 }
 
 .header {
-    background-color: var(--surface-color);
+    background-color: rgb(204, 242, 255);
     padding: 1rem;
     box-shadow: var(--box-shadow);
 }
@@ -142,7 +171,7 @@ body.dark-mode .header {
 .container {
     background-color: var(--surface-color);
     border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
+    box-shadow: -2px 8px 12px -1px rgb(0 0 0 / 0.2), -1px 4px 8px -2px rgb(0 0 0 / 0.2);
     width: 100%;
     max-width: 800px;
     padding: 2rem;
@@ -264,7 +293,7 @@ textarea.input-field {
 .qr-body {
     width: 100%;
     aspect-ratio: 1;
-    background-color: var(--background-color);
+    background-color: #80808036;
     border-radius: var(--border-radius);
     display: flex;
     justify-content: center;
@@ -330,7 +359,7 @@ textarea.input-field {
 .footer {
     text-align: center;
     padding: 1rem;
-    background-color: var(--surface-color);
+    background-color: rgb(204, 242, 255);
     margin-top: auto;
 }
 
@@ -340,7 +369,7 @@ textarea.input-field {
 
 .toast {
     position: fixed;
-    bottom: 2rem;
+    top: 2rem;
     right: 2rem;
     padding: 1rem;
     border-radius: var(--border-radius);
@@ -379,4 +408,35 @@ textarea.input-field {
     .main-content {
         padding: 1rem;
     }
+}
+
+.scroll-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+    opacity: 0;
+    visibility: hidden;
+}
+.scroll-btn:hover {
+    background-color: #3b82f6;
+    transform: scale(1.1);
+}
+.scroll-btn i {
+    font-size: 20px;
+}
+.scroll-btn.show {
+    opacity: 1;
+    visibility: visible;
 }
