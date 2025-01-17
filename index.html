@@ -4,10 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Professional QR Code Generator with customization options">
+    <!-- Firebase Script Starts-->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <!-- Firebase Script Ends -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <title>Notion Quick QR</title>
-
     <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -18,6 +21,19 @@
                 <i class="fas fa-qrcode"></i>
                 <h1> QuickQR</h1>
             </div>
+            <!-- Adding Login Button -->
+            <div class="auth-section">
+                <button id="loginBtn" class="auth-btn">
+                    <i class="fas fa-user"></i> Login
+                </button>
+                <div id="toast" class="toast"></div> <!-- Move toast here -->
+                
+                <!-- Dropdown Menu -->
+                <div id="dropdownMenu" class="dropdown-menu" style="display: none;">
+                    <button id="manageQRBtn" class="dropdown-item">Manage QR</button>
+                    <button id="logoutBtn" class="dropdown-item">Logout</button>
+                </div>
+            </div>
         </header>
         <div class="toggle-container">
             <label class="toggle">
@@ -25,6 +41,26 @@
               <span class="slider"></span>
             </label>
           </div>
+
+        <!-- Manage QR Modal -->
+        <div id="manageQRModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Manage QR</h2>
+                <p>Feature will be added later</p>
+            </div>
+        </div>
+
+        <!-- Login Modal -->
+        <div id="loginModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Login to QuickQR</h2>
+                <button id="googleLoginBtn" class="google-btn">
+                    <i class="fab fa-google"></i> Continue with Google
+                </button>
+            </div>
+        </div>
         
         <!-- Scroll Button -->
         <button class="scroll-btn" id="scrollToTopBtn">
@@ -120,7 +156,6 @@
         </footer>
     </div>
 
-    <div id="toast" class="toast"></div>
     <script src="script.js"></script>
 </body>
 </html>
