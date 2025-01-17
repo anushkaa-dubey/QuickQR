@@ -361,9 +361,43 @@ textarea.input-field {
 
 .footer {
     text-align: center;
-    padding: 1rem;
+    padding: 20px;
     background-color: rgb(204, 242, 255);
-    margin-top: auto;
+    font-family: Arial, sans-serif;
+}
+
+/* Social Links Container */
+.social-links {
+    margin-top: 10px;
+    display: inline-flex; /* Align links horizontally */
+    gap: 20px; /* Add space between the social links */
+}
+
+/* Social Links Styling */
+.social-icon {
+    display: inline-flex;
+    align-items: center; /* Center-align icon and text */
+    text-decoration: none; /* Remove underline */
+    color: #333; /* Default text color */
+    font-size: 16px; /* Text size */
+    font-weight: 500; /* Make text slightly bold */
+    transition: all 0.3s ease; /* Smooth hover effect */
+    padding: 10px 10px; /* Add padding around the link */
+}
+
+/* Padding Between Icon and Text */
+.social-icon i {
+    margin-right: 8px; /* Space between icon and text */
+    font-size: 18px; /* Slightly larger icon size */
+}
+
+/* Hover Effect */
+.social-icon:hover {
+    color: #007BFF; /* Change text and icon color on hover */
+    background-color: #a6f9fc; /* Add a subtle background on hover */
+    border-radius: 5px; /* Rounded corners */
+    transform: translateY(-2px); /* Slight upward movement on hover */
+    text-decoration: none; /* Ensure underline doesn't appear on hover */
 }
 
 .footer i {
