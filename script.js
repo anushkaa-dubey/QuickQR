@@ -6,6 +6,7 @@ class QRCodeGenerator {
         this.logoFile = null;
     }
 
+    
     initializeElements() {
         this.qrText = document.getElementById('qr-text');
         this.textContent = document.getElementById('text-content');
@@ -24,6 +25,8 @@ class QRCodeGenerator {
         this.loadingSpinner = document.querySelector('.loading-spinner');
         this.tabButtons = document.querySelectorAll('.tab-btn');
         this.tabContents = document.querySelectorAll('.tab-content');
+        // For theme toggle
+        this.themeToggle = document.getElementById('mode-toggle');
     }
 
     setupEventListeners() {
@@ -46,6 +49,25 @@ class QRCodeGenerator {
         this.bgColor.addEventListener('change', () => this.generateQRCode());
         this.errorCorrection.addEventListener('change', () => this.generateQRCode());
         this.sizes.addEventListener('change', () => this.generateQRCode());
+        // Listen for theme toggle changes
+        this.themeToggle.addEventListener('change', () => this.toggleTheme());
+    }
+    initializeTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            document.body.classList.add('dark-mode');
+            this.themeToggle.checked = true;
+        }
+    }
+
+    toggleTheme() {
+        if (this.themeToggle.checked) {
+            document.body.classList.add('dark-mode');
+            localStorage.setItem('theme', 'dark');
+        } else {
+            document.body.classList.remove('dark-mode');
+            localStorage.setItem('theme', 'light');
+        }
     }
 
     switchTab(tabName) {
