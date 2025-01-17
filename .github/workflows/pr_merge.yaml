@@ -25,7 +25,7 @@ jobs:
       run: |
         COMMENT=$(cat <<EOF
         {
-          "body": "🎉 Your chaotic pull request has been successfully merged! 🎉 Thank you for your valuable contribution to our chaos. Your chaos are greatly appreciated. Feel free to reach out if you have any more contributions or if there's anything chaotic we can assist you with. Keep up the chaotic work! 🚀"
+          "body": "🎉 Your pull request has been successfully merged! 🎉 Thank you for your valuable contribution to our chaos. Your efforts are greatly appreciated. Feel free to reach out if you have any more contributions or if there's anything  we can assist you with. Keep up the  work! 🚀"
         }
         EOF
         )
