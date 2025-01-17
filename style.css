@@ -152,6 +152,11 @@ body.dark-mode .header {
     justify-content: center;
 }
 
+.logo img {
+    max-width: 100px;
+    height: auto;
+}
+
 .logo i {
     color: var(--primary-color);
     font-size: 1.5rem;

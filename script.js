@@ -38,6 +38,9 @@ class QRCodeGenerator {
         this.tabContents = document.querySelectorAll('.tab-content');
         // For theme toggle
         this.themeToggle = document.getElementById('mode-toggle');
+        // Set default logo
+        this.defaultLogo = new Image();
+        this.defaultLogo.src = 'images/logo.png';
     }
 
     setupEventListeners() {
@@ -163,6 +166,8 @@ class QRCodeGenerator {
             
             if (this.logoFile) {
                 await this.addLogoToQR(ctx, canvas);
+            } else {
+                await this.addDefaultLogoToQR(ctx, canvas);
             }
 
             this.qrContainer.innerHTML = '';
@@ -216,6 +221,23 @@ END:VCARD`;
             };
             logo.onerror = reject;
             logo.src = URL.createObjectURL(this.logoFile);
+        });
+    }
+
+    async addDefaultLogoToQR(ctx, canvas) {
+        return new Promise((resolve, reject) => {
+            this.defaultLogo.onload = () => {
+                const logoSize = canvas.width * 0.2;
+                const x = (canvas.width - logoSize) / 2;
+                const y = (canvas.height - logoSize) / 2;
+                
+                ctx.fillStyle = 'white';
+                ctx.fillRect(x, y, logoSize, logoSize);
+                
+                ctx.drawImage(this.defaultLogo, x, y, logoSize, logoSize);
+                resolve();
+            };
+            this.defaultLogo.onerror = reject;
         });
     }
 

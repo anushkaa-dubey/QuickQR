@@ -90,3 +90,9 @@ Guidelines
 
 - Android Club: For organizing AcWoC'25 and fostering open source contributions.
 - Contributors: A big thank you to everyone who has contributed to this project!
+
+## 🖼️ New Logo
+
+We are excited to introduce the new logo for QuickQR, created by Notion Community, VIT Bhopal. This logo represents the essence of our project and enhances the overall user interface.
+
+![QuickQR Logo](images/logo.png)
