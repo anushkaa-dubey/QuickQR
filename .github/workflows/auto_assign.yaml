@@ -1,0 +1,17 @@
+# assigns task to who ever creates it.
+
+name: Auto Assign Issue Creator
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  auto-assign:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Assign issue creator
+        uses: ahmadnassri/action-auto-assign@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          assignees: ${{ github.actor }}
