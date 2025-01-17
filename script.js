@@ -1,3 +1,14 @@
+function showToast(message, type = 'info') {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.className = `toast ${type}`;
+    toast.style.display = 'block';
+
+    setTimeout(() => {
+        toast.style.display = 'none';
+    }, 3000);
+}
+
 class QRCodeGenerator {
     constructor() {
         this.initializeElements();
@@ -263,3 +274,99 @@ scrollBtn.addEventListener('click', () => {
         behavior: 'smooth'
     });
 });
+
+// Firebase Configuration
+const firebaseConfig = {
+    apiKey: "AIzaSyDiB5PASY-WkkoufspwfJOttq4YDnSqsdI",
+    authDomain: "qr-usermanagement.firebaseapp.com",
+    projectId: "qr-usermanagement",
+    storageBucket: "qr-usermanagement.firebasestorage.app",
+    messagingSenderId: "927684182758",
+    appId: "1:927684182758:web:28bd9c27307003cfa97127"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
+// Authentication Elements
+const loginBtn = document.getElementById('loginBtn');
+const loginModal = document.getElementById('loginModal');
+const closeBtns = document.querySelectorAll('.close');
+const googleLoginBtn = document.getElementById('googleLoginBtn');
+const dropdownMenu = document.getElementById('dropdownMenu');
+const manageQRModal = document.getElementById('manageQRModal');
+const manageQRBtn = document.getElementById('manageQRBtn');
+const logoutBtn = document.getElementById('logoutBtn');
+
+function toggleLoginModal(show) {
+    loginModal.style.display = show ? "block" : "none";
+}
+
+function toggleDropdownMenu(show) {
+    dropdownMenu.style.display = show ? "block" : "none";
+}
+
+function toggleManageQRModal(show) {
+    manageQRModal.style.display = show ? "block" : "none";
+}
+
+// Show/Hide Modals
+loginBtn.onclick = () => toggleLoginModal(true);
+closeBtns.forEach(btn => btn.onclick = () => {
+    toggleLoginModal(false);
+    toggleManageQRModal(false);
+});
+window.onclick = (event) => {
+    if (event.target === loginModal) {
+        toggleLoginModal(false);
+    }
+    if (event.target === manageQRModal) {
+        toggleManageQRModal(false);
+    }
+}
+
+// Google Authentication
+googleLoginBtn.addEventListener('click', () => {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    firebase.auth().signInWithPopup(provider)
+        .then((result) => {
+            showToast('Successfully logged in!', 'success');
+            toggleLoginModal(false);
+            updateUIForLoggedInUser(result.user);
+        })
+        .catch((error) => {
+            showToast('Login failed: ' + error.message, 'error');
+        });
+});
+
+// Auth State Observer
+firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+        updateUIForLoggedInUser(user);
+    } else {
+        updateUIForLoggedOutUser();
+    }
+});
+
+function updateUIForLoggedInUser(user) {
+    loginBtn.innerHTML = `
+        <img src="${user.photoURL}" alt="Profile" style="width: 20px; height: 20px; border-radius: 50%; margin-right: 8px;">
+        ${user.displayName}
+    `;
+    loginBtn.onclick = () => toggleDropdownMenu(true);
+    logoutBtn.onclick = () => {
+        firebase.auth().signOut()
+            .then(() => {
+                showToast('Logged out successfully!', 'error');
+                updateUIForLoggedOutUser();
+            })
+            .catch(error => showToast('Logout failed: ' + error.message, 'error'));
+    };
+    manageQRBtn.onclick = () => toggleManageQRModal(true);
+}
+
+function updateUIForLoggedOutUser() {
+    loginBtn.innerHTML = '<i class="fas fa-user"></i> Login';
+    loginBtn.onclick = () => toggleLoginModal(true);
+    toggleDropdownMenu(false);
+}
