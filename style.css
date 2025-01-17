@@ -10,7 +10,7 @@
     --border-radius: 10px;
     --box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
     --transition: all 0.3s ease;
-    
+
 }
 
 * {
@@ -19,7 +19,7 @@
     box-sizing: border-box;
     font-family: "Playfair Display", serif;
   font-optical-sizing: auto;
-  
+
 }
 /* Default Light Mode Styles */
 body {
@@ -42,26 +42,26 @@ body.dark-mode {
     background-color: var(--background-color);
     color: var(--secondary-color);
 }
-  
+
   .toggle-container {
     position: fixed;
     top: 10px;
     right: 10px;
   }
-  
+
   .toggle {
     position: relative;
     display: inline-block;
     width: 50px;
     height: 25px;
   }
-  
+
   .toggle input {
     opacity: 0;
     width: 0;
     height: 0;
   }
-  
+
   .slider {
     position: absolute;
     cursor: pointer;
@@ -73,7 +73,7 @@ body.dark-mode {
     transition: 0.4s;
     border-radius: 25px;
   }
-  
+
   .slider:before {
     position: absolute;
     content: "";
@@ -85,21 +85,22 @@ body.dark-mode {
     transition: 0.4s;
     border-radius: 50%;
   }
-  
+
   input:checked + .slider { 
     background-color: #2196F3;
   }
-  
+
   input:checked + .slider:before {
     transform: translateX(25px);
   }
-  
+
   /* Dark Mode Styles */
   body.dark-mode {
     background-color: #121212;
     color: #ffffff;
-    background: url('https://www.overflow.design/src/assets/img/covers/oc.png') no-repeat center center/cover;
-    backdrop-filter: blur(2px);
+   
+    background: url('https://cdn.pixabay.com/photo/2019/02/02/14/27/qr-code-3970681_1280.jpg') no-repeat center center/cover;
+   /* backdrop-filter: blur(2px);
     /* background-size: 400% 400%;
     background-attachment: fixed;
     background-image: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #00ff00, #0000ff, #8b00ff);
@@ -132,7 +133,7 @@ body.dark-mode {
 }
 
 .header {
-    background-color: rgb(204, 242, 255);
+    background-color: rgb(89, 169, 239);
     padding: 1rem;
     box-shadow: var(--box-shadow);
     display: flex;
@@ -145,11 +146,20 @@ body.dark-mode .header {
     background-color: var(--surface-color);
 }
 
+body.dark-mode .footer {
+    background-color: var(--surface-color);
+}
+
 .logo {
     display: flex;
     align-items: center;
     gap: 0.5rem;
     justify-content: center;
+}
+
+.logo img {
+    max-width: 150px;
+    height: auto;
 }
 
 .logo i {
@@ -362,7 +372,7 @@ textarea.input-field {
 .footer {
     text-align: center;
     padding: 20px;
-    background-color: rgb(204, 242, 255);
+    background-color: rgb(89, 169, 239);
     font-family: Arial, sans-serif;
 }
 
@@ -378,7 +388,7 @@ textarea.input-field {
     display: inline-flex;
     align-items: center; /* Center-align icon and text */
     text-decoration: none; /* Remove underline */
-    color: #333; /* Default text color */
+    color: #1d1c1c; /* Default text color */
     font-size: 16px; /* Text size */
     font-weight: 500; /* Make text slightly bold */
     transition: all 0.3s ease; /* Smooth hover effect */
@@ -394,14 +404,18 @@ textarea.input-field {
 /* Hover Effect */
 .social-icon:hover {
     color: #007BFF; /* Change text and icon color on hover */
-    background-color: #a6f9fc; /* Add a subtle background on hover */
+    background-color: #fff; /* Add a subtle background on hover */
     border-radius: 5px; /* Rounded corners */
     transform: translateY(-2px); /* Slight upward movement on hover */
     text-decoration: none; /* Ensure underline doesn't appear on hover */
 }
+.footer p {
+    margin: 0;
+    color: rgb(23, 20, 20);
+}
 
 .footer i {
-    color: var(--error-color);
+    color: rgb(200, 45, 45);
 }
 
 .toast {
@@ -511,9 +525,9 @@ a {
 }
 
 .auth-btn {
-    background: #fff;
+    background: #085edf;
     border: 2px solid #000;
-    color: #000;
+    color: #fff;
     padding: 8px 16px;
     margin-right: 50px;
     border-radius: 20px;
@@ -602,4 +616,30 @@ a {
 
 .dropdown-item:hover {
     background-color: #f1f1f1;
+}
+
+body.dark-mode .footer {
+    background-color: var(--surface-color); /* Use surface color for the footer in dark mode */
+    color: var(--secondary-color); /* Use secondary color for text */
+}
+
+body.dark-mode .footer p {
+    color: #fff; /* Update text color for paragraph */
+}
+
+body.dark-mode .footer i {
+    color: var(--primary-color); /* Change icon color in dark mode */
+}
+
+body.dark-mode .footer .social-icon {
+    color: var(--primary-color); /* Change icon color in dark mode */
+}
+
+
+body.dark-mode .footer .social-icon:hover {
+    color: #000000; /* Change text and icon color on hover */
+    background-color: #fff; /* Add a subtle background on hover */
+    border-radius: 5px; /* Rounded corners */
+    transform: translateY(-2px); /* Slight upward movement on hover */
+    text-decoration: none; /* Ensure underline doesn't appear on hover */
 }
