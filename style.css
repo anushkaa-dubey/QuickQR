@@ -464,13 +464,16 @@ textarea.input-field {
     opacity: 1;
     visibility: visible;
 }
-
+a {
+    text-decoration: none;
+    color: inherit;
+}
 /* Auth Button Styles */
 .auth-section {
     position: absolute;
     right: 1rem;
     display: flex;
-    align-items: center;
+    /* align-items: center; */
 }
 
 .auth-btn {
