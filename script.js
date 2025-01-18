@@ -1,29 +1,12 @@
-// Enhanced toast function
 function showToast(message, type = 'info') {
     const toast = document.getElementById('toast');
-    if (!toast) return;
-    
-    if (toast.hideTimeout) {
-        clearTimeout(toast.hideTimeout);
-        toast.style.display = 'none';
-        setTimeout(() => showToastMessage(), 100);
-    } else {
-        showToastMessage();
-    }
-    
-    function showToastMessage() {
-        toast.textContent = message;
-        toast.className = `toast ${type}`;
-        toast.style.display = 'block';
-        toast.style.opacity = '1';
+    toast.textContent = message;
+    toast.className = `toast ${type}`;
+    toast.style.display = 'block';
 
-        toast.hideTimeout = setTimeout(() => {
-            toast.style.opacity = '0';
-            setTimeout(() => {
-                toast.style.display = 'none';
-            }, 300);
-        }, 3000);
-    }
+    setTimeout(() => {
+        toast.style.display = 'none';
+    }, 3000);
 }
 
 class QRCodeGenerator {
@@ -152,7 +135,7 @@ class QRCodeGenerator {
 
     async generateQRCode() {
         if (!this.validateInput()) {
-            showToast('Please fill in all required fields correctly', 'error');
+            this.showToast('Please fill in all required fields correctly', 'error');
             return;
         }
 
@@ -160,83 +143,38 @@ class QRCodeGenerator {
         
         try {
             const qrData = this.getQRData();
-            const options = {
-                width: parseInt(this.sizes.value),
-                height: parseInt(this.sizes.value),
+            const canvas = document.createElement('canvas');
+            const size = parseInt(this.sizes.value);
+            
+            canvas.width = size;
+            canvas.height = size;
+            
+            await QRCode.toCanvas(canvas, qrData, {
+                width: size,
+                height: size,
                 color: {
                     dark: this.qrColor.value,
                     light: this.bgColor.value
                 },
                 errorCorrectionLevel: this.errorCorrection.value
-            };
+            });
 
-            const canvas = document.createElement('canvas');
-            await QRCode.toCanvas(canvas, qrData, options);
-
+            const ctx = canvas.getContext('2d');
+            
             if (this.logoFile) {
-                await this.addLogoToQR(canvas.getContext('2d'), canvas);
+                await this.addLogoToQR(ctx, canvas);
             }
-
-            const qrId = await this.saveQRCode(qrData, options);
-            const shareUrl = `https://quick-qr-nine.vercel.app/share.html?id=${qrId}`;
 
             this.qrContainer.innerHTML = '';
             this.qrContainer.appendChild(canvas);
+            
             this.downloadBtn.disabled = false;
-            
-            const shareButtons = document.querySelector('.share-buttons');
-            shareButtons.style.display = 'flex';
-            
-            this.setupShareButtons(shareUrl);
-            showToast('QR Code generated successfully', 'success');
+            this.showToast('QR Code generated successfully', 'success');
         } catch (error) {
             console.error('QR Code generation error:', error);
-            showToast('Failed to generate QR Code', 'error');
+            this.showToast('Failed to generate QR Code', 'error');
         } finally {
             this.showLoading(false);
-        }
-    }
-
-    setupShareButtons(shareUrl) {
-        const shareMessage = "Here is your Quick QR Code!";
-        
-        document.getElementById('whatsappShare').onclick = () => {
-            const whatsappMessage = `${shareMessage}\n\n${shareUrl}`;
-            window.open(`https://wa.me/?text=${encodeURIComponent(whatsappMessage)}`, '_blank');
-        };
-        
-        document.getElementById('twitterShare').onclick = () => {
-            const tweetMessage = `${shareMessage}\n\n${shareUrl}\n\n#QuickQR #QRCode #WebTool`;
-            window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetMessage)}`, '_blank');
-        };
-
-        document.getElementById('copyLink').onclick = async () => {
-            try {
-                await navigator.clipboard.writeText(`${shareMessage}\n\n${shareUrl}`);
-                showToast('Link and message copied to clipboard!', 'success');
-            } catch (err) {
-                showToast('Failed to copy link', 'error');
-            }
-        };
-    }
-
-    async saveQRCode(qrData, options) {
-        try {
-            const user = firebase.auth().currentUser;
-            const doc = await db.collection('qrcodes').add({
-                content: qrData,
-                options: options,
-                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                creator: user ? {
-                    uid: user.uid,
-                    name: user.displayName,
-                    email: user.email
-                } : 'anonymous'
-            });
-            return doc.id;
-        } catch (error) {
-            console.error('Error saving QR code:', error);
-            throw error;
         }
     }
 
@@ -371,7 +309,6 @@ const firebaseConfig = {
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
 
 // Authentication Elements
 const loginBtn = document.getElementById('loginBtn');
