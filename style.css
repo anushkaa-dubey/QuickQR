@@ -137,7 +137,6 @@ body.dark-mode {
     box-shadow: var(--box-shadow);
     display: flex;
     align-items: center;
-    justify-content: center;
     position: relative;
 }
 
@@ -405,7 +404,7 @@ textarea.input-field {
 }
 
 .toast {
-    position: absolute;
+    position: fixed;
     top: 100%;
     right: 0;
     margin-top: 10px;
@@ -515,7 +514,6 @@ a {
     border: 2px solid #000;
     color: #000;
     padding: 8px 16px;
-    margin-right: 50px;
     border-radius: 20px;
     cursor: pointer;
     display: flex;
