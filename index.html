@@ -7,6 +7,7 @@
     <!-- Firebase Script Starts-->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
     <!-- Firebase Script Ends -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
@@ -148,6 +149,17 @@
                         </button>
                         <button id="downloadBtn" class="secondary-button" disabled>
                             <i class="fas fa-download"></i> Download
+                        </button>
+                    </div>
+                    <div class="share-buttons" style="display: none;">
+                        <button id="whatsappShare" class="share-btn whatsapp">
+                            <i class="fab fa-whatsapp"></i>
+                        </button>
+                        <button id="twitterShare" class="share-btn twitter">
+                            <i class="fab fa-twitter"></i>
+                        </button>
+                        <button id="copyLink" class="share-btn copy">
+                            <i class="fas fa-link"></i>
                         </button>
                     </div>
                 </section>
