@@ -212,27 +212,43 @@ class QRCodeGenerator {
 
         document.getElementById('copyLink').onclick = async () => {
             try {
-                await navigator.clipboard.writeText(`${shareMessage}\n\n${shareUrl}`);
-                showToast('Link and message copied to clipboard!', 'success');
+                await navigator.clipboard.writeText(`\n${shareUrl}`);
+                showToast('Link copied to clipboard!', 'success');
             } catch (err) {
                 showToast('Failed to copy link', 'error');
             }
         };
+
+        // Add login prompt for anonymous users
+        const user = firebase.auth().currentUser;
+        if (!user) {
+            const loginPromptDiv = document.createElement('div');
+            loginPromptDiv.className = 'login-prompt';
+            loginPromptDiv.innerHTML = `
+                <p class="save-prompt">
+                    <i class="fas fa-info-circle"></i>
+                    Want to access this QR code later? 
+                    <a href="#" onclick="toggleLoginModal(true); return false;">Sign in</a>
+                    to save it to your collection!
+                </p>
+            `;
+            document.querySelector('.share-buttons').after(loginPromptDiv);
+        }
     }
 
     async saveQRCode(qrData, options) {
         try {
             const user = firebase.auth().currentUser;
-            const doc = await db.collection('qrcodes').add({
+            const docData = {
                 content: qrData,
                 options: options,
-                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                creator: user ? {
-                    uid: user.uid,
-                    name: user.displayName,
-                    email: user.email
-                } : 'anonymous'
-            });
+                createdAt: new Date(),
+                creator: user ? user.displayName : 'anonymous',
+                userUid: user ? user.uid : null,
+                userEmail: user ? user.email : null
+            };
+
+            const doc = await db.collection('qrcodes').add(docData);
             return doc.id;
         } catch (error) {
             console.error('Error saving QR code:', error);
@@ -418,6 +434,8 @@ googleLoginBtn.addEventListener('click', () => {
             showToast('Successfully logged in!', 'success');
             toggleLoginModal(false);
             updateUIForLoggedInUser(result.user);
+            // Reload the page to update ownership of anonymous QR codes
+            location.reload();
         })
         .catch((error) => {
             showToast('Login failed: ' + error.message, 'error');
@@ -428,10 +446,52 @@ googleLoginBtn.addEventListener('click', () => {
 firebase.auth().onAuthStateChanged((user) => {
     if (user) {
         updateUIForLoggedInUser(user);
+        // Replace login prompt with success message if it exists
+        const loginPrompt = document.querySelector('.login-prompt');
+        if (loginPrompt) {
+            loginPrompt.innerHTML = `
+                <p class="save-prompt">
+                    <i class="fas fa-check-circle"></i>
+                    QR code has been saved into your collection successfully!
+                </p>
+            `;
+            loginPrompt.classList.add('success-prompt');
+            // Increased duration to 10 seconds
+            setTimeout(() => {
+                loginPrompt.remove();
+            }, 10000);
+        }
+        // Update ownership of any anonymous QR codes created in this session
+        updateAnonymousQRCodes(user);
     } else {
         updateUIForLoggedOutUser();
     }
 });
+
+// Add this new function to update anonymous QR codes
+async function updateAnonymousQRCodes(user) {
+    try {
+        const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000);
+        const anonymousQRs = await db.collection('qrcodes')
+            .where('creator', '==', 'anonymous')
+            .where('createdAt', '>', fiveMinutesAgo)
+            .get();
+
+        const batch = db.batch();
+        anonymousQRs.forEach((doc) => {
+            batch.update(doc.ref, {
+                creator: user.displayName,
+                userUid: user.uid,
+                userEmail: user.email,
+                updatedAt: new Date()
+            });
+        });
+
+        await batch.commit();
+    } catch (error) {
+        console.error('Error updating anonymous QR codes:', error);
+    }
+}
 
 function updateUIForLoggedInUser(user) {
     loginBtn.innerHTML = `
@@ -447,11 +507,115 @@ function updateUIForLoggedInUser(user) {
             })
             .catch(error => showToast('Logout failed: ' + error.message, 'error'));
     };
-    manageQRBtn.onclick = () => toggleManageQRModal(true);
+    manageQRBtn.onclick = () => {
+        toggleManageQRModal(true);
+        loadUserQRCodes();
+    };
 }
 
 function updateUIForLoggedOutUser() {
     loginBtn.innerHTML = '<i class="fas fa-user"></i> Login';
     loginBtn.onclick = () => toggleLoginModal(true);
     toggleDropdownMenu(false);
+}
+
+function getQRTypeAndContent(qrData) {
+    if (qrData.startsWith('BEGIN:VCARD')) {
+        const name = qrData.match(/FN:(.*)/)?.[1] || 'Unknown';
+        return { type: 'Contact', content: `Contact: ${name}` };
+    } else if (qrData.startsWith('http')) {
+        return { type: 'URL', content: qrData };
+    } else {
+        return { type: 'Text', content: qrData.substring(0, 50) + (qrData.length > 50 ? '...' : '') };
+    }
+}
+
+async function loadUserQRCodes() {
+    const qrList = document.getElementById('qrList');
+    const user = firebase.auth().currentUser;
+    
+    if (!user) return;
+
+    try {
+        const snapshot = await db.collection('qrcodes')
+            .where('userUid', '==', user.uid)
+            .orderBy('createdAt', 'desc')
+            .get();
+
+        qrList.innerHTML = '';
+
+        if (snapshot.empty) {
+            qrList.innerHTML = '<div class="no-qr-message">No QR codes found.</div>';
+            return;
+        }
+
+        // Create table structure
+        const table = document.createElement('table');
+        table.className = 'qr-table';
+        table.innerHTML = `
+            <thead>
+                <tr>
+                    <th class="sno">S.No</th>
+                    <th class="type">Type</th>
+                    <th>Details</th>
+                    <th class="actions">Actions</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        `;
+
+        let counter = 1;
+        snapshot.forEach(doc => {
+            const data = doc.data();
+            const { type, content } = getQRTypeAndContent(data.content);
+            const shareUrl = `https://quick-qr-nine.vercel.app/share.html?id=${doc.id}`;
+
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td class="sno">${counter}</td>
+                <td class="type">
+                    <a href="${shareUrl}" target="_blank">
+                        ${type} QR
+                    </a>
+                </td>
+                <td class="details">${content}</td>
+                <td class="actions">
+                    <div class="action-buttons">
+                        <button class="action-btn copy-btn" onclick="copyShareLink('${shareUrl}')" title="Copy Link">
+                            <i class="fas fa-link"></i>
+                        </button>
+                        <button class="action-btn delete-btn" onclick="deleteQRCode('${doc.id}')" title="Delete">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </td>
+            `;
+            table.querySelector('tbody').appendChild(row);
+            counter++;
+        });
+
+        qrList.appendChild(table);
+    } catch (error) {
+        console.error('Error loading QR codes:', error);
+        qrList.innerHTML = '<div class="no-qr-message">Error loading QR codes.</div>';
+    }
+}
+
+async function deleteQRCode(docId) {
+    if (!confirm('Are you sure you want to delete this QR code?')) return;
+
+    try {
+        await db.collection('qrcodes').doc(docId).delete();
+        showToast('QR code deleted successfully', 'success');
+        loadUserQRCodes(); // Reload the list
+    } catch (error) {
+        console.error('Error deleting QR code:', error);
+        showToast('Error deleting QR code', 'error');
+    }
+}
+
+function copyShareLink(url) {
+    navigator.clipboard.writeText(url)
+        .then(() => showToast('Share link copied to clipboard!', 'success'))
+        .catch(() => showToast('Failed to copy link', 'error'));
 }
