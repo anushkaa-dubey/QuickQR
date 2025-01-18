@@ -34,7 +34,7 @@
                 
                 <!-- Dropdown Menu -->
                 <div id="dropdownMenu" class="dropdown-menu" style="display: none;">
-                    <button id="manageQRBtn" class="dropdown-item">Manage QR</button>
+                    <button id="manageQRBtn" class="dropdown-item">Manage QR Codes</button>
                     <button id="logoutBtn" class="dropdown-item">Logout</button>
                 </div>
             </div>
@@ -48,10 +48,15 @@
 
         <!-- Manage QR Modal -->
         <div id="manageQRModal" class="modal">
-            <div class="modal-content">
+            <div class="modal-content manage-modal">
                 <span class="close">&times;</span>
-                <h2>Manage QR</h2>
-                <p>Feature will be added later</p>
+                <h2>Manage QR Codes</h2>
+                <div class="qr-list" id="qrList">
+                    <!-- QR codes will be loaded here -->
+                    <div class="loading-spinner">
+                        <i class="fas fa-spinner fa-spin"></i>
+                    </div>
+                </div>
             </div>
         </div>
 

@@ -52,8 +52,8 @@ async function renderQRCode(data) {
         qrBody.appendChild(canvas);
 
         // Show creator info if available
-        if (data.creator && data.creator !== 'anonymous') {
-            creatorInfo.innerHTML = `Created by: <strong>${data.creator.name}</strong>`;
+        if (data.userEmail) {
+            creatorInfo.innerHTML = `Created by: <strong>${data.creator}</strong>`;
             creatorInfo.style.display = 'block';
         } else {
             creatorInfo.innerHTML = 'Created by: <strong>Anonymous</strong>';

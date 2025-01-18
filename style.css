@@ -536,8 +536,10 @@ a {
     left: 0;
     top: 0;
     width: 100%;
-    height: 100%;
+    height: 100vh;
     background-color: rgba(0,0,0,0.5);
+    overflow-y: auto;
+    padding: 20px;
 }
 
 .modal-content {
@@ -688,5 +690,363 @@ a {
     .action-buttons.vertical, 
     .share-buttons.vertical {
         flex-direction: row;
+    }
+}
+
+.login-prompt {
+    margin-top: 15px;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 6px;
+    text-align: center;
+}
+
+.login-prompt .save-prompt {
+    color: #666;
+    margin: 0;
+}
+
+.login-prompt a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.login-prompt a:hover {
+    text-decoration: underline;
+}
+
+.login-prompt i {
+    color: #007bff;
+    margin-right: 5px;
+}
+
+/* For dark mode */
+.dark-mode .login-prompt {
+    background: #2d3436;
+}
+
+.dark-mode .login-prompt .save-prompt {
+    color: #ddd;
+}
+
+.login-prompt.success-prompt {
+    background: #d4edda;
+    border-color: #c3e6cb;
+}
+
+.login-prompt.success-prompt .save-prompt {
+    color: #155724;
+}
+
+.login-prompt.success-prompt i {
+    color: #28a745;
+}
+
+/* For dark mode */
+.dark-mode .login-prompt.success-prompt {
+    background: #064e3b;
+    border-color: #065f46;
+}
+
+.dark-mode .login-prompt.success-prompt .save-prompt {
+    color: #ecfdf5;
+}
+
+.manage-modal {
+    position: relative !important;
+    width: 95% !important;
+    max-width: 890px !important;
+    min-height: 300px !important;
+    height: auto !important;
+    margin: 30px auto !important;
+    padding: 2rem !important;
+    background: var(--surface-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center; /* Center text in the modal */
+}
+
+.manage-modal h2 {
+    width: 100%;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.qr-list {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    padding: 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column; /* Ensure content is centered vertically */
+    height: 100%; /* Ensure it takes full height of the container */
+}
+
+.qr-table {
+    width: 100%;
+    min-width: 800px; /* Ensures table doesn't get too narrow */
+    margin: 0 auto;
+    background: var(--surface-color);
+    border-radius: var(--border-radius);
+    border-collapse: separate;
+    border-spacing: 0;
+    box-shadow: var(--box-shadow);
+}
+
+.qr-table th, 
+.qr-table td {
+    padding: 1rem;
+    text-align: center !important; /* Center all content */
+    border-bottom: 1px solid #e2e8f0;
+    vertical-align: middle;
+}
+
+.qr-table .type a {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+.qr-table .type a:hover {
+    text-decoration: underline;
+}
+
+/* Dark mode support */
+.dark-mode .qr-table .type a {
+    color: #60a5fa;
+}
+
+.qr-table .type a {
+    justify-content: center; /* Center the type link with icon */
+    text-align: center;
+    margin: 0 auto;
+}
+
+.qr-table th {
+    background: var(--primary-color);
+    color: white;
+    font-weight: 500;
+    padding: 1rem;
+    text-align: left;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.qr-table td {
+    padding: 1rem;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.qr-table .sno {
+    width: 80px;
+}
+
+.qr-table .type {
+    width: 180px;
+}
+
+.qr-table .actions {
+    width: 120px;
+    text-align: center;
+}
+
+.qr-table .details {
+    max-width: 400px;
+    margin: 0 auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.qr-table .sno {
+    width: 50px;
+}
+
+.qr-table .type {
+    width: 120px;
+}
+
+.qr-table .actions {
+    width: 120px;
+    text-align: center;
+}
+
+.qr-table .action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+.qr-table .action-btn {
+    width: 35px;
+    height: 35px;
+    border: none;
+    border-radius: var(--border-radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition);
+    color: white;
+}
+
+.qr-table .delete-btn {
+    background-color: var(--error-color);
+}
+
+.qr-table .copy-btn {
+    background-color: var(--accent-color);
+}
+
+.qr-table .qr-link {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.qr-table .qr-link:hover {
+    text-decoration: underline;
+}
+
+/* Dark mode support */
+.dark-mode .qr-table tr:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.dark-mode .qr-table td {
+    border-bottom-color: #2d3748;
+}
+
+.qr-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px));
+    gap: 1rem;
+}
+
+.qr-item {
+    background: var(--surface-color);
+    border-radius: var(--border-radius);
+    padding: 1rem;
+    box-shadow: var(--box-shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.qr-item-title {
+    font-weight: 500;
+    color: var(--primary-color);
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.qr-item-title:hover {
+    text-decoration: underline;
+}
+
+.qr-item-content {
+    color: var(--secondary-color);
+    font-size: 0.875rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.qr-item-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.qr-item-actions button {
+    flex: 1;
+    padding: 0.5rem;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    transition: var(--transition);
+}
+
+.qr-item-actions .delete-btn {
+    background-color: var(--error-color);
+    color: white;
+}
+
+.qr-item-actions .copy-btn {
+    background-color: var(--accent-color);
+    color: white;
+}
+
+.no-qr-message {
+    text-align: center;
+    padding: 2rem;
+    color: var(--secondary-color);
+    font-size: 1.2rem;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%; /* Ensure it takes full height of the container */
+    flex-grow: 1; /* Allow it to grow and fill the available space */
+}
+
+@media (max-width: 768px) {
+    .manage-modal {
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 1rem !important;
+        border-radius: 0 !important;
+        height: 100vh !important;
+        max-height: none !important;
+    }
+
+    .qr-table {
+        font-size: 0.9rem;
+        min-width: 600px; /* Slightly smaller on mobile but still scrollable */
+    }
+
+    .qr-table th, 
+    .qr-table td {
+        padding: 0.75rem;
+    }
+
+    .qr-table .actions {
+        width: 100px;
+    }
+}
+
+/* Center the modal on larger screens */
+@media (min-width: 1400px) {
+    .manage-modal {
+        width: 80% !important;
+        margin: 50px auto !important;
+    }
+}
+
+/* Adjust for smaller screens */
+@media (max-width: 768px) {
+    .modal {
+        padding: 10px;
+    }
+
+    .manage-modal {
+        width: 98% !important;
+        margin: 10px auto !important;
+        padding: 1rem !important;
+    }
+
+    .qr-list {
+        padding: 0.5rem;
     }
 }
