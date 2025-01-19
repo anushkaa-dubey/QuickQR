@@ -12,8 +12,10 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <title>Notion Quick QR</title>
-    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="script.js" defer></script>
 </head>
 <body>
     <div class="app-container">
@@ -152,9 +154,26 @@
                         <button id="generateBtn" class="primary-button">
                             <i class="fas fa-sync-alt"></i> Generate QR
                         </button>
-                        <button id="downloadBtn" class="secondary-button" disabled>
-                            <i class="fas fa-download"></i> Download
-                        </button>
+                        <div class="dropdown">
+                            <button id="downloadBtn" class="secondary-button dropdown-toggle" disabled>
+                                <i class="fas fa-download"></i> Download
+                                <i class="fas fa-caret-down"></i>
+                            </button>
+                            <div class="dropdown-content">
+                                <button id="downloadPNG" class="dropdown-item">
+                                    <i class="fas fa-image"></i> PNG
+                                </button>
+                                <button id="downloadJPG" class="dropdown-item">
+                                    <i class="fas fa-image"></i> JPG
+                                </button>
+                                <button id="downloadSVG" class="dropdown-item">
+                                    <i class="fas fa-code"></i> SVG
+                                </button>
+                                <button id="downloadPDF" class="dropdown-item">
+                                    <i class="fas fa-file-pdf"></i> PDF
+                                </button>
+                            </div>
+                        </div>
                     </div>
                     <div class="share-buttons" style="display: none;">
                         <button id="whatsappShare" class="share-btn whatsapp">
@@ -184,6 +203,5 @@
         </footer>
     </div>
 
-    <script src="script.js"></script>
 </body>
 </html>
