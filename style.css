@@ -42,11 +42,26 @@ body.dark-mode {
     background-color: var(--background-color);
     color: var(--secondary-color);
 }
+
+.header{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mode{
+    color: var(--primary-color);
+}
   
   .toggle-container {
     position: fixed;
-    top: 10px;
-    right: 10px;
+    gap: 10px;
+    display: flex;
+    flex-direction: row !important;
+    background-color: transparent;
+    margin-left: 40%;
+    justify-content: center;
+    align-items: center;
   }
   
   .toggle {
