@@ -52,8 +52,8 @@ async function renderQRCode(data) {
         qrBody.appendChild(canvas);
 
         // Show creator info if available
-        if (data.creator && data.creator !== 'anonymous') {
-            creatorInfo.innerHTML = `Created by: <strong>${data.creator.name}</strong>`;
+        if (data.userEmail) {
+            creatorInfo.innerHTML = `Created by: <strong>${data.creator}</strong>`;
             creatorInfo.style.display = 'block';
         } else {
             creatorInfo.innerHTML = 'Created by: <strong>Anonymous</strong>';
@@ -84,17 +84,120 @@ async function renderQRCode(data) {
             }
         };
 
-        downloadBtn.addEventListener('click', () => {
-            const link = document.createElement('a');
-            link.download = 'SharedQR.png';
-            link.href = canvas.toDataURL('image/png');
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        });
+        // Setup download buttons
+        setupDownloadButtons(canvas, data);
     } catch (error) {
         showError('Failed to render QR code');
     }
+}
+
+function setupDownloadButtons(canvas, data) {
+    const downloadPNG = document.getElementById('downloadPNG');
+    const downloadJPG = document.getElementById('downloadJPG');
+    const downloadSVG = document.getElementById('downloadSVG');
+    const downloadPDF = document.getElementById('downloadPDF');
+    const dropdown = document.querySelector('.dropdown');
+
+    // Add click handler for download dropdown
+    dropdown.addEventListener('click', (e) => {
+        e.stopPropagation();
+        dropdown.classList.toggle('active');
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.dropdown')) {
+            dropdown.classList.remove('active');
+        }
+    });
+
+    // PNG download
+    downloadPNG.addEventListener('click', () => {
+        const link = document.createElement('a');
+        link.download = 'SharedQR.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+        showToast('QR Code downloaded as PNG', 'success');
+    });
+
+    // JPG download
+    downloadJPG.addEventListener('click', () => {
+        const jpgCanvas = document.createElement('canvas');
+        jpgCanvas.width = canvas.width;
+        jpgCanvas.height = canvas.height;
+        const ctx = jpgCanvas.getContext('2d');
+
+        // Fill white background
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(0, 0, jpgCanvas.width, jpgCanvas.height);
+        ctx.drawImage(canvas, 0, 0);
+
+        const link = document.createElement('a');
+        link.download = 'SharedQR.jpg';
+        link.href = jpgCanvas.toDataURL('image/jpeg', 0.8);
+        link.click();
+        showToast('QR Code downloaded as JPG', 'success');
+    });
+
+    // SVG download
+    downloadSVG.addEventListener('click', async () => {
+        try {
+            const svgString = await QRCode.toString(data.content, {
+                ...data.options,
+                type: 'svg'
+            });
+            const blob = new Blob([svgString], { type: 'image/svg+xml' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.download = 'SharedQR.svg';
+            link.href = url;
+            link.click();
+            URL.revokeObjectURL(url);
+            showToast('QR Code downloaded as SVG', 'success');
+        } catch (error) {
+            showToast('Failed to download SVG', 'error');
+        }
+    });
+
+    // PDF download
+    downloadPDF.addEventListener('click', async () => {
+        try {
+            if (!window.jspdf) {
+                await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
+            }
+
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF({
+                orientation: 'portrait',
+                unit: 'mm',
+                format: 'a4'
+            });
+
+            const imgData = canvas.toDataURL('image/png');
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = pdf.internal.pageSize.getHeight();
+            const qrSize = Math.min(pdfWidth, pdfHeight) * 0.8;
+            const x = (pdfWidth - qrSize) / 2;
+            const y = (pdfHeight - qrSize) / 2;
+
+            pdf.addImage(imgData, 'PNG', x, y, qrSize, qrSize);
+            pdf.save('SharedQR.pdf');
+            showToast('QR Code downloaded as PDF', 'success');
+        } catch (error) {
+            showToast('Failed to download PDF', 'error');
+        }
+    });
+}
+
+// Add utility function to load external scripts
+function loadScript(url) {
+    return new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = url;
+        script.onload = resolve;
+        script.onerror = reject;
+        document.head.appendChild(script);
+    });
 }
 
 // Add toast functionality
