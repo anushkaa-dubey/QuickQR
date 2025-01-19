@@ -1050,3 +1050,73 @@ a {
         padding: 0.5rem;
     }
 }
+
+/* ...existing code... */
+
+.dropdown {
+    position: relative;
+    flex: 1;
+}
+
+.dropdown-toggle {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: var(--surface-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    z-index: 1000;
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+}
+
+/* Change hover to click-based display */
+.dropdown.active .dropdown-content {
+    display: block;
+}
+
+.dropdown-content .dropdown-item {
+    width: 100%;
+    padding: 0.75rem;
+    border: none;
+    background: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition: var(--transition);
+    color: var(--secondary-color);
+}
+
+.dropdown-content .dropdown-item:hover {
+    background-color: var(--background-color);
+    color: var(--primary-color);
+}
+
+/* Remove the hover-based display */
+/* Remove or comment out this rule:
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+*/
+
+/* Dark mode support */
+.dark-mode .dropdown-content {
+    background-color: var(--surface-color);
+    border: 1px solid var(--secondary-color);
+}
+
+.dark-mode .dropdown-content .dropdown-item:hover {
+    background-color: var(--background-color);
+}
+/* ...existing code... */
