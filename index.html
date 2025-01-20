@@ -3,89 +3,166 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Professional QR Code Generator with customization options">
+    <!-- Firebase Script Starts-->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <!-- Firebase Script Ends -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <title>QuickQR - Modern QR Code Generator</title>
+    <title>Notion Quick QR</title>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <div class="box">
-        <div class="qr-content">
-            <div class="qr-header">
-                <h1>QuickQR</h1>
-                <div class="tabs">
-                    <button class="tab-btn active" data-tab="single">Single QR</button>
-                    <button class="tab-btn" data-tab="batch">Batch QR</button>
-                </div>
-                <div id="single-qr" class="tab-content active">
-                    <input type="text" id="qr-text" placeholder="Enter text or URL" maxlength="2950">
-                    <div class="char-counter"><span id="char-count">0</span>/2950</div>
-                    <div class="qr-options">
-                        <div class="option-group">
-                            <label for="qr-width">Width:</label>
-                            <input type="number" id="qr-width" value="330" min="100" max="1000">
-                        </div>
-                        <div class="option-group">
-                            <label for="qr-height">Height:</label>
-                            <input type="number" id="qr-height" value="330" min="100" max="1000">
-                        </div>
-                        <div class="option-group">
-                            <label>Foreground Color:</label>
-                            <div id="fg-color-btn" class="color-btn"></div>
-                            <input type="color" id="fg-color" value="#000000" class="hidden-color-input">
-                        </div>
-                        <div class="option-group">
-                            <label>Background Color:</label>
-                            <div id="bg-color-btn" class="color-btn"></div>
-                            <input type="color" id="bg-color" value="#ffffff" class="hidden-color-input">
-                        </div>
-                        <div class="option-group">
-                            <label for="error-correction">Error Correction:</label>
-                            <select id="error-correction">
-                                <option value="L">Low</option>
-                                <option value="M">Medium</option>
-                                <option value="Q">Quartile</option>
-                                <option value="H">High</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="qr-actions">
-                        <button id="generateBtn">Generate</button>
-                        <button id="downloadBtn">Download</button>
-                    </div>
-                </div>
-                <div id="batch-qr" class="tab-content">
-                    <textarea id="batch-input" placeholder="Enter multiple texts or URLs, one per line"></textarea>
-                    <div class="qr-options">
-                        <div class="option-group">
-                            <label for="batch-qr-width">Width:</label>
-                            <input type="number" id="batch-qr-width" value="330" min="100" max="1000">
-                        </div>
-                        <div class="option-group">
-                            <label for="batch-qr-height">Height:</label>
-                            <input type="number" id="batch-qr-height" value="330" min="100" max="1000">
-                        </div>
-                        <div class="option-group">
-                            <label>Foreground Color:</label>
-                            <div id="batch-fg-color-btn" class="color-btn"></div>
-                            <input type="color" id="batch-fg-color" value="#000000" class="hidden-color-input">
-                        </div>
-                        <div class="option-group">
-                            <label>Background Color:</label>
-                            <div id="batch-bg-color-btn" class="color-btn"></div>
-                            <input type="color" id="batch-bg-color" value="#ffffff" class="hidden-color-input">
-                        </div>
-                    </div>
-                    <div class="qr-actions">
-                        <button id="batchGenerateBtn">Generate Batch</button>
-                        <button id="batchDownloadBtn">Download All</button>
-                    </div>
+    <div class="app-container">
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-qrcode"></i>
+                <h1> QuickQR</h1>
+            </div>
+            <!-- Adding Login Button -->
+            <div class="auth-section">
+                <button id="loginBtn" class="auth-btn">
+                    <i class="fas fa-user"></i> Login
+                </button>
+                <div id="toast" class="toast"></div> <!-- Move toast here -->
+                
+                <!-- Dropdown Menu -->
+                <div id="dropdownMenu" class="dropdown-menu" style="display: none;">
+                    <button id="manageQRBtn" class="dropdown-item">Manage QR</button>
+                    <button id="logoutBtn" class="dropdown-item">Logout</button>
                 </div>
             </div>
-            <div class="qr-body" id="qr-code"></div>
+        </header>
+        <div class="toggle-container">
+            <label class="toggle">
+              <input type="checkbox" id="mode-toggle">
+              <span class="slider"></span>
+            </label>
+          </div>
+
+        <!-- Manage QR Modal -->
+        <div id="manageQRModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Manage QR</h2>
+                <p>Feature will be added later</p>
+            </div>
         </div>
+
+        <!-- Login Modal -->
+        <div id="loginModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Login to QuickQR</h2>
+                <button id="googleLoginBtn" class="google-btn">
+                    <i class="fab fa-google"></i> Continue with Google
+                </button>
+            </div>
+        </div>
+        
+        <!-- Scroll Button -->
+        <button class="scroll-btn" id="scrollToTopBtn">
+            <i class="fas fa-arrow-up fa-lg"></i>
+        </button>
+
+        <main class="main-content">
+            <div class="container">
+                <section class="input-section">
+                    <div class="tabs">
+                        <button class="tab-btn active" data-tab="url">URL</button>
+                        <button class="tab-btn" data-tab="text">Text</button>
+                        <button class="tab-btn" data-tab="contact">Contact Card</button>
+                    </div>
+
+                    <div class="tab-content active" id="url-tab">
+                        <input type="url" placeholder="Enter URL (e.g., https://example.com)" id="qr-text" class="input-field">
+                    </div>
+
+                    <div class="tab-content" id="text-tab">
+                        <textarea placeholder="Enter your text message" id="text-content" class="input-field"></textarea>
+                    </div>
+
+                    <div class="tab-content" id="contact-tab">
+                        <input type="text" placeholder="Full Name" id="contact-name" class="input-field">
+                        <input type="tel" placeholder="Phone Number" id="contact-phone" class="input-field">
+                        <input type="email" placeholder="Email" id="contact-email" class="input-field">
+                    </div>
+
+                    <div class="customization-section">
+                        <div class="option-group">
+                            <label for="sizes">QR Code Size:</label>
+                            <select id="sizes" class="select-field">
+                                <option value="200">Small (200x200)</option>
+                                <option value="300" selected>Medium (300x300)</option>
+                                <option value="400">Large (400x400)</option>
+                                <option value="500">Extra Large (500x500)</option>
+                            </select>
+                        </div>
+
+                        <div class="option-group">
+                            <label for="qr-color">QR Code Color:</label>
+                            <input type="color" id="qr-color" value="#000000" class="color-picker">
+                        </div>
+
+                        <div class="option-group">
+                            <label for="bg-color">Background Color:</label>
+                            <input type="color" id="bg-color" value="#FFFFFF" class="color-picker">
+                        </div>
+
+                        <div class="option-group">
+                            <label for="error-correction">Error Correction:</label>
+                            <select id="error-correction" class="select-field">
+                                <option value="L">Low (7%)</option>
+                                <option value="M" selected>Medium (15%)</option>
+                                <option value="Q">Quartile (25%)</option>
+                                <option value="H">High (30%)</option>
+                            </select>
+                        </div>
+
+                        <div class="option-group">
+                            <label for="logo-input" class="custom-file-upload">
+                                <i class="fas fa-image"></i> Upload Logo
+                            </label>
+                            <input type="file" id="logo-input" accept="image/*" class="file-input">
+                            <button id="remove-logo" class="icon-button" style="display: none;">
+                                <i class="fas fa-trash"></i> Remove Logo
+                            </button>
+                        </div>
+                        <!--Batch qr gen-->
+                        <div class="option-group">
+                            <label for="batch-file-input" class="custom-file-upload">
+                                <i class="fas fa-file-csv"></i> Upload CSV for Batch Generation
+                            </label>
+                            <input type="file" id="batch-file-input" accept=".csv" class="file-input">
+                        </div>
+                    </div>
+                </section>
+
+                <section class="preview-section">
+                    <div class="qr-body">
+                        <div class="loading-spinner" style="display:none;">
+                            <i class="fas fa-spinner fa-spin"></i>
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <button id="generateBtn" class="primary-button">
+                            <i class="fas fa-sync-alt"></i> Generate QR
+                        </button>
+                        <button id="downloadBtn" class="secondary-button" disabled>
+                            <i class="fas fa-download"></i> Download
+                        </button>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>Made with <i class="fas fa-heart"></i> by Notion Community VIT Bhopal</p>
+        </footer>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+
     <script src="script.js"></script>
 </body>
 </html>
-
