@@ -26,26 +26,23 @@
             </div>
             <!-- Adding Login Button -->
             <div class="auth-section">
+                <div class="auth-btn-container"> <!-- Add this wrapper -->
+                    <button id="loginBtn" class="auth-btn">
+                        <i class="fas fa-user"></i> Login
+                    </button>
+                    <!-- Move dropdown menu here -->
+                    <div id="dropdownMenu" class="dropdown-menu" style="display: none;">
+                        <button id="manageQRBtn" class="dropdown-item">Manage QR Codes</button>
+                        <button id="logoutBtn" class="dropdown-item">Logout</button>
+                    </div>
+                </div>
                 <button id="loginBtn" class="auth-btn">
-                    <i class="fas fa-user"></i> Login
+                   <a href="./instruction.html"> How to use ?</a>
                 </button>
-                <button id="loginBtn" class="auth-btn">
-                   <a href="./instruction.html"><i class="fa-solid fa-question"></i> How to use ?</a>
+                <button id="theme-toggle" class="theme-btn">
+                    <i class="fas fa-lightbulb"></i>
                 </button>
                 <div id="toast" class="toast"></div> <!-- Move toast here -->
-                
-                <!-- Dropdown Menu -->
-                <div id="dropdownMenu" class="dropdown-menu" style="display: none;">
-                    <button id="manageQRBtn" class="dropdown-item">Manage QR Codes</button>
-                    <button id="logoutBtn" class="dropdown-item">Logout</button>
-                </div>
-            </div>
-            <div class="toggle-container">
-                <label class="toggle">
-                  <input type="checkbox" id="mode-toggle">
-                  <span class="slider"></span>
-                </label>
-                <div class="mode">Dark Mode</div>
             </div>
         </header>
 
