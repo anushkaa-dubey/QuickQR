@@ -166,23 +166,36 @@ class QRCodeGenerator {
     }
     initializeTheme() {
         const savedTheme = localStorage.getItem('theme');
+        const modeDiv = document.querySelector('.mode'); 
+    
         if (savedTheme === 'dark') {
             document.body.classList.add('dark-mode');
+            this.themeToggle.checked = true;
+            modeDiv.textContent = 'Light Mode'; // Show "Light Mode" when in dark mode
+        } else {
+            document.body.classList.remove('dark-mode');
+            modeDiv.textContent = 'Dark Mode'; // Show "Dark Mode" when in light mode
+
             if (this.themeToggle) {
                 this.themeToggle.checked = true;
             }
         }
     }
-
+    
     toggleTheme() {
+        const modeDiv = document.querySelector('.mode');
+    
         if (this.themeToggle.checked) {
             document.body.classList.add('dark-mode');
             localStorage.setItem('theme', 'dark');
+            modeDiv.textContent = 'Light Mode'; // Update to "Light Mode"
         } else {
             document.body.classList.remove('dark-mode');
             localStorage.setItem('theme', 'light');
+            modeDiv.textContent = 'Dark Mode'; // Update to "Dark Mode"
         }
     }
+    
 
     switchTab(tabName) {
         this.currentTab = tabName;
