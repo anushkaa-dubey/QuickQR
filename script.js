@@ -3,27 +3,26 @@ function showToast(message, type = 'info') {
     const toast = document.getElementById('toast');
     if (!toast) return;
     
+    // Clear any existing timeout
     if (toast.hideTimeout) {
         clearTimeout(toast.hideTimeout);
+        toast.classList.remove('hide');
         toast.style.display = 'none';
-        setTimeout(() => showToastMessage(), 100);
-    } else {
-        showToastMessage();
     }
     
-    function showToastMessage() {
-        toast.textContent = message;
-        toast.className = `toast ${type}`;
-        toast.style.display = 'block';
-        toast.style.opacity = '1';
-
-        toast.hideTimeout = setTimeout(() => {
-            toast.style.opacity = '0';
-            setTimeout(() => {
-                toast.style.display = 'none';
-            }, 300);
-        }, 3000);
-    }
+    // Show new toast
+    toast.textContent = message;
+    toast.className = `toast ${type}`;
+    toast.style.display = 'block';
+    
+    // Set timeout to hide toast
+    toast.hideTimeout = setTimeout(() => {
+        toast.classList.add('hide');
+        setTimeout(() => {
+            toast.style.display = 'none';
+            toast.classList.remove('hide');
+        }, 300);
+    }, 3000);
 }
 
 // Utility function to load external scripts
@@ -49,6 +48,11 @@ class QRCodeGenerator {
         } else {
             this.init();
         }
+        this.lastGeneratedData = null;
+        this.lastGeneratedTimestamp = null;
+        this.duplicatePreventionDelay = 2000; // 2 seconds
+        this.themeBtn = document.getElementById('theme-toggle');
+        this.setupThemeToggle();
     }
 
     init() {
@@ -102,20 +106,27 @@ class QRCodeGenerator {
             button.addEventListener('click', () => this.switchTab(button.dataset.tab));
         });
         
+        const validateAndShowError = () => {
+            const validation = this.validateInput();
+            if (!validation.isValid) {
+                showToast(validation.errorMessage, 'error');
+            }
+        };
+
         if (this.qrText) {
-            this.qrText.addEventListener('input', () => this.validateInput());
+            this.qrText.addEventListener('blur', validateAndShowError);
         }
         if (this.textContent) {
-            this.textContent.addEventListener('input', () => this.validateInput());
+            this.textContent.addEventListener('blur', validateAndShowError);
         }
         if (this.contactName) {
-            this.contactName.addEventListener('input', () => this.validateInput());
-        }
-        if (this.contactPhone) {
-            this.contactPhone.addEventListener('input', () => this.validateInput());
+            this.contactName.addEventListener('blur', validateAndShowError);
         }
         if (this.contactEmail) {
-            this.contactEmail.addEventListener('input', () => this.validateInput());
+            this.contactEmail.addEventListener('blur', validateAndShowError);
+        }
+        if (this.contactPhone) {
+            this.contactPhone.addEventListener('blur', validateAndShowError);
         }
         
         if (this.qrColor) {
@@ -213,23 +224,35 @@ class QRCodeGenerator {
 
     validateInput() {
         let isValid = false;
+        let errorMessage = '';
         
         switch (this.currentTab) {
             case 'url':
                 isValid = this.isValidUrl(this.qrText.value);
+                errorMessage = 'Please enter a valid URL';
                 break;
             case 'text':
                 isValid = this.textContent.value.trim().length > 0;
+                errorMessage = 'Please enter some text';
                 break;
             case 'contact':
-                isValid = this.contactName.value.trim().length > 0 &&
-                         this.isValidEmail(this.contactEmail.value) &&
-                         this.isValidPhone(this.contactPhone.value);
+                const nameValid = this.contactName.value.trim().length > 0;
+                const emailValid = this.isValidEmail(this.contactEmail.value);
+                const phoneValid = this.isValidPhone(this.contactPhone.value);
+                
+                isValid = nameValid && emailValid && phoneValid;
+                
+                if (!nameValid) errorMessage = 'Please enter a name';
+                else if (!emailValid) errorMessage = 'Please enter a valid email';
+                else if (!phoneValid) errorMessage = 'Please enter a valid phone number';
                 break;
         }
         
-        this.generateBtn.disabled = !isValid;
-        return isValid;
+        if (this.generateBtn) {
+            this.generateBtn.disabled = !isValid;
+        }
+
+        return { isValid, errorMessage };
     }
 
     isValidUrl(url) {
@@ -250,14 +273,18 @@ class QRCodeGenerator {
     }
 
     async generateQRCode() {
-        if (!this.validateInput()) {
-            showToast('Please fill in all required fields correctly', 'error');
-            return;
-        }
-
-        this.showLoading(true);
-        
         try {
+            // Reset states at the start
+            this.resetQRContainer();
+            
+            const validation = this.validateInput();
+            if (!validation.isValid) {
+                showToast(validation.errorMessage, 'error');
+                return;
+            }
+    
+            this.showLoading(true);
+            
             const qrData = this.getQRData();
             const options = {
                 width: parseInt(this.sizes.value),
@@ -268,37 +295,69 @@ class QRCodeGenerator {
                 },
                 errorCorrectionLevel: this.errorCorrection.value
             };
+    
+            // Add debouncing to prevent rapid-fire generation
+            if (this.generateTimeout) {
+                clearTimeout(this.generateTimeout);
+            }
+
+            await new Promise(resolve => {
+                this.generateTimeout = setTimeout(resolve, 500);
+            });
 
             const canvas = document.createElement('canvas');
             await QRCode.toCanvas(canvas, qrData, options);
-
+    
             if (this.logoFile) {
                 await this.addLogoToQR(canvas.getContext('2d'), canvas);
             }
-
+    
             const qrId = await this.saveQRCode(qrData, options);
             const shareUrl = `https://quick-qr-nine.vercel.app/share.html?id=${qrId}`;
-
+    
             this.qrContainer.innerHTML = '';
             this.qrContainer.appendChild(canvas);
             this.downloadBtn.disabled = false;
             
             const shareButtons = document.querySelector('.share-buttons');
-            shareButtons.style.display = 'flex';
+            if (shareButtons) {
+                shareButtons.style.display = 'flex';
+            }
             
             this.setupShareButtons(shareUrl);
             showToast('QR Code generated successfully', 'success');
         } catch (error) {
             console.error('QR Code generation error:', error);
             showToast('Failed to generate QR Code', 'error');
+            this.resetQRContainer();
         } finally {
             this.showLoading(false);
+            // Don't disable the generate button automatically
+            if (this.generateBtn) {
+                // Re-run validation to set correct button state
+                this.validateInput();
+            }
+        }
+    }
+    
+    // Add new helper method to reset QR container
+    resetQRContainer() {
+        if (this.qrContainer) {
+            this.qrContainer.innerHTML = '';
+        }
+        if (this.downloadBtn) {
+            this.downloadBtn.disabled = true;
+        }
+        const shareButtons = document.querySelector('.share-buttons');
+        if (shareButtons) {
+            shareButtons.style.display = 'none';
         }
     }
 
     setupShareButtons(shareUrl) {
         const shareMessage = "Here is your Quick QR Code!";
         
+        // Setup share button click handlers
         document.getElementById('whatsappShare').onclick = () => {
             const whatsappMessage = `${shareMessage}\n\n${shareUrl}`;
             window.open(`https://wa.me/?text=${encodeURIComponent(whatsappMessage)}`, '_blank');
@@ -318,9 +377,15 @@ class QRCodeGenerator {
             }
         };
 
-        // Add login prompt for anonymous users
+        // Add login prompt for anonymous users - with duplicate check
         const user = firebase.auth().currentUser;
         if (!user) {
+            // Remove any existing login prompts first
+            const existingPrompt = document.querySelector('.login-prompt');
+            if (existingPrompt) {
+                existingPrompt.remove();
+            }
+
             const loginPromptDiv = document.createElement('div');
             loginPromptDiv.className = 'login-prompt';
             loginPromptDiv.innerHTML = `
@@ -331,28 +396,72 @@ class QRCodeGenerator {
                     to save it to your collection!
                 </p>
             `;
-            document.querySelector('.share-buttons').after(loginPromptDiv);
+            const shareButtons = document.querySelector('.share-buttons');
+            if (shareButtons && shareButtons.nextElementSibling?.className !== 'login-prompt') {
+                shareButtons.after(loginPromptDiv);
+            }
         }
     }
 
     async saveQRCode(qrData, options) {
         try {
             const user = firebase.auth().currentUser;
+            const currentTime = new Date();
+            
+            // Check for duplicate generation
+            if (this.lastGeneratedData === qrData && 
+                this.lastGeneratedTimestamp && 
+                (currentTime - this.lastGeneratedTimestamp) < this.duplicatePreventionDelay) {
+                console.log('Prevented duplicate QR code generation');
+                return this.lastGeneratedId;
+            }
+
+            // Check if same content already exists in database
+            const existingDocs = await db.collection('qrcodes')
+                .where('content', '==', qrData)
+                .where('creator', '==', user ? user.displayName : 'anonymous')
+                .limit(1)
+                .get();
+
+            if (!existingDocs.empty) {
+                const existingDoc = existingDocs.docs[0];
+                console.log('Found existing QR code');
+                return existingDoc.id;
+            }
+
+            // If no duplicate found, create new document
             const docData = {
                 content: qrData,
                 options: options,
-                createdAt: new Date(),
+                createdAt: currentTime,
                 creator: user ? user.displayName : 'anonymous',
                 userUid: user ? user.uid : null,
-                userEmail: user ? user.email : null
+                userEmail: user ? user.email : null,
+                // Add hash of content for faster duplicate checking
+                contentHash: await this.hashContent(qrData)
             };
 
             const doc = await db.collection('qrcodes').add(docData);
+            
+            // Update last generated info
+            this.lastGeneratedData = qrData;
+            this.lastGeneratedTimestamp = currentTime;
+            this.lastGeneratedId = doc.id;
+
             return doc.id;
         } catch (error) {
             console.error('Error saving QR code:', error);
             throw error;
         }
+    }
+
+    // Helper method to create a hash of the content
+    async hashContent(content) {
+        const encoder = new TextEncoder();
+        const data = encoder.encode(content);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
     }
 
     getQRData() {
@@ -530,8 +639,12 @@ END:VCARD`;
     }
 
     showLoading(show) {
-        this.loadingSpinner.style.display = show ? 'block' : 'none';
-        this.generateBtn.disabled = show;
+        if (this.loadingSpinner) {
+            this.loadingSpinner.style.display = show ? 'block' : 'none';
+        }
+        if (this.generateBtn) {
+            this.generateBtn.disabled = show;
+        }
     }
 
     showToast(message, type = 'info') {
@@ -543,6 +656,23 @@ END:VCARD`;
         setTimeout(() => {
             toast.style.display = 'none';
         }, 3000);
+    }
+
+    setupThemeToggle() {
+        if (this.themeBtn) {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+                this.themeBtn.innerHTML = '<i class="fas fa-moon"></i>';
+            }
+
+            this.themeBtn.addEventListener('click', () => {
+                document.body.classList.toggle('dark-mode');
+                const isDark = document.body.classList.contains('dark-mode');
+                localStorage.setItem('theme', isDark ? 'dark' : 'light');
+                this.themeBtn.innerHTML = isDark ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-lightbulb"></i>';
+            });
+        }
     }
 }
 
@@ -645,8 +775,6 @@ function initializeAuthElements() {
                 showToast('Successfully logged in!', 'success');
                 toggleLoginModal(false);
                 updateUIForLoggedInUser(result.user);
-                // Reload the page to update ownership of anonymous QR codes
-                location.reload();
             })
             .catch((error) => {
                 showToast('Login failed: ' + error.message, 'error');
@@ -657,22 +785,24 @@ function initializeAuthElements() {
     firebase.auth().onAuthStateChanged((user) => {
         if (user) {
             updateUIForLoggedInUser(user);
+            showToast(`Welcome back, ${user.displayName}!`, 'success'); // Add welcome message
+            
             // Replace login prompt with success message if it exists
             const loginPrompt = document.querySelector('.login-prompt');
             if (loginPrompt) {
                 loginPrompt.innerHTML = `
                     <p class="save-prompt">
                         <i class="fas fa-check-circle"></i>
-                        QR code has been saved into your collection successfully!
+                        QR code has been saved to your collection successfully!
                     </p>
                 `;
                 loginPrompt.classList.add('success-prompt');
-                // Increased duration to 10 seconds
                 setTimeout(() => {
                     loginPrompt.remove();
-                }, 10000);
+                }, 5000);
             }
-            // Update ownership of any anonymous QR codes created in this session
+            
+            // Update ownership of anonymous QR codes
             updateAnonymousQRCodes(user);
         } else {
             updateUIForLoggedOutUser();
@@ -709,7 +839,16 @@ function initializeAuthElements() {
             <img src="${user.photoURL}" alt="Profile" style="width: 20px; height: 20px; border-radius: 50%; margin-right: 8px;">
             ${user.displayName}
         `;
-        loginBtn.onclick = () => toggleDropdownMenu(true);
+        loginBtn.onclick = (event) => {
+            event.stopPropagation(); // Prevent the document click event
+            const user = firebase.auth().currentUser;
+            if (user) {
+                // Toggle dropdown
+                dropdownMenu.style.display = dropdownMenu.style.display === 'none' ? 'block' : 'none';
+            } else {
+                toggleLoginModal(true);
+            }
+        };
         logoutBtn.onclick = () => {
             firebase.auth().signOut()
                 .then(() => {
@@ -837,4 +976,15 @@ function initializeAuthElements() {
     window.toggleManageQRModal = toggleManageQRModal;
     window.deleteQRCode = deleteQRCode;
     window.copyShareLink = copyShareLink;
+
+    // Update the event listeners for the dropdown
+    document.addEventListener('click', (event) => {
+        const dropdownMenu = document.getElementById('dropdownMenu');
+        const loginBtn = document.getElementById('loginBtn');
+        
+        // Close dropdown if clicking outside of it and the login button
+        if (!dropdownMenu.contains(event.target) && !loginBtn.contains(event.target)) {
+            dropdownMenu.style.display = 'none';
+        }
+    });
 }
