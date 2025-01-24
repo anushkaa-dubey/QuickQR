@@ -1224,6 +1224,44 @@ a {
 }
 
 /* ...existing code... */
+.scanner-container {
+    max-width: 500px;
+    margin: 0 auto;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#scanner-video {
+    max-width: 100%;
+    background: #000;
+    border-radius: 8px;
+}
+
+.scanner-controls {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+    gap: 10px;
+    width: 100%; 
+}
+
+.scanner-result {
+    margin-top: 15px;
+    padding: 15px;
+    background: #f4f4f4;
+    border-radius: 8px;
+    width: 100%; 
+}
+
+.scan-actions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 15px;
+    width: 100%;
+}
 
 .dark-mode .theme-btn i.fa-lightbulb {
     display: none;
@@ -1232,5 +1270,4 @@ a {
 .theme-btn i.fa-moon {
     display: none;
 }
-
 /* ...existing code... */
