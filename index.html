@@ -16,6 +16,7 @@
     <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="script.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/qr-scanner/qr-scanner.umd.min.js"></script>
 </head>
 <body>
     <div class="app-container">
@@ -83,6 +84,7 @@
                         <button class="tab-btn active" data-tab="url">URL</button>
                         <button class="tab-btn" data-tab="text">Text</button>
                         <button class="tab-btn" data-tab="contact">Contact Card</button>
+                        <button class="tab-btn" data-tab="scanner">Scanner</button>
                     </div>
 
                     <div class="tab-content active" id="url-tab">
@@ -97,6 +99,24 @@
                         <input type="text" placeholder="Full Name" id="contact-name" class="input-field">
                         <input type="tel" placeholder="Phone Number" id="contact-phone" class="input-field">
                         <input type="email" placeholder="Email" id="contact-email" class="input-field">
+                    </div>
+                    <div id="qr-scanner-section">
+                        <div class="scanner-container">
+                            <video id="scanner-video" playsinline></video>
+                            <canvas id="scanner-canvas" style="display:none;"></canvas>
+                            
+                            <div class="scanner-controls">
+                                <button id="start-scanner-btn" class="primary-button">
+                                    <i class="fas fa-qrcode"></i> Start Scanner
+                                </button>
+                                
+                                <select id="camera-select" class="camera-select" style="display:none;">
+                                    <option value="">Select Camera</option>
+                                </select>
+                            </div>
+                            
+                            <div id="scanner-result" class="scanner-result"></div>
+                        </div>
                     </div>
 
                     <div class="customization-section">

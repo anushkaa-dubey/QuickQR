@@ -38,7 +38,278 @@ function loadScript(url) {
 
 // Single instance of QRGenerator
 let qrGenerator = null;
+class QRCodeScanner {
+    constructor(qrGenerator) {
+        this.qrGenerator = qrGenerator;
+        this.stream = null;
+        this.scanning = false;
+        this.initializeElements();
+        this.setupEventListeners();
+    }
 
+    initializeElements() {
+        this.scannerVideo = document.getElementById('scanner-video');
+        this.scannerCanvas = document.getElementById('scanner-canvas');
+        this.startScannerBtn = document.getElementById('start-scanner-btn');
+        this.cameraSelect = document.getElementById('camera-select');
+        this.scannerResult = document.getElementById('scanner-result');
+    }
+
+    setupEventListeners() {
+        if (this.startScannerBtn) {
+            this.startScannerBtn.addEventListener('click', () => this.toggleScanner());
+        }
+
+        if (this.cameraSelect) {
+            this.cameraSelect.addEventListener('change', (e) => this.switchCamera(e.target.value));
+        }
+    }
+
+    async toggleScanner() {
+        if (!this.scanning) {
+            await this.startScanner();
+        } else {
+            this.stopScanner();
+        }
+    }
+
+    async startScanner() {
+        try {
+            // Request camera access
+            this.stream = await navigator.mediaDevices.getUserMedia({
+                video: { 
+                    facingMode: 'environment',
+                    width: { ideal: 1280 },
+                    height: { ideal: 720 }
+                }
+            });
+
+            // Set video source and start playing
+            if (this.scannerVideo) {
+                this.scannerVideo.srcObject = this.stream;
+                this.scannerVideo.setAttribute('playsinline', true);
+                this.scannerVideo.play();
+
+                // Update button and UI
+                if (this.startScannerBtn) {
+                    this.startScannerBtn.innerHTML = '<i class="fas fa-stop"></i> Stop Scanner';
+                }
+
+                // Start scanning process
+                this.scanning = true;
+                this.scanQRCode();
+            }
+        } catch (error) {
+            console.error('Camera access error:', error);
+            this.showToast('Failed to access camera. Please check permissions.', 'error');
+        }
+    }
+
+    stopScanner() {
+        // Stop video stream
+        if (this.stream) {
+            this.stream.getTracks().forEach(track => track.stop());
+            this.stream = null;
+        }
+
+        // Reset video and UI
+        if (this.scannerVideo) {
+            this.scannerVideo.srcObject = null;
+        }
+
+        if (this.startScannerBtn) {
+            this.startScannerBtn.innerHTML = '<i class="fas fa-qrcode"></i> Start Scanner';
+        }
+
+        // Stop scanning
+        this.scanning = false;
+    }
+
+    scanQRCode() {
+        if (!this.scanning || !this.scannerVideo || !this.scannerCanvas) return;
+
+        const canvas = this.scannerCanvas;
+        const ctx = canvas.getContext('2d');
+
+        const tick = () => {
+            if (this.scannerVideo.videoWidth === 0) {
+                requestAnimationFrame(tick);
+                return;
+            }
+
+            // Set canvas dimensions to match video
+            canvas.width = this.scannerVideo.videoWidth;
+            canvas.height = this.scannerVideo.videoHeight;
+
+            // Draw current video frame
+            ctx.drawImage(this.scannerVideo, 0, 0, canvas.width, canvas.height);
+
+            // Use jsQR to decode QR code
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const code = jsQR(imageData.data, imageData.width, imageData.height, {
+                inversionAttempts: 'dontInvert'
+            });
+
+            if (code) {
+                this.handleScanResult(code.data);
+                this.stopScanner();
+                return;
+            }
+
+            // Continue scanning if not stopped
+            if (this.scanning) {
+                requestAnimationFrame(tick);
+            }
+        };
+
+        // Start scanning loop
+        requestAnimationFrame(tick);
+    }
+
+    handleScanResult(result) {
+        let processedResult;
+        try {
+            // Try to parse the result
+            if (result.startsWith('BEGIN:VCARD')) {
+                processedResult = this.parseVCard(result);
+            } else if (result.startsWith('http')) {
+                processedResult = { 
+                    type: 'URL', 
+                    content: result 
+                };
+            } else {
+                processedResult = { 
+                    type: 'Text', 
+                    content: result 
+                };
+            }
+
+            // Display result
+            if (this.scannerResult) {
+                this.scannerResult.innerHTML = `
+                    <div class="scanned-result">
+                        <h3>Scanned QR Code</h3>
+                        <p><strong>Type:</strong> ${processedResult.type}</p>
+                        <p><strong>Content:</strong> ${processedResult.content}</p>
+                        <div class="scan-actions">
+                            <button id="copy-scan-result" class="secondary-button">
+                                <i class="fas fa-copy"></i> Copy
+                            </button>
+                            <button id="generate-from-scan" class="primary-button">
+                                <i class="fas fa-qrcode"></i> Regenerate QR
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+                // Add event listeners for actions
+                const copyBtn = document.getElementById('copy-scan-result');
+                const generateBtn = document.getElementById('generate-from-scan');
+
+                if (copyBtn) {
+                    copyBtn.addEventListener('click', () => {
+                        navigator.clipboard.writeText(processedResult.content)
+                            .then(() => this.showToast('Copied to clipboard', 'success'))
+                            .catch(() => this.showToast('Copy failed', 'error'));
+                    });
+                }
+
+                if (generateBtn) {
+                    generateBtn.addEventListener('click', () => {
+                        this.regenerateFromScan(processedResult);
+                    });
+                }
+            }
+
+        } catch (error) {
+            console.error('Result processing error:', error);
+            if (this.scannerResult) {
+                this.scannerResult.innerHTML = `
+                    <div class="error-result">
+                        <p>Unable to process QR code</p>
+                    </div>
+                `;
+            }
+        }
+    }
+
+    regenerateFromScan(result) {
+        // Ensure qrGenerator has the necessary methods
+        if (!this.qrGenerator) {
+            this.showToast('QR Generator not available', 'error');
+            return;
+        }
+
+        // Switch to appropriate tab based on result type
+        switch (result.type) {
+            case 'URL':
+                this.qrGenerator.switchTab('url');
+                this.qrGenerator.qrText.value = result.content;
+                break;
+            case 'Text':
+                this.qrGenerator.switchTab('text');
+                this.qrGenerator.textContent.value = result.content;
+                break;
+            case 'Contact':
+                this.qrGenerator.switchTab('contact');
+                this.populateContactFields(result.content);
+                break;
+        }
+
+        // Trigger input validation and generate QR
+        this.qrGenerator.validateInput();
+        this.qrGenerator.generateQRCode();
+    }
+
+    populateContactFields(contactInfo) {
+        // Parse contact info and populate fields
+        const [name, phone, email] = contactInfo.split('|').map(item => item.trim());
+        
+        if (this.qrGenerator.contactName) 
+            this.qrGenerator.contactName.value = name || '';
+        if (this.qrGenerator.contactPhone) 
+            this.qrGenerator.contactPhone.value = phone || '';
+        if (this.qrGenerator.contactEmail) 
+            this.qrGenerator.contactEmail.value = email || '';
+    }
+
+    parseVCard(vcard) {
+        const lines = vcard.split('\n');
+        const contact = {};
+        
+        lines.forEach(line => {
+            if (line.startsWith('FN:')) contact.name = line.split(':')[1];
+            if (line.startsWith('TEL:')) contact.phone = line.split(':')[1];
+            if (line.startsWith('EMAIL:')) contact.email = line.split(':')[1];
+        });
+
+        return { 
+            type: 'Contact', 
+            content: `${contact.name || ''} | ${contact.phone || ''} | ${contact.email || ''}` 
+        };
+    }
+
+    showToast(message, type = 'info') {
+        if (this.qrGenerator && this.qrGenerator.showToast) {
+            this.qrGenerator.showToast(message, type);
+        } else {
+            console.log(message);
+        }
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Ensure QR Code scanning is only initialized if the necessary elements exist
+    const scannerVideo = document.getElementById('scanner-video');
+    const startScannerBtn = document.getElementById('start-scanner-btn');
+    
+    if (scannerVideo && startScannerBtn) {
+        if (!qrGenerator) {
+            qrGenerator = new QRCodeGenerator();
+        }
+        const qrScanner = new QRCodeScanner(qrGenerator);
+    }
+});
 // QR Generator Class - define only once
 class QRCodeGenerator {
     constructor() {
