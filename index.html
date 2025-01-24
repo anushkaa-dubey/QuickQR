@@ -100,22 +100,21 @@
                         <input type="tel" placeholder="Phone Number" id="contact-phone" class="input-field">
                         <input type="email" placeholder="Email" id="contact-email" class="input-field">
                     </div>
-                    <div id="qr-scanner-section">
-                        <div class="scanner-container">
-                            <video id="scanner-video" playsinline></video>
-                            <canvas id="scanner-canvas" style="display:none;"></canvas>
-                            
+                    <div class="tab-content" id="scanner-tab">
+                        <div class="scanner-container" id="scanner-container">
+                            <div class="scanner-preview">
+                                <video id="scanner-video" playsinline></video>
+                                <canvas id="scanner-canvas" style="display: none;"></canvas>
+                            </div>
                             <div class="scanner-controls">
                                 <button id="start-scanner-btn" class="primary-button">
                                     <i class="fas fa-qrcode"></i> Start Scanner
                                 </button>
-                                
-                                <select id="camera-select" class="camera-select" style="display:none;">
+                                <select id="camera-select" class="select-field">
                                     <option value="">Select Camera</option>
                                 </select>
                             </div>
-                            
-                            <div id="scanner-result" class="scanner-result"></div>
+                            <div class="scanner-result" id="scanner-result"></div>
                         </div>
                     </div>
 
