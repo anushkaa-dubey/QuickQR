@@ -15,6 +15,38 @@
     <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+    .scroll-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+    opacity: 0;
+    visibility: hidden;
+}
+.scroll-btn:hover {
+    background-color: #3b82f6;
+    transform: scale(1.1);
+}
+.scroll-btn i {
+    font-size: 20px;
+}
+.scroll-btn.show {
+    opacity: 1;
+    visibility: visible;
+}
+    </style>
+    <style>
         .bg-grey { background-color: #f9f9f9; padding: 50px 15px; display: flex; flex-direction: column; align-items: center; }
 .container { max-width: 1200px; width: 100%; display: flex; flex-direction: column; align-items: center; }
 .roadmap-title { font-size: 28px; font-weight: 600; color: #333; margin-bottom: 15px; }
@@ -41,6 +73,11 @@
 </head>
 
 <body>
+    <!-- Scroll Button -->
+    <button class="scroll-btn" id="scrollToTopBtn">
+      <i class="fas fa-arrow-up fa-lg"></i>
+    </button>
+
     <div class="app-container">
         <header class="header">
             <div class="logo">
@@ -102,12 +139,6 @@
               </a>
             </div>
           </section>
-          
-
-<button class="scroll-btn" id="scrollToTopBtn">
-    <i class="fas fa-arrow-up fa-lg"></i>
-</button>
-
 
 
 <footer class="footer">
@@ -124,5 +155,25 @@
 </div>
 
 <script src="script.js"></script>
+<script>
+  // Initialize scroll button
+  const scrollBtn = document.getElementById('scrollToTopBtn');
+    if (scrollBtn) {
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 30) {
+                scrollBtn.classList.add('show');
+            } else {
+                scrollBtn.classList.remove('show');
+            }
+        });
+
+        scrollBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    }
+</script>
 </body>
 </html>
