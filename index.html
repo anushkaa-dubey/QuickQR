@@ -62,12 +62,24 @@
 
         <!-- Login Modal -->
         <div id="loginModal" class="modal">
-            <div class="modal-content">
+            <div class="right-panel modal-content">
                 <span class="close">&times;</span>
-                <h2>Login to QuickQR</h2>
-                <button id="googleLoginBtn" class="google-btn">
-                    <i class="fab fa-google"></i> Continue with Google
+                <h2> Login to QuickQR</h2>
+                <button id="googleLoginBtn" class="google-signin"> <i class="fa-brands fa-google google-icon" aria-hidden="true"></i>
+                    Sign in with Google
                 </button>
+                <p class="divider">or sign in with email</p>
+                <form action="#">
+                    <label for="username">Username or Email</label>
+                    <input type="text" id="username" name="username" placeholder="Enter your username or email">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password">
+                    <div class="options">
+                        <a href="#" class="forgot">Forgot?</a>
+                    </div>
+                    <button type="submit" class="signin-button">Sign In</button>
+                </form>
+                <p class="signup">Don't have an account? <a href="#">Sign up</a></p>
             </div>
         </div>
         

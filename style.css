@@ -517,13 +517,10 @@ a {
 }
 
 .modal-content {
-    background-color: #fefefe;
-    margin: 15% auto;
-    padding: 20px;
+    margin: 5% auto;
     border-radius: 10px;
     width: 80%;
     max-width: 400px;
-    text-align: center;
     position: relative;
 }
 
@@ -1234,3 +1231,99 @@ a {
 }
 
 /* ...existing code... */
+
+/* login page  */
+.right-panel {
+    flex: 1;
+    background-color: white;
+    padding: 45px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.google-signin {
+    width: 100%;
+    padding: 10px;
+    background-color: #4285F4;
+    color: white;
+    border: none;
+    margin-top: 1rem;
+    border-radius: 4rem;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.google-signin:hover {
+    background: #f1f1f1;
+}
+.divider {
+    text-align: center;
+    margin: 10px auto 20px auto;
+    color: black;
+    font-size: 0.7rem;
+}
+.right-panel h2{
+    margin: auto;
+}
+
+form {
+    width: 100%;
+}
+
+.right-panel label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: rgb(56, 56, 56);
+    font-weight: bold;
+}
+
+.right-panel input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+}
+
+.options {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+}
+
+.forgot {
+    font-size: 14px;
+    color: #4285F4;
+    text-decoration: none;
+}
+
+.signin-button {
+    width: 100%;
+    padding: 10px;
+    background-color: rgb(41, 1, 105);
+    border: none;
+    color: white;
+    border-radius: 4rem;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.5s ease;
+
+}
+
+.signin-button:hover {
+    background-color: rgb(82, 0, 169);
+    transition: all 0.5s ease;
+}
+
+.signup {
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.signup a {
+    color: #4285F4;
+    text-decoration: none;
+}
