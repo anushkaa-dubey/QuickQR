@@ -61,13 +61,13 @@
             </div>
         </div>
 
-         <!-- Login Modal -->
-         <div id="loginModal" class="modal">
+        <!-- Login Modal -->
+        <div id="loginModal" class="modal">
             <div class="right-panel modal-content">
                 <span class="close">&times;</span>
-                <h2>Login to QuickQR</h2>
-                <button id="googleLoginBtn" class="google-signin">
-                    <i class="fa-brands fa-google google-icon" aria-hidden="true"></i> Sign in with Google
+                <h2> Login to QuickQR</h2>
+                <button id="googleLoginBtn" class="google-signin"> <i class="fa-brands fa-google google-icon" aria-hidden="true"></i>
+                    Sign in with Google
                 </button>
                 <p class="divider">or sign in with email</p>
                 <form action="#">
@@ -80,54 +80,9 @@
                     </div>
                     <button type="submit" class="signin-button">Sign In</button>
                 </form>
-                <p class="signup">Don't have an account? <a id="openSignUp" href="#">Sign up</a></p>
+                <p class="signup">Don't have an account? <a href="#">Sign up</a></p>
             </div>
         </div>
-
-        <!-- Sign-Up Modal -->
-        <div id="signUpModal" class="modal">
-            <div class="modal-content">
-                <span class="close">&times;</span>
-                <h2>Create an Account</h2>
-                <form action="#">
-                    <label for="signup-name">Full Name</label>
-                    <input type="text" id="signup-name" name="name" placeholder="Enter your full name">
-                    <label for="signup-email">Email</label>
-                    <input type="email" id="signup-email" name="email" placeholder="Enter your email">
-                    <label for="signup-password">Password</label>
-                    <input type="password" id="signup-password" name="password" placeholder="Create a password">
-                    <label for="signup-confirm-password">Confirm Password</label>
-                    <input type="password" id="signup-confirm-password" name="confirm-password" placeholder="Confirm your password">
-                    <button type="submit" class="signup-button">Sign Up</button>
-                </form>
-                <p class="login">Already have an account? <a id="openLogin" href="#">Login</a></p>
-            </div>
-        </div>
-
-        <script>
-            // Open the Sign-Up modal when clicking "Sign Up" in Login Modal
-            const loginModal = document.getElementById("loginModal");
-            const signUpModal = document.getElementById("signUpModal");
-    
-            document.getElementById("openSignUp").addEventListener("click", () => {
-                loginModal.style.display = "none"; // Hide Login Modal
-                signUpModal.style.display = "block"; // Show Sign-Up Modal
-            });
-    
-            document.getElementById("openLogin").addEventListener("click", () => {
-                signUpModal.style.display = "none"; // Hide Sign-Up Modal
-                loginModal.style.display = "block"; // Show Login Modal
-            });
-    
-            // Close Modals
-            const closeButtons = document.querySelectorAll(".close");
-            closeButtons.forEach(btn => {
-                btn.addEventListener("click", () => {
-                    signUpModal.style.display = "none";
-                    loginModal.style.display = "none";
-                });
-            });
-        </script>
         
         <!-- Scroll Button -->
         <button class="scroll-btn" id="scrollToTopBtn">
