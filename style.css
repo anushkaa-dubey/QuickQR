@@ -212,7 +212,7 @@ textarea.input-field {
 .select-field {
     width: 100%;
     padding: 0.5rem;
-    border: 1px solid #e2e8f0;
+    border: 1px solid #a4a8ae;
     border-radius: var(--border-radius);
     background-color: white;
     font-size: 0.875rem;
@@ -224,14 +224,20 @@ textarea.input-field {
     padding: 0;
     border: none;
     border-radius: var(--border-radius);
+    background-color: white ;
     cursor: pointer;
+}
+
+body.dark-mode .color-picker {
+    border-radius: 0;
+    background-color: black;
 }
 
 .custom-file-upload {
     display: inline-block;
     padding: 0.5rem 1rem;
     background-color: var(--surface-color);
-    border: 1px solid #e2e8f0;
+    border: 1px solid #a7acb3;
     border-radius: var(--border-radius);
     cursor: pointer;
     transition: var(--transition);
@@ -1420,6 +1426,14 @@ a {
 
 .dark-mode .theme-btn i.fa-sun {
     display: none;
+}
+
+body.dark-mode label {
+    color: rgb(215, 215, 215);
+}
+
+body.dark-mode .custom-file-upload {
+    color: rgb(137, 137, 137);
 }
 
 /* ...existing code... */
