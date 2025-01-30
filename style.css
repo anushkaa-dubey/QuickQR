@@ -649,8 +649,8 @@ textarea.input-field {
 
 .scroll-btn {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
+    bottom: 30px;
+    right: 30px;
     background-color: #007bff;
     color: #fff;
     border: none;
@@ -665,13 +665,14 @@ textarea.input-field {
     transition: all 0.3s ease-in-out;
     opacity: 0;
     visibility: hidden;
+    z-index: 1000;
 }
 .scroll-btn:hover {
     background-color: #3b82f6;
     transform: scale(1.1);
 }
 .scroll-btn i {
-    font-size: 20px;
+    font-size: 25px;
 }
 .scroll-btn.show {
     opacity: 1;
