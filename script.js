@@ -930,20 +930,31 @@ END:VCARD`;
     }
 
     setupThemeToggle() {
-        if (this.themeBtn) {
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'dark') {
-                document.body.classList.add('dark-mode');
-                this.themeBtn.innerHTML = '<i class="fas fa-moon"></i>';
-            }
+        const themeBtn = document.getElementById('theme-toggle');
+        const mobileThemeBtn = document.getElementById('mobile-theme-toggle');
+        const buttons = [themeBtn, mobileThemeBtn];
 
-            this.themeBtn.addEventListener('click', () => {
-                document.body.classList.toggle('dark-mode');
-                const isDark = document.body.classList.contains('dark-mode');
-                localStorage.setItem('theme', isDark ? 'dark' : 'light');
-                this.themeBtn.innerHTML = isDark ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-lightbulb"></i>';
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            document.body.classList.add('dark-mode');
+            buttons.forEach(btn => {
+                if (btn) btn.innerHTML = '<i class="fas fa-moon"></i>';
             });
         }
+
+        buttons.forEach(btn => {
+            if (btn) {
+                btn.addEventListener('click', () => {
+                    document.body.classList.toggle('dark-mode');
+                    const isDark = document.body.classList.contains('dark-mode');
+                    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+                    const icon = isDark ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-lightbulb"></i>';
+                    buttons.forEach(b => {
+                        if (b) b.innerHTML = icon;
+                    });
+                });
+            }
+        });
     }
 }
 
@@ -1259,3 +1270,142 @@ function initializeAuthElements() {
         }
     });
 }
+
+// Add this to your existing script.js file
+
+// Sidebar functionality
+const hamburgerMenu = document.querySelector('.hamburger-menu');
+const sidebar = document.querySelector('.sidebar');
+const sidebarClose = document.querySelector('.sidebar-close');
+const sidebarOverlay = document.querySelector('.sidebar-overlay');
+const mainContent = document.querySelector('.main-content');
+
+function toggleSidebar() {
+    sidebar.classList.toggle('active');
+    sidebarOverlay.classList.toggle('active');
+    mainContent.classList.toggle('sidebar-active');
+}
+
+function closeSidebar() {
+    sidebar.classList.remove('active');
+    sidebarOverlay.classList.remove('active');
+    mainContent.classList.remove('sidebar-active');
+}
+
+hamburgerMenu.addEventListener('click', toggleSidebar);
+sidebarClose.addEventListener('click', closeSidebar);
+sidebarOverlay.addEventListener('click', closeSidebar);
+
+// Close sidebar when clicking a link (optional)
+const sidebarLinks = document.querySelectorAll('.sidebar-link');
+sidebarLinks.forEach(link => {
+    link.addEventListener('click', closeSidebar);
+});
+
+// Close sidebar on window resize if it's open (optional)
+window.addEventListener('resize', () => {
+    if (window.innerWidth > 768 && sidebar.classList.contains('active')) {
+        closeSidebar();
+    }
+});
+
+// Add this after the existing sidebar code
+function initializeSidebarLinks() {
+    // Get all sidebar elements
+    const sidebarLogin = document.getElementById('sidebar-login');
+    const sidebarSignup = document.getElementById('sidebar-signup');
+    const sidebarManage = document.getElementById('sidebar-manage');
+    const sidebarLogout = document.getElementById('sidebar-logout');
+    const authItems = document.querySelectorAll('.sidebar-auth-item');
+
+    // Login click handler
+    sidebarLogin.addEventListener('click', (e) => {
+        e.preventDefault();
+        closeSidebar();
+        toggleLoginModal(true);
+    });
+
+    // Signup click handler
+    sidebarSignup.addEventListener('click', (e) => {
+        e.preventDefault();
+        closeSidebar();
+        signUpModal.style.display = "block";
+    });
+
+    // Manage QR codes handler
+    sidebarManage.addEventListener('click', (e) => {
+        e.preventDefault();
+        closeSidebar();
+        toggleManageQRModal(true);
+        loadUserQRCodes();
+    });
+
+    // Logout handler
+    sidebarLogout.addEventListener('click', (e) => {
+        e.preventDefault();
+        firebase.auth().signOut()
+            .then(() => {
+                showToast('Logged out successfully!', 'success');
+                updateSidebarForLoggedOutUser();
+                closeSidebar();
+            })
+            .catch(error => showToast('Logout failed: ' + error.message, 'error'));
+    });
+
+    // Update sidebar based on auth state
+    firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+            updateSidebarForLoggedInUser(user);
+        } else {
+            updateSidebarForLoggedOutUser();
+        }
+    });
+}
+
+function updateSidebarForLoggedInUser(user) {
+    // Hide login/signup, show manage/logout
+    document.getElementById('sidebar-login').style.display = 'none';
+    document.getElementById('sidebar-signup').style.display = 'none';
+    
+    // Show authenticated items
+    document.querySelectorAll('.sidebar-auth-item').forEach(item => {
+        item.style.display = 'flex';
+    });
+
+    // Add user info to sidebar if you want
+    const sidebarHeader = document.querySelector('.sidebar-header');
+    const existingUserInfo = document.querySelector('.sidebar-user-info');
+    
+    if (!existingUserInfo) {
+        const userInfo = document.createElement('div');
+        userInfo.className = 'sidebar-user-info';
+        userInfo.innerHTML = `
+            <img src="${user.photoURL}" alt="Profile" style="width: 32px; height: 32px; border-radius: 50%;">
+            <span>${user.displayName}</span>
+        `;
+        sidebarHeader.appendChild(userInfo);
+    }
+}
+
+function updateSidebarForLoggedOutUser() {
+    // Show login/signup, hide manage/logout
+    document.getElementById('sidebar-login').style.display = 'flex';
+    document.getElementById('sidebar-signup').style.display = 'flex';
+    
+    // Hide authenticated items
+    document.querySelectorAll('.sidebar-auth-item').forEach(item => {
+        item.style.display = 'none';
+    });
+
+    // Remove user info if exists
+    const userInfo = document.querySelector('.sidebar-user-info');
+    if (userInfo) {
+        userInfo.remove();
+    }
+}
+
+// Add this to your document ready function or main initialization
+document.addEventListener('DOMContentLoaded', () => {
+    // ...existing code...
+    initializeSidebarLinks();
+});
