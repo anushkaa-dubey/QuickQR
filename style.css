@@ -1340,6 +1340,10 @@ a {
     transition: all 0.3s ease;
 }
 
+.auth-btn:hover {
+    background-color: #1d4ed8;
+}
+
 .dropdown-menu {
     position: absolute;
     top: calc(100% + 5px);
