@@ -92,11 +92,11 @@ body.dark-mode {
 
 .header {
     background-color: rgb(204, 242, 255);
-    padding: 1rem;
+    padding: 1rem 2rem;
     box-shadow: var(--box-shadow);
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     position: relative;
 }
 
@@ -362,6 +362,7 @@ textarea.input-field {
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    align-items: center;
 }
 
 .footer-logo {
@@ -389,6 +390,7 @@ textarea.input-field {
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
+    text-align: left;
 }
 
 .footer-links h4 {
@@ -396,6 +398,7 @@ textarea.input-field {
     margin-bottom: 1rem;
     color: var(--primary-color);
     position: relative;
+    text-align: left;
 }
 
 .footer-links h4::after {
@@ -406,6 +409,9 @@ textarea.input-field {
     width: 50px;
     height: 3px;
     background-color: var(--primary-color);
+    left: 0; /* Ensure underline starts from left */
+    transform: none; /* Remove any existing transform */
+    margin: 0; /* Remove any margins */
 }
 
 .footer-links a {
@@ -416,6 +422,8 @@ textarea.input-field {
     align-items: center;
     gap: 0.5rem;
     opacity: 0.8;
+    justify-content: flex-start; /* Align links to left */
+    padding: 0.5rem 0;
 }
 
 .footer-links a:hover {
@@ -1400,6 +1408,7 @@ a {
     align-items: center;
     justify-content: center;
     transition: var(--transition);
+    margin-left: 1rem;
 }
 
 .theme-btn:hover {
@@ -1678,3 +1687,444 @@ form input:focus {
 .login a:hover {
     text-decoration: underline;
 }
+
+/* Sidebar Navigation Styles */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -280px;
+    width: 280px;
+    height: 100vh;
+    background-color: var(--surface-color);
+    box-shadow: var(--box-shadow);
+    z-index: 1000;
+    transition: var(--transition);
+    padding: 1rem;
+    overflow-y: auto;
+}
+
+.sidebar.active {
+    left: 0;
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e2e8f0;
+    margin-bottom: 1rem;
+}
+
+.sidebar-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--secondary-color);
+    cursor: pointer;
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    color: var(--secondary-color);
+    text-decoration: none;
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+}
+
+.sidebar-link:hover {
+    background-color: var(--background-color);
+    color: var(--primary-color);
+}
+
+.sidebar-link i {
+    width: 20px;
+    text-align: center;
+}
+
+.hamburger-menu {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
+/* Dark mode support for sidebar */
+.dark-mode .sidebar {
+    background-color: var(--surface-color);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dark-mode .sidebar-header {
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Overlay for sidebar */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+.sidebar-overlay.active {
+    display: block;
+}
+
+/* Update existing header styles */
+.header {
+    background-color: rgb(204, 242, 255);
+    padding: 1rem 2rem;
+    box-shadow: var(--box-shadow);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Update existing media queries */
+@media (max-width: 768px) {
+    .hamburger-menu {
+        display: block;
+    }
+
+    .auth-section,
+    .header .nav-links {
+        display: none;
+    }
+
+    .header {
+        padding: 1rem;
+    }
+
+    .logo {
+        margin: 0 auto;
+    }
+
+    /* Ensure the sidebar is hidden by default on mobile */
+    .sidebar {
+        left: -280px;
+    }
+
+    /* Adjust main content when sidebar is open */
+    .main-content.sidebar-active {
+        transform: translateX(280px);
+    }
+}
+
+/* ...rest of existing code... */
+
+/* Add these new styles before the closing brace of your last media query */
+.sidebar-user-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 1rem;
+}
+
+.sidebar-user-info img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.sidebar-user-info span {
+    color: var(--secondary-color);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    color: var(--secondary-color);
+    text-decoration: none;
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+}
+
+.sidebar-link:hover {
+    background-color: rgba(37, 99, 235, 0.1);
+    color: var(--primary-color);
+}
+
+.sidebar-link i {
+    width: 20px;
+    text-align: center;
+}
+
+.sidebar-auth-item {
+    display: none;
+}
+
+/* Dark mode support */
+.dark-mode .sidebar-user-info {
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark-mode .sidebar-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* ...existing code... */
+
+/* Add these new mobile-specific styles */
+@media (max-width: 768px) {
+    .header {
+        grid-template-columns: 1fr auto 1fr; /* Three-column grid layout */
+        display: grid;
+        align-items: center;
+        padding: 1rem;
+    }
+
+    .hamburger-menu {
+        display: block;
+        justify-self: start; /* Align to left */
+        grid-column: 1;
+    }
+
+    .logo {
+        grid-column: 2;
+        margin: 0 auto;
+        padding: 0;
+    }
+
+    .auth-section {
+        display: none; /* Hide the regular auth section */
+    }
+
+    /* New mobile header right section */
+    .mobile-header-right {
+        grid-column: 3;
+        justify-self: end; /* Align to right */
+        display: flex;
+        align-items: center;
+    }
+
+    .theme-btn {
+        margin-left: auto; /* Push to the right */
+        padding: 0.5rem;
+    }
+
+    /* Hide all auth buttons on mobile except theme toggle */
+    .auth-btn {
+        display: none;
+    }
+
+    /* Show theme toggle on mobile */
+    .theme-btn {
+        display: flex;
+        margin: 0;
+    }
+}
+
+/* Updated Footer Styles */
+.footer {
+    /* ...existing footer styles... */
+    padding: 2rem 1rem;
+}
+
+/* Mobile-friendly footer container */
+@media (max-width: 768px) {
+    .footer-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        padding: 0 1rem;
+    }
+
+    .footer-brand {
+        text-align: center;
+    }
+
+    .footer-logo {
+        justify-content: center;
+        margin-bottom: 1rem;
+    }
+
+    .footer-description {
+        font-size: 0.875rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .footer-social {
+        justify-content: center;
+        gap: 1.5rem;
+        margin-top: 1rem;
+    }
+
+    .social-link {
+        width: 40px;
+        height: 40px;
+        font-size: 1.25rem;
+    }
+
+    .footer-links {
+        text-align: left; /* Keep left alignment on mobile */
+        padding: 1rem 0;
+    }
+
+    .footer-links h4 {
+        font-size: 1.1rem;
+        margin-bottom: 1.5rem;
+        text-align: left;
+    }
+
+    .footer-links h4::after {
+        left: 0;
+        transform: none;
+        margin-left: 0;
+    }
+
+    .footer-links a {
+        justify-content: flex-start;
+    }
+
+    .footer-links a:hover {
+        transform: translateX(5px); /* Maintain hover effect */
+    }
+
+    .footer-bottom {
+        margin-top: 1.5rem;
+        padding-top: 1.5rem;
+        font-size: 0.75rem;
+    }
+
+    .made-with-love {
+        flex-wrap: wrap;
+        justify-content: center;
+        text-align: center;
+        gap: 0.25rem;
+    }
+}
+
+/* Enhance touch targets for mobile */
+@media (max-width: 480px) {
+    .footer-social {
+        gap: 2rem;
+    }
+
+    .social-link {
+        width: 48px;
+        height: 48px;
+        font-size: 1.5rem;
+    }
+
+    .footer-links a {
+        padding: 1rem 0;
+    }
+
+    .footer-bottom {
+        padding: 1rem 0.5rem;
+    }
+}
+
+/* Update mobile styles */
+@media (max-width: 768px) {
+    .auth-section .theme-btn {
+        display: none; /* Hide desktop theme toggle */
+    }
+
+    .mobile-header-right .theme-btn {
+        display: flex; /* Show mobile theme toggle */
+        margin: 0;
+    }
+
+    /* Move theme toggle to mobile header right */
+    #theme-toggle {
+        order: 1;
+    }
+}
+
+/* ...existing code... */
+
+/* Add these new styles */
+.mobile-only {
+    display: none;
+}
+
+/* Update mobile styles */
+@media (max-width: 768px) {
+    .header {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .hamburger-menu {
+        display: block;
+        grid-column: 1;
+    }
+
+    .logo {
+        grid-column: 2;
+        margin: 0;
+        justify-content: center;
+    }
+
+    .auth-section {
+        display: none;
+    }
+
+    .mobile-only {
+        display: flex;
+    }
+
+    #mobile-theme-toggle {
+        grid-column: 3;
+        margin: 0;
+        padding: 8px;
+        width: 36px;
+        height: 36px;
+    }
+}
+
+/* ...rest of existing code... */
+
+/* ...existing code... */
+
+.logo-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.logo-link:hover {
+    opacity: 0.8;
+    transform: scale(1.02);
+}
+
+.logo-link i,
+.logo-link h1 {
+    color: var(--primary-color);
+}
+
+/* ...existing code... */

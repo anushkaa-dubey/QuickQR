@@ -20,32 +20,87 @@
 </head>
 <body>
     <div class="app-container">
+        <!-- Update the header section -->
         <header class="header">
+            <button class="hamburger-menu" aria-label="Open menu">
+                <i class="fas fa-bars"></i>
+            </button>
+            
             <div class="logo">
-                <i class="fas fa-qrcode"></i>
-                <h1> QuickQR</h1>
+                <a href="index.html" class="logo-link">
+                    <i class="fas fa-qrcode"></i>
+                    <h1>QuickQR</h1>
+                </a>
             </div>
-            <!-- Adding Login Button -->
+        
+            <!-- Regular auth section (hidden on mobile) -->
             <div class="auth-section">
-                <div class="auth-btn-container"> <!-- Add this wrapper -->
+                <div class="auth-btn-container">
                     <button id="loginBtn" class="auth-btn">
                         <i class="fas fa-user"></i> Login
                     </button>
-                    <!-- Move dropdown menu here -->
                     <div id="dropdownMenu" class="dropdown-menu" style="display: none;">
                         <button id="manageQRBtn" class="dropdown-item">Manage QR Codes</button>
                         <button id="logoutBtn" class="dropdown-item">Logout</button>
                     </div>
                 </div>
-                <button id="loginBtn" class="auth-btn">
-                   <a href="./instruction.html"> How to use ?</a>
+                <button id="howToUseBtn" class="auth-btn">
+                    <a href="./instruction.html">How to use ?</a>
                 </button>
+                <!-- Move theme toggle button here -->
                 <button id="theme-toggle" class="theme-btn">
                     <i class="fas fa-lightbulb"></i>
                 </button>
-                <div id="toast" class="toast"></div> <!-- Move toast here -->
             </div>
+        
+            <!-- Mobile theme toggle -->
+            <button id="mobile-theme-toggle" class="theme-btn mobile-only">
+                <i class="fas fa-lightbulb"></i>
+            </button>
+        
+            <div id="toast" class="toast"></div>
         </header>
+        
+        <!-- After the header, add the sidebar and overlay -->
+        <div class="sidebar-overlay"></div>
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-qrcode"></i>
+                    <h1>QuickQR</h1>
+                </div>
+                <button class="sidebar-close" aria-label="Close menu">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="index.html" class="sidebar-link" id="sidebar-home">
+                    <i class="fas fa-home"></i>
+                    Home
+                </a>
+                <a href="instruction.html" class="sidebar-link" id="sidebar-instructions">
+                    <i class="fas fa-question-circle"></i>
+                    How to Use
+                </a>
+                <a href="#" class="sidebar-link" id="sidebar-login">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Login
+                </a>
+                <a href="#" class="sidebar-link" id="sidebar-signup">
+                    <i class="fas fa-user-plus"></i>
+                    Sign Up
+                </a>
+                <!-- Add these new items that will only show when logged in -->
+                <a href="#" class="sidebar-link sidebar-auth-item" id="sidebar-manage" style="display: none;">
+                    <i class="fas fa-qrcode"></i>
+                    Manage QR Codes
+                </a>
+                <a href="#" class="sidebar-link sidebar-auth-item" id="sidebar-logout" style="display: none;">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </a>
+            </nav>
+        </div>
 
         <!-- Manage QR Modal -->
         <div id="manageQRModal" class="modal">
