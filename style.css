@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
 :root {
+    --background-color: #f5f5f5;
     --primary-color: #2563eb;
     --primary-dark: #1d4ed8;
     --secondary-color: #64748b;
@@ -8,7 +9,7 @@
     --error-color: #ef4444;
     --success-color: #22c55e;
     --border-radius: 10px;
-    --box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --box-shadow: 0 4px 10px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
     --transition: all 0.3s ease;
     
 }
@@ -18,11 +19,14 @@
     padding: 0;
     box-sizing: border-box;
     font-family: "Playfair Display", serif;
-  font-optical-sizing: auto;
+    font-optical-sizing: auto;
   
 }
 /* Default Light Mode Styles */
 body {
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2),rgba(52, 52, 52, 0.2), rgba(86, 86, 86, 0.2)),
+    url('https://www.overflow.design/src/assets/img/covers/oc.png') no-repeat center center/cover;
+    backdrop-filter: blur(3px);
     animation: rainbowAnimation 10s ease infinite;
     color: var(--secondary-color);
     line-height: 1.5;
@@ -34,7 +38,7 @@ body.dark-mode {
     --background-color: #121212;
     --surface-color: #1f1f1f;
     --secondary-color: #b0b0b0;
-    --primary-color: #90caf9;
+    --primary-color: #4095db;
     --primary-dark: #42a5f5;
     --accent-color: #64b5f6;
     --error-color: #ef5350;
@@ -57,8 +61,9 @@ body.dark-mode {
 body.dark-mode {
     background-color: #121212;
     color: #ffffff;
-    background: url('https://www.overflow.design/src/assets/img/covers/oc.png') no-repeat center center/cover;
-    backdrop-filter: blur(2px);
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7),rgba(52, 52, 52, 0.7), rgba(86, 86, 86, 0.7)),
+    url('https://www.overflow.design/src/assets/img/covers/oc.png') no-repeat center center/cover;
+    backdrop-filter: blur(3px);
     /* background-size: 400% 400%;
     background-attachment: fixed;
     background-image: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #00ff00, #0000ff, #8b00ff);
@@ -92,7 +97,7 @@ body.dark-mode {
 
 .header {
     background-color: rgb(204, 242, 255);
-    padding: 1rem 2rem;
+    padding: 1.2rem;
     box-shadow: var(--box-shadow);
     display: flex;
     align-items: center;
@@ -136,7 +141,7 @@ body.dark-mode .header {
     box-shadow: -2px 8px 12px -1px rgb(0 0 0 / 0.2), -1px 4px 8px -2px rgb(0 0 0 / 0.2);
     width: 100%;
     max-width: 800px;
-    padding: 2rem;
+    padding: 2.5rem;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 2rem;
@@ -158,8 +163,27 @@ body.dark-mode .header {
     transition: var(--transition);
 }
 
+.tab-btn:hover{
+    background-color: rgb(197, 197, 197);
+    color: black;
+}
+
+.dark-mode .tab-btn:hover{
+    background-color: var(--secondary-color);
+    color: black;
+}
+
 .tab-btn.active {
     background-color: var(--primary-color);
+    color: white;
+}
+
+.tab-btn.active:hover{
+    background-color: var(--accent-color);
+}
+
+.dark-mode .tab-btn.active:hover{
+    background-color: var(--accent-color);
     color: white;
 }
 
@@ -212,7 +236,7 @@ textarea.input-field {
 .select-field {
     width: 100%;
     padding: 0.5rem;
-    border: 1px solid #e2e8f0;
+    border: 1px solid #a4a8ae;
     border-radius: var(--border-radius);
     background-color: white;
     font-size: 0.875rem;
@@ -224,14 +248,20 @@ textarea.input-field {
     padding: 0;
     border: none;
     border-radius: var(--border-radius);
+    background-color: white ;
     cursor: pointer;
+}
+
+body.dark-mode .color-picker {
+    border-radius: 0;
+    background-color: black;
 }
 
 .custom-file-upload {
     display: inline-block;
     padding: 0.5rem 1rem;
     background-color: var(--surface-color);
-    border: 1px solid #e2e8f0;
+    border: 1px solid #a7acb3;
     border-radius: var(--border-radius);
     cursor: pointer;
     transition: var(--transition);
@@ -522,6 +552,13 @@ textarea.input-field {
     border-top-color: rgba(255, 255, 255, 0.1);
 }
 
+.dark-mode .signup{
+    color: rgb(83, 83, 83);
+}
+
+.dark-mode .modal-content label{
+    color: rgb(66, 65, 65);
+}
 @media (max-width: 768px) {
     .footer-container {
         grid-template-columns: 1fr;
@@ -1434,6 +1471,14 @@ a {
 
 .dark-mode .theme-btn i.fa-sun {
     display: none;
+}
+
+body.dark-mode label {
+    color: rgb(215, 215, 215);
+}
+
+body.dark-mode .custom-file-upload {
+    color: rgb(137, 137, 137);
 }
 
 /* ...existing code... */
