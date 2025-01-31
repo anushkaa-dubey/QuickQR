@@ -13,6 +13,123 @@
     
 }
 
+/* Logo Styling */
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Increased gap for better spacing */
+    cursor: pointer; /* Add pointer cursor for interactivity */
+    transition: var(--transition); /* Smooth transition for hover effects */
+}
+
+.logo-container:hover {
+    transform: scale(1.05); /* Slightly scale up on hover */
+}
+
+.logo-img {
+    width: 60px; /* Slightly larger logo */
+    height: 60px; /* Ensure height matches width for a square aspect ratio */
+    border-radius: 50%; /* Circular logo (optional) */
+    object-fit: cover; /* Ensure the image fits well */
+    box-shadow: var(--box-shadow); /* Add a subtle shadow */
+    transition: var(--transition); /* Smooth transition for hover effects */
+}
+
+.logo-img:hover {
+    transform: rotate(10deg); /* Add a fun rotation effect on hover */
+}
+
+.logo-text {
+    font-size: 1.75rem; /* Larger font size */
+    font-weight: 700; /* Bolder font weight */
+    color: var(--primary-color);
+    text-transform: uppercase; /* Uppercase text for a modern look */
+    letter-spacing: 1px; /* Add spacing between letters */
+    transition: var(--transition); /* Smooth transition for hover effects */
+}
+
+.logo-text:hover {
+    color: var(--primary-dark); /* Darker color on hover */
+}
+
+/* Header Styling */
+.header {
+    background-color: rgb(204, 242, 255);
+    padding: 1.5rem 2rem; /* Increased padding for better spacing */
+    box-shadow: var(--box-shadow);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 1000; /* Ensure header stays on top */
+}
+
+body.dark-mode .header {
+    background-color: var(--surface-color);
+}
+
+/* Auth Button Styling */
+.auth-section {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Add spacing between buttons */
+}
+
+.auth-btn {
+    background: var(--primary-color);
+    border: none;
+    color: white;
+    padding: 0.75rem 1.5rem; /* Larger padding for better clickability */
+    border-radius: 25px; /* Rounded corners */
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: var(--transition);
+    font-weight: 600; /* Bolder text */
+    text-transform: uppercase; /* Uppercase text */
+}
+
+.auth-btn:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px); /* Slight lift on hover */
+}
+
+.auth-btn i {
+    font-size: 1.2rem; /* Larger icon */
+}
+
+/* Dropdown Menu Styling */
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: var(--surface-color);
+    border: 1px solid #e2e8f0;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    display: none; /* Hidden by default */
+    flex-direction: column;
+    z-index: 1000;
+    min-width: 150px; /* Minimum width for dropdown */
+}
+
+.dropdown-item {
+    padding: 0.75rem 1rem;
+    border: none;
+    background: none;
+    cursor: pointer;
+    text-align: left;
+    color: var(--secondary-color);
+    transition: var(--transition);
+}
+
+.dropdown-item:hover {
+    background-color: var(--background-color);
+    color: var(--primary-color);
+}
+
 * {
     margin: 0;
     padding: 0;
