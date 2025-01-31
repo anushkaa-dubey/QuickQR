@@ -552,7 +552,8 @@ body.dark-mode .color-picker {
     border-top-color: rgba(255, 255, 255, 0.1);
 }
 
-.dark-mode .signup{
+.dark-mode .signup,
+.dark-mode .login{
     color: rgb(83, 83, 83);
 }
 
@@ -1541,6 +1542,18 @@ body.dark-mode .custom-file-upload {
     align-items: flex-start;
 }
 
+#loginModel{
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
 .google-signin {
     width: 100%;
     padding: 10px;
@@ -1551,10 +1564,12 @@ body.dark-mode .custom-file-upload {
     border-radius: 4rem;
     cursor: pointer;
     font-size: 14px;
+    transition: background 0.4s ease;
 }
 
 .google-signin:hover {
-    background: #f1f1f1;
+    background: var(--accent-color);
+    transition: background 0.4s ease;
 }
 .divider {
     text-align: center;
@@ -1564,6 +1579,7 @@ body.dark-mode .custom-file-upload {
 }
 .right-panel h2{
     margin: auto;
+    color: rgb(67, 67, 67);
 }
 
 form {
@@ -1608,7 +1624,6 @@ form {
     cursor: pointer;
     font-size: 16px;
     transition: all 0.5s ease;
-
 }
 
 .signin-button:hover {
@@ -1636,25 +1651,15 @@ form {
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
 }
 
-.modal-content {
+.sign-up-content {
     background-color: #ffffff;
-    margin: 15% auto;
-    padding: 20px;
-    border-radius: 8px;
-    width: 400px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    font-family: Arial, sans-serif;
 }
 
-.modal-content h2 {
-    font-size: 1.5rem;
-    color: #4A4A4A;
-    text-align: center;
-    margin-bottom: 20px;
-    font-weight: 600;
+.sign-up-content h2{
+    margin-bottom: 1rem;
 }
 
 /* Close Button */
@@ -1701,36 +1706,35 @@ form input:focus {
 
 /* Button Styling */
 .signup-button {
-    background-color: #6A0DAD;
-    color: #ffffff;
+    width: 100%;
     padding: 10px;
+    background-color: rgb(41, 1, 105);
     border: none;
-    border-radius: 6px;
-    font-size: 1rem;
+    color: white;
+    border-radius: 4rem;
     cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.3s;
+    font-size: 16px;
+    transition: all 0.5s ease;
 }
 
 .signup-button:hover {
-    background-color: #570c8e;
+    background-color: rgb(82, 0, 169);
+    transition: all 0.5s ease;
 }
 
 /* Login Text */
 .login {
-    text-align: center;
-    font-size: 0.9rem;
-    margin-top: 15px;
-    color: #4A4A4A;
+    margin-top: 20px;
+    font-size: 14px;
 }
 
 .login a {
-    color: #6A0DAD;
+    color: #4285F4;
     text-decoration: none;
-    font-weight: 600;
 }
 
-.login a:hover {
+.login a:hover,
+.signup a:hover {
     text-decoration: underline;
 }
 
