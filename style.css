@@ -151,6 +151,7 @@ body.dark-mode .header {
     display: flex;
     gap: 0.5rem;
     margin-bottom: 1rem;
+    flex-wrap: wrap;
 }
 
 .tab-btn {
@@ -2207,4 +2208,57 @@ input[type="text"]:hover, input[type="password"]:hover {
 .logo-link i,
 .logo-link h1 {
     color: var(--primary-color);
+}
+
+/* Add these new styles for the batch tab button */
+.batch-tab {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+    color: white !important;
+    position: relative;
+    text-decoration: none;
+}
+
+.batch-tab:hover {
+    background: linear-gradient(45deg, var(--primary-dark), var(--primary-color));
+    transform: translateY(-1px);
+}
+
+.batch-label {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #ff4757;
+    color: white;
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+/* Update existing tab styles to accommodate new button */
+.tabs {
+    /* ...existing tab styles... */
+    flex-wrap: wrap;
+}
+
+/* Mobile responsiveness for batch tab */
+@media (max-width: 768px) {
+    .tabs {
+        gap: 0.3rem;
+    }
+    
+    .tab-btn, .batch-tab {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.9rem;
+    }
+
+    .batch-label {
+        font-size: 0.6rem;
+        padding: 1px 4px;
+        top: -6px;
+        right: -6px;
+    }
 }

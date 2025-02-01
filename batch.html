@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Batch QR Generator - QuickQR</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="batch.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <script src="batch.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <header class="header">
+            <div class="logo">
+                <a href="index.html" class="logo-link">
+                    <i class="fas fa-qrcode"></i>
+                    <h1>QuickQR</h1>
+                </a>
+            </div>
+            <button id="theme-toggle" class="theme-btn">
+                <i class="fas fa-lightbulb"></i>
+            </button>
+        </header>
+
+        <main class="main-content">
+            <div class="batch-container">
+                <div class="input-panel">
+                    <div class="batch-header">
+                        <h1>Batch QR Generator</h1>
+                        <p>Generate multiple QR codes at once by entering one item per line</p>
+                    </div>
+                    <textarea id="batchInput" class="batch-textarea" 
+                        placeholder="Enter one item per line. Each line will generate a separate QR code.&#10;&#10;Example:&#10;https://example.com&#10;Hello World&#10;+1234567890"></textarea>
+                    <div class="batch-options">
+                        <select id="batchSize" class="select-field">
+                            <option value="200">Small (200x200)</option>
+                            <option value="300" selected>Medium (300x300)</option>
+                            <option value="400">Large (400x400)</option>
+                        </select>
+                        <button id="generateBatchBtn" class="primary-button">
+                            <i class="fas fa-qrcode"></i> Generate Batch
+                        </button>
+                        <button id="downloadAllBtn" class="secondary-button" disabled>
+                            <i class="fas fa-download"></i> Download All (.zip)
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="qr-display-panel">
+                    <div class="qr-wrapper">
+                        <div id="qrGrid" class="qr-grid">
+                            <!-- QR codes will be added here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="footer-bottom">
+                <div class="made-with-love">
+                    Made with <i class="fas fa-heart"></i> by Notion Community, VIT Bhopal
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <div id="toast" class="toast"></div>
+</body>
+</html>
