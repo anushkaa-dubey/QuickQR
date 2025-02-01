@@ -52,6 +52,134 @@
     color: var(--primary-dark); /* Darker color on hover */
 }
 
+/* Dark Mode Colors */
+body.dark-mode {
+    --background-color: #0d0d0d; /* Deep black for a true dark mode */
+    --surface-color: #161616; /* Darker surface for contrast */
+    --secondary-color: #d4d4d4; /* Lighter text for readability */
+    --primary-color: #4facfe; /* Gradient blue for modern touch */
+    --primary-dark: #00c6ff;
+    --accent-color: #a1c4fd; /* Soft neon accent */
+    --error-color: #ff6b6b;
+    --success-color: #66ff99;
+
+    background-color: var(--background-color);
+    color: var(--secondary-color);
+}
+
+/* Dark Mode Header with Gradient */
+body.dark-mode .header {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+    box-shadow: 0px 2px 10px rgba(255, 255, 255, 0.1);
+}
+
+/* Dark Mode Auth Button with Neon Glow */
+body.dark-mode .auth-btn {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    color: white;
+    border: none;
+    text-shadow: 0px 0px 8px rgba(79, 172, 254, 0.6);
+    transition: all 0.3s ease-in-out;
+}
+
+body.dark-mode .auth-btn:hover {
+    background: var(--primary-dark);
+    box-shadow: 0px 0px 15px var(--primary-color);
+    transform: translateY(-3px);
+}
+
+/* Dark Mode Dropdown with Glassmorphism */
+body.dark-mode .dropdown-menu {
+    background: rgba(22, 22, 22, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode .dropdown-item {
+    color: var(--secondary-color);
+    transition: all 0.3s ease-in-out;
+}
+
+body.dark-mode .dropdown-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--primary-color);
+}
+
+/* Dark Mode Input Fields with Glow */
+body.dark-mode .input-field {
+    background: #1e1e1e;
+    border: 1px solid #333;
+    color: white;
+    box-shadow: inset 0px 0px 5px rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .input-field:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0px 0px 10px var(--primary-color);
+}
+
+/* Dark Mode Primary Buttons */
+body.dark-mode .primary-button {
+    background: var(--primary-color);
+    color: white;
+    border-radius: 8px;
+    transition: all 0.3s ease-in-out;
+}
+
+body.dark-mode .primary-button:hover {
+    background: var(--primary-dark);
+    box-shadow: 0px 0px 15px var(--primary-color);
+}
+
+/* Dark Mode Secondary Buttons */
+body.dark-mode .secondary-button {
+    background: #252525;
+    color: var(--secondary-color);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+body.dark-mode .secondary-button:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Dark Mode Modal */
+body.dark-mode .modal-content {
+    background: rgba(22, 22, 22, 0.95);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.7);
+}
+
+/* Dark Mode Scroll Button with Glow */
+body.dark-mode .scroll-btn {
+    background: var(--primary-color);
+    color: white;
+    box-shadow: 0px 0px 15px var(--primary-dark);
+}
+
+body.dark-mode .scroll-btn:hover {
+    background: var(--primary-dark);
+    box-shadow: 0px 0px 20px var(--primary-color);
+}
+
+/* Dark Mode Footer */
+body.dark-mode .footer {
+    background: #161616;
+}
+
+/* Neon Glow for Links */
+body.dark-mode a {
+    color: var(--accent-color);
+    transition: color 0.3s ease-in-out;
+}
+
+body.dark-mode a:hover {
+    text-shadow: 0px 0px 10px var(--accent-color);
+    color: white;
+}
+
+
 /* Header Styling */
 .header {
     background-color: rgb(204, 242, 255);
