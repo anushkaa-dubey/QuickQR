@@ -7,64 +7,180 @@
     <!-- Firebase Script Starts-->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
     <!-- Firebase Script Ends -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <title>Notion Quick QR</title>
-    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="script.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/qr-scanner/qr-scanner.umd.min.js"></script>
 </head>
 <body>
     <div class="app-container">
+        <!-- Update the header section -->
         <header class="header">
-            <div class="logo-container">
-                <img src="assets/logo.png" alt="QuickQR Logo" class="logo-img">
-                <h1 class="logo-text">QuickQR</h1>
+            <div class="logo">
+                <i class="fas fa-qrcode"></i>
+                <h1> QuickQR</h1>
             </div>
-            <!-- Adding Login Button -->
+        
+            <!-- Regular auth section (hidden on mobile) -->
             <div class="auth-section">
-                <button id="loginBtn" class="auth-btn">
-                    <i class="fas fa-user"></i> Login
-                </button>
-                <div id="toast" class="toast"></div> <!-- Move toast here -->
-                
-                <!-- Dropdown Menu -->
-                <div id="dropdownMenu" class="dropdown-menu" style="display: none;">
-                    <button id="manageQRBtn" class="dropdown-item">Manage QR</button>
-                    <button id="logoutBtn" class="dropdown-item">Logout</button>
+                <div class="auth-btn-container">
+                    <button id="loginBtn" class="auth-btn">
+                        <i class="fas fa-user"></i> Login
+                    </button>
+                    <div id="dropdownMenu" class="dropdown-menu" style="display: none;">
+                        <button id="manageQRBtn" class="dropdown-item">Manage QR Codes</button>
+                        <button id="logoutBtn" class="dropdown-item">Logout</button>
+                    </div>
                 </div>
+                <button id="howToUseBtn" class="auth-btn">
+                    <a href="./instruction.html">How to use ?</a>
+                </button>
+                <!-- Move theme toggle button here -->
+                <button id="theme-toggle" class="theme-btn">
+                    <i class="fas fa-lightbulb"></i>
+                </button>
             </div>
+        
+            <!-- Mobile theme toggle -->
+            <button id="mobile-theme-toggle" class="theme-btn mobile-only">
+                <i class="fas fa-lightbulb"></i>
+            </button>
+        
+            <div id="toast" class="toast"></div>
         </header>
-        <div class="toggle-container">
-            <label class="toggle">
-              <input type="checkbox" id="mode-toggle">
-              <span class="slider"></span>
-            </label>
-          </div>
+        
+        <!-- After the header, add the sidebar and overlay -->
+        <div class="sidebar-overlay"></div>
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-qrcode"></i>
+                    <h1>QuickQR</h1>
+                </div>
+                <button class="sidebar-close" aria-label="Close menu">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="index.html" class="sidebar-link" id="sidebar-home">
+                    <i class="fas fa-home"></i>
+                    Home
+                </a>
+                <a href="instruction.html" class="sidebar-link" id="sidebar-instructions">
+                    <i class="fas fa-question-circle"></i>
+                    How to Use
+                </a>
+                <a href="#" class="sidebar-link" id="sidebar-login">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Login
+                </a>
+                <a href="#" class="sidebar-link" id="sidebar-signup">
+                    <i class="fas fa-user-plus"></i>
+                    Sign Up
+                </a>
+                <!-- Add these new items that will only show when logged in -->
+                <a href="#" class="sidebar-link sidebar-auth-item" id="sidebar-manage" style="display: none;">
+                    <i class="fas fa-qrcode"></i>
+                    Manage QR Codes
+                </a>
+                <a href="#" class="sidebar-link sidebar-auth-item" id="sidebar-logout" style="display: none;">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </a>
+            </nav>
+        </div>
 
         <!-- Manage QR Modal -->
         <div id="manageQRModal" class="modal">
-            <div class="modal-content">
+            <div class="modal-content manage-modal">
                 <span class="close">&times;</span>
-                <h2>Manage QR</h2>
-                <p>Feature will be added later</p>
+                <h2>Manage QR Codes</h2>
+                <div class="qr-list" id="qrList">
+                    <!-- QR codes will be loaded here -->
+                    <div class="loading-spinner">
+                        <i class="fas fa-spinner fa-spin"></i>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- Login Modal -->
-        <div id="loginModal" class="modal">
-            <div class="modal-content">
+         <!-- Login Modal -->
+         <div id="loginModal" class="modal">
+            <div class="right-panel modal-content">
                 <span class="close">&times;</span>
                 <h2>Login to QuickQR</h2>
-                <button id="googleLoginBtn" class="google-btn">
-                    <i class="fab fa-google"></i> Continue with Google
+                <button id="googleLoginBtn" class="google-signin">
+                    <i class="fa-brands fa-google google-icon" aria-hidden="true"></i> Sign in with Google
                 </button>
+                <p class="divider">or sign in with email</p>
+                <form action="#">
+                    <label for="username">Username or Email</label>
+                    <input type="text" id="username" name="username" placeholder="Enter your username or email">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password">
+                    <div class="options">
+                        <a href="#" class="forgot">Forgot?</a>
+                    </div>
+                    <button type="submit" class="signin-button">Sign In</button>
+                </form>
+                <p class="signup">Don't have an account? <a id="openSignUp" href="#">Sign up</a></p>
             </div>
         </div>
+
+        <!-- Sign-Up Modal -->
+        <div id="signUpModal" class="modal">
+            <div class="right-panel modal-content sign-up-content">
+                <span class="close">&times;</span>
+                <h2>Create an Account</h2>
+                <form action="#">
+                    <label for="signup-name">Full Name</label>
+                    <input type="text" id="signup-name" name="name" placeholder="Enter your full name">
+                    <label for="signup-email">Email</label>
+                    <input type="email" id="signup-email" name="email" placeholder="Enter your email">
+                    <label for="signup-password">Password</label>
+                    <input type="password" id="signup-password" name="password" placeholder="Create a password">
+                    <label for="signup-confirm-password">Confirm Password</label>
+                    <input type="password" id="signup-confirm-password" name="confirm-password" placeholder="Confirm your password">
+                    <button type="submit" class="signup-button">Sign Up</button>
+                </form>
+                <p class="login">Already have an account? <a id="openLogin" href="#">Login</a></p>
+            </div>
+        </div>
+
+        <script>
+            // Open the Sign-Up modal when clicking "Sign Up" in Login Modal
+            const loginModal = document.getElementById("loginModal");
+            const signUpModal = document.getElementById("signUpModal");
+    
+            document.getElementById("openSignUp").addEventListener("click", () => {
+                loginModal.style.display = "none"; // Hide Login Modal
+                signUpModal.style.display = "block"; // Show Sign-Up Modal
+            });
+    
+            document.getElementById("openLogin").addEventListener("click", () => {
+                signUpModal.style.display = "none"; // Hide Sign-Up Modal
+                loginModal.style.display = "block"; // Show Login Modal
+            });
+    
+            // Close Modals
+            const closeButtons = document.querySelectorAll(".close");
+            closeButtons.forEach(btn => {
+                btn.addEventListener("click", () => {
+                    signUpModal.style.display = "none";
+                    loginModal.style.display = "none";
+                });
+            });
+        </script>
         
         <!-- Scroll Button -->
         <button class="scroll-btn" id="scrollToTopBtn">
-            <i class="fas fa-arrow-up fa-lg"></i>
+            <i class="fas fa-arrow-up fa-xl"></i>
         </button>
 
         <main class="main-content">
@@ -74,6 +190,7 @@
                         <button class="tab-btn active" data-tab="url">URL</button>
                         <button class="tab-btn" data-tab="text">Text</button>
                         <button class="tab-btn" data-tab="contact">Contact Card</button>
+                        <button class="tab-btn" data-tab="scanner">Scanner</button>
                     </div>
 
                     <div class="tab-content active" id="url-tab">
@@ -88,6 +205,23 @@
                         <input type="text" placeholder="Full Name" id="contact-name" class="input-field">
                         <input type="tel" placeholder="Phone Number" id="contact-phone" class="input-field">
                         <input type="email" placeholder="Email" id="contact-email" class="input-field">
+                    </div>
+                    <div class="tab-content" id="scanner-tab">
+                        <div class="scanner-container" id="scanner-container">
+                            <div class="scanner-preview">
+                                <video id="scanner-video" playsinline></video>
+                                <canvas id="scanner-canvas" style="display: none;"></canvas>
+                            </div>
+                            <div class="scanner-controls">
+                                <button id="start-scanner-btn" class="primary-button">
+                                    <i class="fas fa-qrcode"></i> Start Scanner
+                                </button>
+                                <select id="camera-select" class="select-field">
+                                    <option value="">Select Camera</option>
+                                </select>
+                            </div>
+                            <div class="scanner-result" id="scanner-result"></div>
+                        </div>
                     </div>
 
                     <div class="customization-section">
@@ -143,8 +277,36 @@
                         <button id="generateBtn" class="primary-button">
                             <i class="fas fa-sync-alt"></i> Generate QR
                         </button>
-                        <button id="downloadBtn" class="secondary-button" disabled>
-                            <i class="fas fa-download"></i> Download
+                        <div class="dropdown">
+                            <button id="downloadBtn" class="secondary-button dropdown-toggle" disabled>
+                                <i class="fas fa-download"></i> Download
+                                <i class="fas fa-caret-down"></i>
+                            </button>
+                            <div class="dropdown-content">
+                                <button id="downloadPNG" class="dropdown-item">
+                                    <i class="fas fa-image"></i> PNG
+                                </button>
+                                <button id="downloadJPG" class="dropdown-item">
+                                    <i class="fas fa-image"></i> JPG
+                                </button>
+                                <button id="downloadSVG" class="dropdown-item">
+                                    <i class="fas fa-code"></i> SVG
+                                </button>
+                                <button id="downloadPDF" class="dropdown-item">
+                                    <i class="fas fa-file-pdf"></i> PDF
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="share-buttons" style="display: none;">
+                        <button id="whatsappShare" class="share-btn whatsapp">
+                            <i class="fab fa-whatsapp"></i>
+                        </button>
+                        <button id="twitterShare" class="share-btn twitter">
+                            <i class="fab fa-twitter"></i>
+                        </button>
+                        <button id="copyLink" class="share-btn copy">
+                            <i class="fas fa-link"></i>
                         </button>
                     </div>
                 </section>
@@ -152,10 +314,53 @@
         </main>
 
         <footer class="footer">
-            <p>Made with <i class="fas fa-heart"></i> by Notion Community VIT Bhopal</p>
+            <div class="footer-container">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <i class="fas fa-qrcode"></i>
+                        QuickQR
+                    </div>
+                    <p class="footer-description">
+                        Simplifying QR code generation with powerful customization and seamless sharing. 
+                        Create, manage, and share QR codes effortlessly.
+                    </p>
+                    <div class="footer-social">
+                        <a href="https://www.instagram.com/notion.vit/" target="_blank" class="social-link">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/company/notion_vit/" target="_blank" class="social-link">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="https://github.com/notion-vit" target="_blank" class="social-link">
+                            <i class="fab fa-github"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <a href="#"><i class="fas fa-arrow-right"></i> Home</a>
+                    <a href="#"><i class="fas fa-arrow-right"></i> Generate QR</a>
+                    <a href="#"><i class="fas fa-arrow-right"></i> Manage QR Codes</a>
+                    <a href="#"><i class="fas fa-arrow-right"></i> Instructions</a>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Support</h4>
+                    <a href="#"><i class="fas fa-arrow-right"></i> Contact Us</a>
+                    <a href="#"><i class="fas fa-arrow-right"></i> FAQ</a>
+                    <a href="#"><i class="fas fa-arrow-right"></i> Privacy Policy</a>
+                    <a href="#"><i class="fas fa-arrow-right"></i> Terms of Service</a>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="made-with-love">
+                    Made with <i class="fas fa-heart"></i> by Notion Community, VIT Bhopal
+                </div>
+            </div>
         </footer>
     </div>
 
-    <script src="script.js"></script>
 </body>
 </html>

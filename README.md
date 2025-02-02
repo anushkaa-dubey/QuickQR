@@ -90,3 +90,4 @@ Guidelines
 
 - Android Club: For organizing AcWoC'25 and fostering open source contributions.
 - Contributors: A big thank you to everyone who has contributed to this project!
+- Project by Notion Community, VIT Bhopal

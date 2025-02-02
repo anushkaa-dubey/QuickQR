@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Professional QR Code Generator with customization options">
+    <!-- Firebase Script Starts-->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <!-- Firebase Script Ends -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Notion Quick QR</title>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+    .scroll-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+    opacity: 0;
+    visibility: hidden;
+}
+.scroll-btn:hover {
+    background-color: #3b82f6;
+    transform: scale(1.1);
+}
+.scroll-btn i {
+    font-size: 20px;
+}
+.scroll-btn.show {
+    opacity: 1;
+    visibility: visible;
+}
+    </style>
+    <style>
+        .bg-grey { background-color: #f9f9f9; padding: 50px 15px; display: flex; flex-direction: column; align-items: center; }
+.container { max-width: 1200px; width: 100%; display: flex; flex-direction: column; align-items: center; }
+.roadmap-title { font-size: 28px; font-weight: 600; color: #333; margin-bottom: 15px; }
+.roadmap-subtitle { font-size: 18px; color: #666; margin-bottom: 40px; }
+.roadmap { display: flex; flex-direction: column; align-items: center; width: 100%; gap: 50px; }
+.roadmap-step { display: flex; flex-direction: column; align-items: center; text-align: center; width: 100%; }
+.roadmap-step:not(:last-child)::after { content: ''; width: 4px; height: 50px; background-color: #2ecc71; position: relative; margin: 20px 0; }
+.roadmap-image { width: 100%; max-width: 400px; height: auto; margin-bottom: 15px; display: block; }
+.roadmap-step-title { font-size: 20px; font-weight: 500; color: #2ecc71; margin-bottom: 10px; }
+.roadmap-step-desc { font-size: 16px; color: #555; line-height: 1.6; }
+.roadmap-btn-link { text-decoration: none; margin-top: 40px; }
+.roadmap-btn { background-color: #2ecc71; color: #fff; font-size: 16px; padding: 10px 25px; border: none; border-radius: 5px; cursor: pointer; transition: all 0.3s ease; }
+.roadmap-btn:hover { background-color: #27ae60; }
+
+/* Center images within steps */
+.roadmap-step .roadmap-image { margin: 0 auto; }
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .roadmap-step-desc { font-size: 14px; }
+  .roadmap-btn { font-size: 14px; padding: 8px 20px; }
+}
+    </style>
+</head>
+
+<body>
+    <!-- Scroll Button -->
+    <button class="scroll-btn" id="scrollToTopBtn">
+      <i class="fas fa-arrow-up fa-lg"></i>
+    </button>
+
+    <div class="app-container">
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-qrcode"></i>
+                <h1> QuickQR</h1>
+            </div>
+            <!-- Adding Login Button -->
+            <div class="auth-section">
+                <button id="loginBtn" class="auth-btn">
+                    <i class="fas fa-user"></i> Login
+                </button>
+                <button id="loginBtn" class="auth-btn">
+                   <a href="./index.html"> <i class="fa-solid fa-house"></i> Home</a>
+                </button>
+                <div id="toast" class="toast"></div> <!-- Move toast here -->
+                
+                <!-- Dropdown Menu -->
+                <div id="dropdownMenu" class="dropdown-menu" style="display: none;">
+                    <button id="manageQRBtn" class="dropdown-item">Manage QR</button>
+                    <button id="logoutBtn" class="dropdown-item">Logout</button>
+                </div>
+            </div>
+        </header>
+
+        <section class="bg-grey roadmap-section">
+            <div class="container text-center mx-auto">
+              <h2 class="roadmap-title">How to make a free QR Code?</h2>
+              <p class="roadmap-subtitle">Create a free QR Code in three simple steps.</p>
+              <div class="roadmap">
+                <!-- Step 1 -->
+                <div class="roadmap-step">
+                  <div class="roadmap-content">
+                    <img src="./images/img1.png" alt="Choose the QR Code type" class="roadmap-image" />
+                    <h3 class="roadmap-step-title">1. Choose the QR Code type</h3>
+                    <p class="roadmap-step-desc">Select the type of QR Code that best fits your needs. Choose from multiple options, including a link (URL), PDF, or Multi-URL. While static QR Codes cannot be edited after creation, dynamic QR Codes can be edited anytime.</p>
+                  </div>
+                </div>
+          
+                <!-- Step 2 -->
+                <div class="roadmap-step">
+                  <div class="roadmap-content">
+                    <img src="./images/img2.png" alt="Add details and customize" class="roadmap-image" />
+                    <h3 class="roadmap-step-title">2. Add details and customize</h3>
+                    <p class="roadmap-step-desc">Enter the information in the provided fields. Optionally, personalize your QR Code to make it stand out. Use the customization panel to add a logo, change colors, and adjust styles to align with your brand.</p>
+                  </div>
+                </div>
+          
+                <!-- Step 3 -->
+                <div class="roadmap-step">
+                  <div class="roadmap-content">
+                    <img src="./images/img3.png" alt="Select file format and download" class="roadmap-image" />
+                    <h3 class="roadmap-step-title">3. Select the file format and download</h3>
+                    <p class="roadmap-step-desc">Choose your preferred file format and size. Next, download your custom QR Code. It’s now ready to scan and generate data you can analyze to see how your QR Code performs.</p>
+                  </div>
+                </div>
+              </div>
+              <a href="./index.html" class="roadmap-btn-link">
+                <button class="roadmap-btn">Try for free</button>
+              </a>
+            </div>
+          </section>
+
+
+<footer class="footer">
+    <p>Made with <i class="fas fa-heart"></i> by Notion Community VIT Bhopal</p>
+    <div class="social-links">
+<a href="https://www.instagram.com/notion.vit/" target="_blank" class="social-icon">
+    <i class="fab fa-instagram"></i> Instagram
+</a>
+<a href="https://www.linkedin.com/company/notion_vit/" target="_blank" class="social-icon">
+    <i class="fab fa-linkedin"></i> LinkedIn
+</a>
+</div>
+</footer>
+</div>
+
+<script src="script.js"></script>
+<script>
+  // Initialize scroll button
+  const scrollBtn = document.getElementById('scrollToTopBtn');
+    if (scrollBtn) {
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 30) {
+                scrollBtn.classList.add('show');
+            } else {
+                scrollBtn.classList.remove('show');
+            }
+        });
+
+        scrollBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    }
+</script>
+</body>
+</html>
