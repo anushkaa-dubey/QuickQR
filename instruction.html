@@ -7,6 +7,7 @@
     <!-- Firebase Script Starts-->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
     <!-- Firebase Script Ends -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
@@ -80,100 +81,307 @@
 
     <div class="app-container">
         <header class="header">
+            <button class="hamburger-menu" aria-label="Open menu">
+                <i class="fas fa-bars"></i>
+            </button>
+            
             <div class="logo">
-                <i class="fas fa-qrcode"></i>
-                <h1> QuickQR</h1>
+                <a href="index.html" class="logo-link">
+                    <i class="fas fa-qrcode"></i>
+                    <h1>QuickQR</h1>
+                </a>
             </div>
-            <!-- Adding Login Button -->
+        
+            <!-- Regular auth section (hidden on mobile) -->
             <div class="auth-section">
-                <button id="loginBtn" class="auth-btn">
-                    <i class="fas fa-user"></i> Login
+                <button id="homeBtn" class="auth-btn">
+                    <a href="./index.html"><i class="fa-solid fa-house"></i> Home</a>
                 </button>
-                <button id="loginBtn" class="auth-btn">
-                   <a href="./index.html"> <i class="fa-solid fa-house"></i> Home</a>
+                <!-- Theme toggle button -->
+                <button id="theme-toggle" class="theme-btn">
+                    <i class="fas fa-lightbulb"></i>
                 </button>
-                <div id="toast" class="toast"></div> <!-- Move toast here -->
-                
-                <!-- Dropdown Menu -->
-                <div id="dropdownMenu" class="dropdown-menu" style="display: none;">
-                    <button id="manageQRBtn" class="dropdown-item">Manage QR</button>
-                    <button id="logoutBtn" class="dropdown-item">Logout</button>
-                </div>
             </div>
+        
+            <!-- Mobile theme toggle -->
+            <button id="mobile-theme-toggle" class="theme-btn mobile-only">
+                <i class="fas fa-lightbulb"></i>
+            </button>
+        
+            <div id="toast" class="toast"></div>
         </header>
 
-        <section class="bg-grey roadmap-section">
-            <div class="container text-center mx-auto">
-              <h2 class="roadmap-title">How to make a free QR Code?</h2>
-              <p class="roadmap-subtitle">Create a free QR Code in three simple steps.</p>
-              <div class="roadmap">
-                <!-- Step 1 -->
-                <div class="roadmap-step">
-                  <div class="roadmap-content">
-                    <img src="./images/img1.png" alt="Choose the QR Code type" class="roadmap-image" />
-                    <h3 class="roadmap-step-title">1. Choose the QR Code type</h3>
-                    <p class="roadmap-step-desc">Select the type of QR Code that best fits your needs. Choose from multiple options, including a link (URL), PDF, or Multi-URL. While static QR Codes cannot be edited after creation, dynamic QR Codes can be edited anytime.</p>
-                  </div>
+        <!-- Add sidebar and overlay after header -->
+        <div class="sidebar-overlay"></div>
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-qrcode"></i>
+                    <h1>QuickQR</h1>
                 </div>
-          
-                <!-- Step 2 -->
-                <div class="roadmap-step">
-                  <div class="roadmap-content">
-                    <img src="./images/img2.png" alt="Add details and customize" class="roadmap-image" />
-                    <h3 class="roadmap-step-title">2. Add details and customize</h3>
-                    <p class="roadmap-step-desc">Enter the information in the provided fields. Optionally, personalize your QR Code to make it stand out. Use the customization panel to add a logo, change colors, and adjust styles to align with your brand.</p>
-                  </div>
-                </div>
-          
-                <!-- Step 3 -->
-                <div class="roadmap-step">
-                  <div class="roadmap-content">
-                    <img src="./images/img3.png" alt="Select file format and download" class="roadmap-image" />
-                    <h3 class="roadmap-step-title">3. Select the file format and download</h3>
-                    <p class="roadmap-step-desc">Choose your preferred file format and size. Next, download your custom QR Code. It’s now ready to scan and generate data you can analyze to see how your QR Code performs.</p>
-                  </div>
-                </div>
-              </div>
-              <a href="./index.html" class="roadmap-btn-link">
-                <button class="roadmap-btn">Try for free</button>
-              </a>
+                <button class="sidebar-close" aria-label="Close menu">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
-          </section>
+            <nav class="sidebar-nav">
+                <a href="index.html" class="sidebar-link" id="sidebar-home">
+                    <i class="fas fa-home"></i>
+                    Home
+                </a>
+                <a href="instruction.html" class="sidebar-link" id="sidebar-instructions">
+                    <i class="fas fa-question-circle"></i>
+                    How to Use
+                </a>
+                <!-- These will be shown/hidden based on auth state -->
+            </nav>
+        </div>
 
+        <section class="instructions-container app-container">
+            <div class="instruction-header">
+                <h1>How to Use QuickQR</h1>
+                <p>Create stunning QR codes in just a few simple steps</p>
+            </div>
 
-<footer class="footer">
-    <p>Made with <i class="fas fa-heart"></i> by Notion Community VIT Bhopal</p>
-    <div class="social-links">
-<a href="https://www.instagram.com/notion.vit/" target="_blank" class="social-icon">
-    <i class="fab fa-instagram"></i> Instagram
-</a>
-<a href="https://www.linkedin.com/company/notion_vit/" target="_blank" class="social-icon">
-    <i class="fab fa-linkedin"></i> LinkedIn
-</a>
-</div>
-</footer>
-</div>
+            <div class="step-cards-container">
+                <!-- Step 1 -->
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3><i class="fas fa-qrcode"></i> Choose QR Type</h3>
+                        <p>Select the type of QR Code that best fits your needs - URL, Text, Contact Card, or use our Scanner. We offer both static and dynamic QR codes to suit your requirements.</p>
+                        <div class="visual-guide">
+                            <img src="./images/img1.png" alt="Choose QR Type" class="step-image">
+                        </div>
+                    </div>
+                </div>
 
-<script src="script.js"></script>
-<script>
-  // Initialize scroll button
-  const scrollBtn = document.getElementById('scrollToTopBtn');
-    if (scrollBtn) {
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 30) {
-                scrollBtn.classList.add('show');
-            } else {
-                scrollBtn.classList.remove('show');
+                <!-- Step 2 -->
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3><i class="fas fa-palette"></i> Customize Your QR</h3>
+                        <p>Make your QR code unique with our customization tools:</p>
+                        <ul class="feature-list">
+                            <li><i class="fas fa-paint-brush"></i> Change colors</li>
+                            <li><i class="fas fa-expand"></i> Adjust size</li>
+                            <li><i class="fas fa-image"></i> Add your logo</li>
+                            <li><i class="fas fa-shield-alt"></i> Set error correction</li>
+                        </ul>
+                        <div class="visual-guide">
+                            <img src="./images/img2.png" alt="Customize QR" class="step-image">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3><i class="fas fa-download"></i> Download & Share</h3>
+                        <p>Export your QR code in multiple formats:</p>
+                        <ul class="feature-list">
+                            <li><i class="fas fa-file-image"></i> PNG format</li>
+                            <li><i class="fas fa-file"></i> SVG format</li>
+                            <li><i class="fas fa-file-pdf"></i> PDF format</li>
+                            <li><i class="fas fa-share-alt"></i> Direct sharing</li>
+                        </ul>
+                        <div class="visual-guide">
+                            <img src="./images/img3.png" alt="Download Options" class="step-image">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cta-section">
+                <a href="./index.html" class="cta-button">
+                    <i class="fas fa-magic"></i> Create Your QR Code Now
+                </a>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p>Made with <i class="fas fa-heart"></i> by Notion Community VIT Bhopal</p>
+            <div class="social-links">
+        <a href="https://www.instagram.com/notion.vit/" target="_blank" class="social-icon">
+            <i class="fab fa-instagram"></i> Instagram
+        </a>
+        <a href="https://www.linkedin.com/company/notion_vit/" target="_blank" class="social-icon">
+            <i class="fab fa-linkedin"></i> LinkedIn
+        </a>
+        </div>
+        </footer>
+    </div>
+
+    <style>
+        .instructions-container {
+            padding: 3rem 1rem;
+            background: linear-gradient(to bottom, #f8fafc, #fff);
+        }
+
+        .instruction-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .instruction-header h1 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .instruction-header p {
+            font-size: 1.2rem;
+            color: var(--secondary-color);
+        }
+
+        .step-cards-container {
+            display: grid;
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .step-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .step-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .step-number {
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            width: 40px;
+            height: 40px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .step-content {
+            padding: 1rem 0;
+        }
+
+        .step-content h3 {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: 1rem 0;
+        }
+
+        .feature-list li {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0;
+            color: var(--secondary-color);
+        }
+
+        .feature-list li i {
+            color: var(--primary-color);
+        }
+
+        .visual-guide {
+            margin-top: 1.5rem;
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+
+        .step-image {
+            width: 100%;
+            height: auto;
+            border-radius: 0.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .step-image:hover {
+            transform: scale(1.02);
+        }
+
+        .cta-section {
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--primary-color);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 2rem;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        @media (min-width: 768px) {
+            .step-cards-container {
+                grid-template-columns: repeat(3, 1fr);
             }
-        });
+        }
 
-        scrollBtn.addEventListener('click', () => {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
+        /* Dark mode support */
+        .dark-mode .instructions-container {
+            background: linear-gradient(to bottom, #1a1a1a, #2d2d2d);
+        }
+
+        .dark-mode .step-card {
+            background: var(--surface-color);
+        }
+
+        .dark-mode .step-content h3 {
+            color: var(--accent-color);
+        }
+    </style>
+
+    <script src="script.js"></script>
+    <script>
+      // Initialize scroll button
+      const scrollBtn = document.getElementById('scrollToTopBtn');
+        if (scrollBtn) {
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 30) {
+                    scrollBtn.classList.add('show');
+                } else {
+                    scrollBtn.classList.remove('show');
+                }
             });
-        });
-    }
-</script>
+
+            scrollBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
+    </script>
 </body>
 </html>

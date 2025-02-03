@@ -313,15 +313,19 @@ document.addEventListener('DOMContentLoaded', () => {
 // QR Generator Class - define only once
 class QRCodeGenerator {
     constructor() {
-        // Wait for DOM to be fully loaded before initializing
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', () => this.init());
-        } else {
-            this.init();
+        // Check if we're on the QR generation page
+        if (document.querySelector('.input-section')) {
+            // Only initialize if we're on the main QR page
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', () => this.init());
+            } else {
+                this.init();
+            }
+            this.lastGeneratedData = null;
+            this.lastGeneratedTimestamp = null;
+            this.duplicatePreventionDelay = 2000; // 2 seconds
         }
-        this.lastGeneratedData = null;
-        this.lastGeneratedTimestamp = null;
-        this.duplicatePreventionDelay = 2000; // 2 seconds
+        // Always initialize theme functionality
         this.themeBtn = document.getElementById('theme-toggle');
         this.setupThemeToggle();
     }
@@ -334,6 +338,7 @@ class QRCodeGenerator {
     }
 
     initializeElements() {
+        // Only initialize elements if they exist
         this.qrText = document.getElementById('qr-text');
         this.textContent = document.getElementById('text-content');
         this.contactName = document.getElementById('contact-name');
@@ -1007,7 +1012,11 @@ const firebaseConfig = {
 let db;
 if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
-    db = firebase.firestore();
+    if (firebase.firestore) {
+        db = firebase.firestore();
+    } else {
+        console.log('Firestore not available');
+    }
 }
 
 // Separate auth initialization
@@ -1022,31 +1031,40 @@ function initializeAuthElements() {
     const manageQRBtn = document.getElementById('manageQRBtn');
     const logoutBtn = document.getElementById('logoutBtn');
 
+    // Only proceed with auth initialization if we're on a page with auth elements
+    if (!loginBtn) {
+        console.log('Auth elements not found, skipping auth initialization');
+        return;
+    }
+
     function toggleLoginModal(show) {
-        loginModal.style.display = show ? "block" : "none";
+        if (loginModal) {
+            loginModal.style.display = show ? "block" : "none";
+        }
     }
 
     function toggleDropdownMenu(show) {
-        dropdownMenu.style.display = show ? "block" : "none";
+        if (dropdownMenu) {
+            dropdownMenu.style.display = show ? "block" : "none";
+        }
     }
 
     function toggleManageQRModal(show) {
-        manageQRModal.style.display = show ? "block" : "none";
+        if (manageQRModal) {
+            manageQRModal.style.display = show ? "block" : "none";
+        }
     }
 
-    // Show/Hide Modals
-    loginBtn.onclick = () => toggleLoginModal(true);
-    closeBtns.forEach(btn => btn.onclick = () => {
-        toggleLoginModal(false);
-        toggleManageQRModal(false);
-    });
-    window.onclick = (event) => {
-        if (event.target === loginModal) {
+    // Only add event listeners if elements exist
+    if (loginBtn) {
+        loginBtn.onclick = () => toggleLoginModal(true);
+    }
+
+    if (closeBtns) {
+        closeBtns.forEach(btn => btn.onclick = () => {
             toggleLoginModal(false);
-        }
-        if (event.target === manageQRModal) {
             toggleManageQRModal(false);
-        }
+        });
     }
 
     // Google Authentication
@@ -1281,67 +1299,109 @@ const sidebarOverlay = document.querySelector('.sidebar-overlay');
 const mainContent = document.querySelector('.main-content');
 
 function toggleSidebar() {
-    sidebar.classList.toggle('active');
-    sidebarOverlay.classList.toggle('active');
-    mainContent.classList.toggle('sidebar-active');
+    const sidebar = document.querySelector('.sidebar');
+    const sidebarOverlay = document.querySelector('.sidebar-overlay');
+    const mainContent = document.querySelector('.main-content');
+    
+    if (sidebar && sidebarOverlay) {
+        sidebar.classList.toggle('active');
+        sidebarOverlay.classList.toggle('active');
+        if (mainContent) {
+            mainContent.classList.toggle('sidebar-active');
+        }
+    }
 }
 
 function closeSidebar() {
-    sidebar.classList.remove('active');
-    sidebarOverlay.classList.remove('active');
-    mainContent.classList.remove('sidebar-active');
+    const sidebar = document.querySelector('.sidebar');
+    const sidebarOverlay = document.querySelector('.sidebar-overlay');
+    const mainContent = document.querySelector('.main-content');
+    
+    if (sidebar && sidebarOverlay) {
+        sidebar.classList.remove('active');
+        sidebarOverlay.classList.remove('active');
+        if (mainContent) {
+            mainContent.classList.remove('sidebar-active');
+        }
+    }
 }
 
-hamburgerMenu.addEventListener('click', toggleSidebar);
-sidebarClose.addEventListener('click', closeSidebar);
-sidebarOverlay.addEventListener('click', closeSidebar);
+// Update the sidebar initialization
+document.addEventListener('DOMContentLoaded', () => {
+    const hamburgerMenu = document.querySelector('.hamburger-menu');
+    const sidebarClose = document.querySelector('.sidebar-close');
+    const sidebarOverlay = document.querySelector('.sidebar-overlay');
+    const sidebarLinks = document.querySelectorAll('.sidebar-link');
 
-// Close sidebar when clicking a link (optional)
-const sidebarLinks = document.querySelectorAll('.sidebar-link');
-sidebarLinks.forEach(link => {
-    link.addEventListener('click', closeSidebar);
-});
-
-// Close sidebar on window resize if it's open (optional)
-window.addEventListener('resize', () => {
-    if (window.innerWidth > 768 && sidebar.classList.contains('active')) {
-        closeSidebar();
+    // Add event listeners only if elements exist
+    if (hamburgerMenu) {
+        hamburgerMenu.addEventListener('click', toggleSidebar);
     }
+    
+    if (sidebarClose) {
+        sidebarClose.addEventListener('click', closeSidebar);
+    }
+    
+    if (sidebarOverlay) {
+        sidebarOverlay.addEventListener('click', closeSidebar);
+    }
+
+    // Close sidebar when clicking links
+    if (sidebarLinks.length > 0) {
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', closeSidebar);
+        });
+    }
+
+    // Close sidebar on window resize
+    window.addEventListener('resize', () => {
+        const sidebar = document.querySelector('.sidebar');
+        if (window.innerWidth > 768 && sidebar && sidebar.classList.contains('active')) {
+            closeSidebar();
+        }
+    });
+
+    // ...rest of existing initialization code...
 });
 
-// Add this after the existing sidebar code
 function initializeSidebarLinks() {
     // Get all sidebar elements
     const sidebarLogin = document.getElementById('sidebar-login');
     const sidebarSignup = document.getElementById('sidebar-signup');
     const sidebarManage = document.getElementById('sidebar-manage');
     const sidebarLogout = document.getElementById('sidebar-logout');
-    const authItems = document.querySelectorAll('.sidebar-auth-item');
 
-    // Login click handler
-    sidebarLogin.addEventListener('click', (e) => {
+    // Only proceed if necessary elements exist
+    if (!sidebarLogin || !sidebarSignup || !sidebarManage || !sidebarLogout) {
+        console.log('Sidebar elements not found, skipping sidebar initialization');
+        return;
+    }
+
+    // Add event listeners only if elements exist
+    sidebarLogin?.addEventListener('click', (e) => {
         e.preventDefault();
         closeSidebar();
         toggleLoginModal(true);
     });
 
-    // Signup click handler
-    sidebarSignup.addEventListener('click', (e) => {
+    sidebarSignup?.addEventListener('click', (e) => {
         e.preventDefault();
         closeSidebar();
-        signUpModal.style.display = "block";
+        if (typeof signUpModal !== 'undefined') {
+            signUpModal.style.display = "block";
+        }
     });
 
-    // Manage QR codes handler
-    sidebarManage.addEventListener('click', (e) => {
+    sidebarManage?.addEventListener('click', (e) => {
         e.preventDefault();
         closeSidebar();
         toggleManageQRModal(true);
-        loadUserQRCodes();
+        if (typeof loadUserQRCodes === 'function') {
+            loadUserQRCodes();
+        }
     });
 
-    // Logout handler
-    sidebarLogout.addEventListener('click', (e) => {
+    sidebarLogout?.addEventListener('click', (e) => {
         e.preventDefault();
         firebase.auth().signOut()
             .then(() => {
@@ -1361,6 +1421,26 @@ function initializeSidebarLinks() {
         }
     });
 }
+
+// Update sidebar initialization in the DOMContentLoaded event
+document.addEventListener('DOMContentLoaded', () => {
+    const hamburgerMenu = document.querySelector('.hamburger-menu');
+    const sidebar = document.querySelector('.sidebar');
+    const sidebarClose = document.querySelector('.sidebar-close');
+    const sidebarOverlay = document.querySelector('.sidebar-overlay');
+
+    // Only initialize sidebar functionality if elements exist
+    if (hamburgerMenu && sidebar && sidebarClose && sidebarOverlay) {
+        hamburgerMenu.addEventListener('click', toggleSidebar);
+        sidebarClose.addEventListener('click', closeSidebar);
+        sidebarOverlay.addEventListener('click', closeSidebar);
+        
+        // Initialize sidebar links
+        initializeSidebarLinks();
+    }
+
+    // ...rest of existing initialization code...
+});
 
 function updateSidebarForLoggedInUser(user) {
     // Hide login/signup, show manage/logout
