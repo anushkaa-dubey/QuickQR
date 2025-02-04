@@ -128,8 +128,13 @@
                 <form action="#">
                     <label for="username">Username or Email</label>
                     <input type="text" id="username" name="username" placeholder="Enter your username or email">
+                    
                     <label for="password">Password</label>
-                    <input type="password" id="password" name="password" placeholder="Enter your password">
+                    <div class="password-container">
+                        <input type="password" id="password" name="password" placeholder="Enter your password">
+                        <i class="fa fa-eye-slash toggle-password" id="togglePassword"></i>
+                    </div>
+        
                     <div class="options">
                         <a href="#" class="forgot">Forgot?</a>
                     </div>
@@ -138,7 +143,45 @@
                 <p class="signup">Don't have an account? <a id="openSignUp" href="#">Sign up</a></p>
             </div>
         </div>
-
+        
+        <style>
+            .password-container {
+                position: relative;
+                display: flex;
+                align-items: center;
+            }
+            
+            .password-container input {
+                width: 100%;
+                padding-right: 40px;
+            }
+        
+            .toggle-password {
+                position: absolute;
+                right: 10px;
+                cursor: pointer;
+                color: #666;
+            }
+        
+            .toggle-password:hover {
+                color: #000;
+            }
+        </style>
+        
+        <script>
+            document.getElementById("togglePassword").addEventListener("click", function () {
+                let passwordField = document.getElementById("password");
+                if (passwordField.type === "password") {
+                    passwordField.type = "text";
+                    this.classList.remove("fa-eye-slash");
+                    this.classList.add("fa-eye");
+                } else {
+                    passwordField.type = "password";
+                    this.classList.remove("fa-eye");
+                    this.classList.add("fa-eye-slash");
+                }
+            });
+        </script>
         <!-- Sign-Up Modal -->
         <div id="signUpModal" class="modal">
             <div class="right-panel modal-content sign-up-content">
@@ -147,18 +190,68 @@
                 <form action="#">
                     <label for="signup-name">Full Name</label>
                     <input type="text" id="signup-name" name="name" placeholder="Enter your full name">
+        
                     <label for="signup-email">Email</label>
                     <input type="email" id="signup-email" name="email" placeholder="Enter your email">
+        
                     <label for="signup-password">Password</label>
-                    <input type="password" id="signup-password" name="password" placeholder="Create a password">
+                    <div class="password-container">
+                        <input type="password" id="signup-password" name="password" placeholder="Create a password">
+                        <i class="fa fa-eye-slash toggle-password" data-target="signup-password"></i>
+                    </div>
+        
                     <label for="signup-confirm-password">Confirm Password</label>
-                    <input type="password" id="signup-confirm-password" name="confirm-password" placeholder="Confirm your password">
+                    <div class="password-container">
+                        <input type="password" id="signup-confirm-password" name="confirm-password" placeholder="Confirm your password">
+                        <i class="fa fa-eye-slash toggle-password" data-target="signup-confirm-password"></i>
+                    </div>
+        
                     <button type="submit" class="signup-button">Sign Up</button>
                 </form>
                 <p class="login">Already have an account? <a id="openLogin" href="#">Login</a></p>
             </div>
         </div>
-
+        
+        <style>
+            .password-container {
+                position: relative;
+                display: flex;
+                align-items: center;
+            }
+        
+            .password-container input {
+                width: 100%;
+                padding-right: 40px;
+            }
+        
+            .toggle-password {
+                position: absolute;
+                right: 10px;
+                cursor: pointer;
+                color: #666;
+            }
+        
+            .toggle-password:hover {
+                color: #000;
+            }
+        </style>
+        
+        <script>
+            document.querySelectorAll(".toggle-password").forEach((eyeIcon) => {
+                eyeIcon.addEventListener("click", function () {
+                    let passwordField = document.getElementById(this.getAttribute("data-target"));
+                    if (passwordField.type === "password") {
+                        passwordField.type = "text";
+                        this.classList.remove("fa-eye-slash");
+                        this.classList.add("fa-eye");
+                    } else {
+                        passwordField.type = "password";
+                        this.classList.remove("fa-eye");
+                        this.classList.add("fa-eye-slash");
+                    }
+                });
+            });
+        </script>        
         <script>
             // Open the Sign-Up modal when clicking "Sign Up" in Login Modal
             const loginModal = document.getElementById("loginModal");
