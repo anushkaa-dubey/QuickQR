@@ -8,7 +8,15 @@ A lightweight and easy-to-use web-based QR Code Generator that enables users to 
 
 - Generate QR codes for text, URLs, or any input data.
 - Customize the size of the QR code.
-- Download the generated QR code as an image file.
+- Download the generated QR code as an image file (PNG, JPG, SVG, PDF).
+- Embed logos inside QR codes.
+- Batch QR code generation through file upload.
+- Color customization (foreground and background).
+- Provide error correction levels (L, M, Q, H).
+- User authentication with Google.
+- Manage and share QR codes.
+- Dark mode support.
+- Responsive design for mobile and desktop.
 
 ### Future Enhancements
 
@@ -16,6 +24,9 @@ A lightweight and easy-to-use web-based QR Code Generator that enables users to 
 - Provide error correction levels (L, M, Q, H).
 - Bulk QR code generation through file upload.
 - Embed logos inside QR codes.
+- Dynamic QR codes that can be updated with new data.
+- Mobile app version of the QR code generator.
+
 
 ---
 
@@ -24,6 +35,10 @@ A lightweight and easy-to-use web-based QR Code Generator that enables users to 
 - **HTML5**: Structure and layout.
 - **CSS3**: Styling and responsiveness.
 - **JavaScript**: QR code generation logic.
+- **Firebase**: User authentication and Firestore database.
+- **JSZip**: Batch QR code download as a ZIP file.
+- **QRCode.js**: QR code generation library.
+- **jsPDF**: PDF generation library.
 
 ---
 
@@ -31,11 +46,23 @@ A lightweight and easy-to-use web-based QR Code Generator that enables users to 
 
 ```plaintext
 QR-Code-Generator
-
-├── index.html     # Main HTML file for the app
-├── style.css      # CSS for styling the app
-├── script.js      # JavaScript for QR code generation
-├── README.md      # Documentation
+├── index.html          # Main HTML file for the app
+├── style.css           # CSS for styling the app
+├── script.js           # JavaScript for QR code generation
+├── share.html          # HTML for sharing QR codes
+├── share.js            # JavaScript for sharing QR codes
+├── batch.html          # HTML for batch QR code generation
+├── batch.js            # JavaScript for batch QR code generation
+├── batch.css           # CSS for batch QR code generation
+├── instruction.html    # HTML for instructions on how to use the app
+├── README.md           # Documentation
+├── Contribution Guideline # Contribution guidelines
+├── Code_Of_Conduct.md  # Code of conduct
+├── .github/            # GitHub configuration files
+│   ├── ISSUE_TEMPLATE/ # Issue templates
+│   ├── PULL_REQUEST_TEMPLATE/ # Pull request template
+│   └── workflows/      # GitHub Actions workflows
+└── images/             # Images used in the project
 ```
 
 ## 🤝 Contributing
@@ -81,6 +108,15 @@ Guidelines
 - Be respectful and inclusive towards others.
 - Provide clear documentation for any features or fixes you introduce.
 - Adhere to the repository's coding standards and best practices.
+
+## Issues
+- **Search Before Raising:** Check if the issue already exists to avoid duplicates.
+- **Provide Details:** Clearly describe the problem and include steps to reproduce it, if applicable.
+- **Be Constructive:** Avoid vague or unhelpful comments on issues.
+
+## Testing
+- **Test Your Code**: Ensure that your changes are well-tested before submission.
+- **No Breaking Changes**: Make sure your contribution doesn’t break existing functionality.
 
 ## 📜 License
 
