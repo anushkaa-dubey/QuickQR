@@ -34,24 +34,30 @@
                 
                 <!-- Dropdown Menu -->
                 <div id="dropdownMenu" class="dropdown-menu" style="display: none;">
-                    <button id="manageQRBtn" class="dropdown-item">Manage QR</button>
+                    <button id="manageQRBtn" class="dropdown-item">Manage QR Codes</button>
                     <button id="logoutBtn" class="dropdown-item">Logout</button>
                 </div>
             </div>
+            <div class="toggle-container">
+                <label class="toggle">
+                  <input type="checkbox" id="mode-toggle">
+                  <span class="slider"></span>
+                </label>
+                <div class="mode">Dark Mode</div>
+            </div>
         </header>
-        <div class="toggle-container">
-            <label class="toggle">
-              <input type="checkbox" id="mode-toggle">
-              <span class="slider"></span>
-            </label>
-          </div>
 
         <!-- Manage QR Modal -->
         <div id="manageQRModal" class="modal">
-            <div class="modal-content">
+            <div class="modal-content manage-modal">
                 <span class="close">&times;</span>
-                <h2>Manage QR</h2>
-                <p>Feature will be added later</p>
+                <h2>Manage QR Codes</h2>
+                <div class="qr-list" id="qrList">
+                    <!-- QR codes will be loaded here -->
+                    <div class="loading-spinner">
+                        <i class="fas fa-spinner fa-spin"></i>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -167,15 +173,21 @@
         </main>
 
         <footer class="footer">
-            <p>Made with <i class="fas fa-heart"></i> by Notion Community, VIT Bhopal</p>
+            <p>Made with <i class="fas fa-heart"></i> by Notion Community, VIT Bhopal</p> <br>
+            <div class="quickLinks">
+                <h3>Quick Links</h3>
+                <a  class="qlinks" href="faq.html"><p>FAQ</p></a>
+                <a  class="qlinks" href="privacy.html"><p>Privacy policy</p></a>
+                <a  class="qlinks" href="terms.html"><p>Terms and conditions</p></a>
+            </div>
             <div class="social-links">
-        <a href="https://www.instagram.com/notion.vit/" target="_blank" class="social-icon">
-            <i class="fab fa-instagram"></i> Instagram
-        </a>
-        <a href="https://www.linkedin.com/company/notion_vit/" target="_blank" class="social-icon">
-            <i class="fab fa-linkedin"></i> LinkedIn
-        </a>
-    </div>
+                <a href="https://www.instagram.com/notion.vit/" target="_blank" class="social-icon">
+                    <i class="fab fa-instagram"></i> Instagram
+                </a>
+                        <a href="https://www.linkedin.com/company/notion_vit/" target="_blank" class="social-icon">
+                    <i class="fab fa-linkedin"></i> LinkedIn
+                </a>
+            </div>
         </footer>
     </div>
 

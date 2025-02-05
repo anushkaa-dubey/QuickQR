@@ -366,6 +366,17 @@ textarea.input-field {
     font-family: Arial, sans-serif;
 }
 
+.quick-links {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 10px;
+}
+
+.qlinks:hover{
+    color: #22c55e
+}
+
 /* Social Links Container */
 .social-links {
     margin-top: 10px;

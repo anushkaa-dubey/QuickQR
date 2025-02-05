@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ</title>
+    <link rel="stylesheet" href="faq.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <i class="fas fa-qrcode"></i>
+            <h1> QuickQR</h1>
+        </div>
+        <!-- Adding Login Button -->
+        <div class="auth-section">
+            <button id="loginBtn" class="auth-btn">
+                <i class="fas fa-user"></i> Login
+            </button>
+            <button id="loginBtn" class="auth-btn">
+               <a href="./instruction.html"><i class="fa-solid fa-question"></i> How to use ?</a>
+            </button>
+            <div id="toast" class="toast"></div> <!-- Move toast here -->
+            
+            <!-- Dropdown Menu -->
+            <div id="dropdownMenu" class="dropdown-menu" style="display: none;">
+                <button id="manageQRBtn" class="dropdown-item">Manage QR Codes</button>
+                <button id="logoutBtn" class="dropdown-item">Logout</button>
+            </div>
+        </div>
+        <div class="toggle-container">
+            <label class="toggle">
+              <input type="checkbox" id="mode-toggle">
+              <span class="slider"></span>
+            </label>
+            <div class="mode">Dark Mode</div>
+        </div>
+    </header>
+
+    <main class="faq-container">
+        <h1>Frequently Asked Questions</h1>
+        <div class="faq">
+            <h2>What is QuickQR?</h2>
+            <p>QuickQR is a professional QR Code Generator with customization options. It allows you to create QR codes for your business, personal use, and more.</p>
+        </div>
+        <div class="faq">
+            <h2>How do I use QuickQR?</h2>
+            <p>Using QuickQR is simple. Just enter the data you want to encode in the QR code, customize the design, and download the QR code image.</p>
+        </div>
+        <div class="faq">
+            <h2>Is QuickQR free to use?</h2>
+            <p>Yes, QuickQR is free to use. You can create QR codes without any cost.</p>
+        </div>
+        <div class="faq">
+            <h2>Can I customize the design of the QR code?</h2>
+            <p>Yes, QuickQR allows you to customize the design of the QR code. You can change the color, add a logo, and more.</p>
+        </div>
+        <div class="faq">
+            <h2>How do I download the QR code?</h2>
+            <p>After customizing the QR code, you can download the image by clicking the download button.</p>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>Made with <i class="fas fa-heart"></i> by Notion Community, VIT Bhopal</p> <br>
+        <div class="quickLinks">
+            <h3>Quick Links</h3>
+            <a href="faq.html"><p>FAQ</p></a>
+            <a href="privacy.html"><p>Privacy policy</p></a>
+            <a href="terms.html"><p>Terms and conditions</p></a>
+        </div>
+        <div class="social-links">
+            <a href="https://www.instagram.com/notion.vit/" target="_blank" class="social-icon">
+                <i class="fab fa-instagram"></i> Instagram
+            </a>
+                    <a href="https://www.linkedin.com/company/notion_vit/" target="_blank" class="social-icon">
+                <i class="fab fa-linkedin"></i> LinkedIn
+            </a>
+        </div>
+    </footer>
+</body>
+</html>
