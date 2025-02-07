@@ -79,5 +79,42 @@
             </a>
         </div>
     </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const themeToggle = document.getElementById("mode-toggle");
+
+        if (!themeToggle) {
+            console.error("theme-toggle not found!");
+            return;
+        }
+
+        // Default to light mode if no theme is set
+        if (!localStorage.getItem("theme")) {
+            localStorage.setItem("theme", "light");
+        }
+
+        // Apply saved theme
+        if (localStorage.getItem("theme") === "dark") {
+            document.body.classList.add("dark-mode");
+            themeToggle.checked = true;
+        } else {
+            document.body.classList.remove("dark-mode");
+        }
+
+        // Toggle theme on checkbox change
+        themeToggle.addEventListener("change", () => {
+            if (themeToggle.checked) {
+                document.body.classList.add("dark-mode");
+                localStorage.setItem("theme", "dark");
+            } else {
+                document.body.classList.remove("dark-mode");
+                localStorage.setItem("theme", "light");
+            }
+        });
+    });
+
+    </script>
+    
 </body>
 </html>
