@@ -39,9 +39,19 @@ body {
 h1 {
     font-size: 28px;
     color: var(--h1-color);
-    margin-bottom: 20px;
 }
 
+.back-button{
+    color: var(--primary-color);
+    font-size: 20px;
+    margin: 20px 0;
+    margin-left: 40px;
+}
+
+.logo-link i,
+.logo-link h1 {
+    color: var(--primary-color);
+}
 .faq {
     background: var(--faq-box-bg);
     border-radius: 8px;
