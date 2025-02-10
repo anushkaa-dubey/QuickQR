@@ -32,11 +32,28 @@
                     </div>
                     <div class="actions-panel">
                         <div class="action-buttons vertical">
-                            <button id="downloadBtn" class="primary-button">
-                                <i class="fas fa-download"></i> Download QR Code
-                            </button>
+                            <div class="dropdown">
+                                <button id="downloadBtn" class="primary-button dropdown-toggle">
+                                    <i class="fas fa-download"></i> Download QR Code
+                                    <i class="fas fa-caret-down"></i>
+                                </button>
+                                <div class="dropdown-content">
+                                    <button id="downloadPNG" class="dropdown-item">
+                                        <i class="fas fa-image"></i> PNG
+                                    </button>
+                                    <button id="downloadJPG" class="dropdown-item">
+                                        <i class="fas fa-image"></i> JPG
+                                    </button>
+                                    <button id="downloadSVG" class="dropdown-item">
+                                        <i class="fas fa-code"></i> SVG
+                                    </button>
+                                    <button id="downloadPDF" class="dropdown-item">
+                                        <i class="fas fa-file-pdf"></i> PDF
+                                    </button>
+                                </div>
+                            </div>
                             <a href="index.html" class="secondary-button">
-                             Create New QR
+                                Create New QR
                             </a>
                         </div>
                         <div class="share-buttons vertical" style="display: none;">
