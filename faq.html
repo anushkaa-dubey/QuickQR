@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ</title>
+    <link rel="stylesheet" href="faq.css">
+    <link rel="stylesheet" href="style.css">
+    <!-- Firebase Script Starts-->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <!-- Firebase Script Ends -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <title>Notion Quick QR</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="script.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/qr-scanner/qr-scanner.umd.min.js"></script>
+</head>
+<body>
+    <header class="header">
+        <button class="hamburger-menu" aria-label="Open menu">
+            <i class="fas fa-bars"></i>
+        </button>
+        
+        <div class="logo">
+            <a href="index.html" class="logo-link">
+                <i class="fas fa-qrcode"></i>
+                <h1>QuickQR</h1>
+            </a>
+        </div>
+    
+        <!-- Regular auth section (hidden on mobile) -->
+        <div class="auth-section">
+            <div class="auth-btn-container">
+                <button id="loginBtn" class="auth-btn">
+                    <i class="fas fa-user"></i> Login
+                </button>
+                <div id="dropdownMenu" class="dropdown-menu" style="display: none;">
+                    <button id="manageQRBtn" class="dropdown-item">Manage QR Codes</button>
+                    <button id="logoutBtn" class="dropdown-item">Logout</button>
+                </div>
+            </div>
+            <button id="howToUseBtn" class="auth-btn">
+                <a href="./instruction.html">How to use ?</a>
+            </button>
+            <!-- Move theme toggle button here -->
+            <button id="theme-toggle" class="theme-btn">
+                <i class="fas fa-lightbulb"></i>
+            </button>
+        </div>
+    
+        <!-- Mobile theme toggle -->
+        <button id="mobile-theme-toggle" class="theme-btn mobile-only">
+            <i class="fas fa-lightbulb"></i>
+        </button>
+    
+        <div id="toast" class="toast"></div>
+    </header>
+
+    <div class="back-button">
+        <a href="index.html">
+            <i class="fas fa-arrow-left"></i> Back to Home
+        </a>
+    </div>
+
+    <main class="faq-container">
+        <h1>Frequently Asked Questions</h1>
+        <div class="faq">
+            <h2>What is QuickQR?</h2>
+            <p>QuickQR is a professional QR Code Generator with customization options. It allows you to create QR codes for your business, personal use, and more.</p>
+        </div>
+        <div class="faq">
+            <h2>How do I use QuickQR?</h2>
+            <p>Using QuickQR is simple. Just enter the data you want to encode in the QR code, customize the design, and download the QR code image.</p>
+        </div>
+        <div class="faq">
+            <h2>Is QuickQR free to use?</h2>
+            <p>Yes, QuickQR is free to use. You can create QR codes without any cost.</p>
+        </div>
+        <div class="faq">
+            <h2>Can I customize the design of the QR code?</h2>
+            <p>Yes, QuickQR allows you to customize the design of the QR code. You can change the color, add a logo, and more.</p>
+        </div>
+        <div class="faq">
+            <h2>How do I download the QR code?</h2>
+            <p>After customizing the QR code, you can download the image by clicking the download button.</p>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <div class="footer-logo">
+                    <i class="fas fa-qrcode"></i>
+                    QuickQR
+                </div>
+                <p class="footer-description">
+                    Simplifying QR code generation with powerful customization and seamless sharing. 
+                    Create, manage, and share QR codes effortlessly.
+                </p>
+                <div class="footer-social">
+                    <a href="https://www.instagram.com/notion.vit/" target="_blank" class="social-link">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/company/notion_vit/" target="_blank" class="social-link">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a href="https://github.com/notion-vit" target="_blank" class="social-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <a href="#"><i class="fas fa-arrow-right"></i> Home</a>
+                <a href="#"><i class="fas fa-arrow-right"></i> Generate QR</a>
+                <a href="#"><i class="fas fa-arrow-right"></i> Manage QR Codes</a>
+                <a href="#"><i class="fas fa-arrow-right"></i> Instructions</a>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Support</h4>
+                <a href="#"><i class="fas fa-arrow-right"></i> Contact Us</a>
+                <a href="faq.html"><i class="fas fa-arrow-right"></i> FAQ</a>
+                <a href="#"><i class="fas fa-arrow-right"></i> Privacy Policy</a>
+                <a href="#"><i class="fas fa-arrow-right"></i> Terms of Service</a>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <div class="made-with-love">
+                Made with <i class="fas fa-heart"></i> by Notion Community, VIT Bhopal
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const themeToggle = document.getElementById("mode-toggle");
+
+        if (!themeToggle) {
+            console.error("theme-toggle not found!");
+            return;
+        }
+
+        // Default to light mode if no theme is set
+        if (!localStorage.getItem("theme")) {
+            localStorage.setItem("theme", "light");
+        }
+
+        // Apply saved theme
+        if (localStorage.getItem("theme") === "dark") {
+            document.body.classList.add("dark-mode");
+            themeToggle.checked = true;
+        } else {
+            document.body.classList.remove("dark-mode");
+        }
+
+        // Toggle theme on checkbox change
+        themeToggle.addEventListener("change", () => {
+            if (themeToggle.checked) {
+                document.body.classList.add("dark-mode");
+                localStorage.setItem("theme", "dark");
+            } else {
+                document.body.classList.remove("dark-mode");
+                localStorage.setItem("theme", "light");
+            }
+        });
+    });
+
+    </script>
+    
+</body>
+</html>
