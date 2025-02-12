@@ -276,6 +276,49 @@
     background: rgba(255, 255, 255, 0.1);
 }
 
+/* Logo Styles */
+.logo-icon {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+}
+
+.logo-icon .fa-qrcode {
+    font-size: 2rem;
+    color: var(--primary-color);
+    transform: rotate(-5deg);
+    transition: transform 0.3s ease;
+}
+
+.logo-icon .overlay-icon {
+    position: absolute;
+    bottom: -0.2rem;
+    right: -0.2rem;
+    font-size: 1rem;
+    color: var(--accent-color);
+    background: var(--surface-color);
+    border-radius: 50%;
+    padding: 0.2rem;
+    box-shadow: var(--box-shadow);
+    transition: all 0.3s ease;
+}
+
+.logo:hover .fa-qrcode {
+    transform: rotate(5deg);
+}
+
+.logo:hover .overlay-icon {
+    transform: scale(1.1) rotate(180deg);
+    color: var(--primary-color);
+}
+
+.dark-mode .logo-icon .overlay-icon {
+    background: var(--surface-color);
+}
+
 @media (max-width: 1024px) {
     .batch-container {
         grid-template-columns: 1fr;
