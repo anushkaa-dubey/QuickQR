@@ -118,13 +118,20 @@ body.dark-mode .header {
 
 .logo i {
     color: var(--primary-color);
-    font-size: 1.5rem;
+    font-size: 1.8rem;
+    transform: rotate(-5deg);
+    transition: transform 0.3s ease;
+}
+
+.logo:hover i {
+    transform: rotate(5deg) scale(1.1);
 }
 
 .logo h1 {
     color: var(--primary-color);
     font-size: 1.5rem;
     font-weight: 600;
+    letter-spacing: -0.5px;
 }
 
 .main-content {
@@ -406,7 +413,9 @@ body.dark-mode .color-picker {
 }
 
 .footer-logo i {
-    font-size: 2rem;
+    font-size: 2.2rem;
+    transform: rotate(-5deg);
+    margin-right: 0.5rem;
     color: var(--primary-color);
 }
 
@@ -572,6 +581,17 @@ body.dark-mode .color-picker {
     padding: 20px;
     background-color: rgb(204, 242, 255);
     font-family: Arial, sans-serif;
+}
+
+.quick-links {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 10px;
+}
+
+.qlinks:hover{
+    color: #22c55e
 }
 
 /* Social Links Container */
@@ -2262,3 +2282,62 @@ input[type="text"]:hover, input[type="password"]:hover {
         right: -6px;
     }
 }
+
+/* ...existing code... */
+.logo-icon {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+}
+
+.logo-icon .fa-qrcode {
+    font-size: 2rem;
+    color: var(--primary-color);
+    transform: rotate(-5deg);
+    transition: transform 0.3s ease;
+}
+
+.logo-icon .overlay-icon {
+    position: absolute;
+    bottom: -0.2rem;
+    right: -0.2rem;
+    font-size: 1rem;
+    color: var(--accent-color);
+    background: var(--surface-color);
+    border-radius: 50%;
+    padding: 0.2rem;
+    box-shadow: var(--box-shadow);
+    transition: all 0.3s ease;
+}
+
+.logo:hover .fa-qrcode {
+    transform: rotate(5deg);
+}
+
+.logo:hover .overlay-icon {
+    transform: scale(1.1) rotate(180deg);
+    color: var(--primary-color);
+}
+
+.footer-logo .logo-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    margin-right: 0.5rem;
+}
+
+.footer-logo .fa-qrcode {
+    font-size: 2.5rem;
+}
+
+.footer-logo .overlay-icon {
+    font-size: 1.2rem;
+}
+
+/* Dark mode adjustments */
+.dark-mode .logo-icon .overlay-icon {
+    background: var(--surface-color);
+}
+/* ...existing code... */
