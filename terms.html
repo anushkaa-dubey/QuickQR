@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy</title>
+    <link rel="stylesheet" href="privacy.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="terms.css">
+    <!-- Firebase Script Starts-->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <!-- Firebase Script Ends -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <title>Notion Quick QR</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="script.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/qr-scanner/qr-scanner.umd.min.js"></script>
+</head>
+<body>
+    <header class="header">
+        <button class="hamburger-menu" aria-label="Open menu">
+            <i class="fas fa-bars"></i>
+        </button>
+        
+        <div class="logo">
+            <a href="index.html" class="logo-link">
+                <div class="logo-icon">
+                    <i class="fas fa-qrcode"></i>
+                    <i class="fas fa-wand-magic-sparkles overlay-icon"></i>
+                </div>
+                <h1>QuickQR</h1>
+            </a>
+        </div>
+    
+        <!-- Regular auth section (hidden on mobile) -->
+        <div class="auth-section">
+            <div class="auth-btn-container">
+                <button id="loginBtn" class="auth-btn">
+                    <i class="fas fa-user"></i> Login
+                </button>
+                <div id="dropdownMenu" class="dropdown-menu" style="display: none;">
+                    <button id="manageQRBtn" class="dropdown-item">Manage QR Codes</button>
+                    <button id="logoutBtn" class="dropdown-item">Logout</button>
+                </div>
+            </div>
+            <button id="howToUseBtn" class="auth-btn">
+                <a href="./instruction.html">How to use ?</a>
+            </button>
+            <!-- Move theme toggle button here -->
+            <button id="theme-toggle" class="theme-btn">
+                <i class="fas fa-lightbulb"></i>
+            </button>
+        </div>
+    
+        <!-- Mobile theme toggle -->
+        <button id="mobile-theme-toggle" class="theme-btn mobile-only">
+            <i class="fas fa-lightbulb"></i>
+        </button>
+    
+        <div id="toast" class="toast"></div>
+    </header>
+
+    <main>
+        <h1>Terms and Conditions</h1>
+        <p>
+            Welcome to QuickQR! These terms and conditions outline the rules and regulations for the use of our website.
+        </p>
+        <div class="card">
+            <h2>1. Acceptance of Terms</h2>
+            <p>
+                By accessing this website, you accept these terms and conditions in full. Do not continue to use QuickQR’s website 
+                if you do not accept all of the terms and conditions stated on this page.
+            </p>
+        </div>
+
+        <div class="card">
+            <h2>2. License to Use</h2>
+            <p>
+                Unless otherwise stated, QuickQR and/or its licensors own the intellectual property rights for all material on this website. 
+                All intellectual property rights are reserved. You may access this from QuickQR for your own personal use subjected to 
+                restrictions set in these terms and conditions.
+            </p>
+        </div>
+        
+        <div class="card">
+            <h2>3. User Responsibilities</h2>
+            <p>As a user, you agree:</p>
+            <ul>
+                <li>Not to misuse our services for illegal or unauthorized purposes.</li>
+                <li>Not to attempt to gain unauthorized access to our systems.</li>
+                <li>To provide accurate and truthful information when required.</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>4. Limitation of Liability</h2>
+            <p>
+                QuickQR will not be liable for any damages resulting from the use or inability to use our website, 
+                including but not limited to direct, indirect, incidental, punitive, and consequential damages.
+            </p>
+        </div>
+
+        <div class="card">
+            <h2>5. Changes to Terms</h2>
+            <p>
+                We reserve the right to modify these terms at any time. We will provide notice of such changes by updating the date at the top of this page.
+            </p> 
+        </div>
+        
+        <div class="card">
+            <h2>6. Contact Information</h2>
+            <p>
+                If you have any questions about these Terms, please contact us at <a href="mailto:support@quickqr.com">support@quickqr.com</a>.
+            </p>
+        </div>
+        
+    </main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <div class="footer-logo">
+                    <i class="fas fa-qrcode"></i>
+                    QuickQR
+                </div>
+                <p class="footer-description">
+                    Simplifying QR code generation with powerful customization and seamless sharing. 
+                    Create, manage, and share QR codes effortlessly.
+                </p>
+                <div class="footer-social">
+                    <a href="https://www.instagram.com/notion.vit/" target="_blank" class="social-link">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/company/notion_vit/" target="_blank" class="social-link">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a href="https://github.com/notion-vit" target="_blank" class="social-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <a href="#"><i class="fas fa-arrow-right"></i> Home</a>
+                <a href="#"><i class="fas fa-arrow-right"></i> Generate QR</a>
+                <a href="#"><i class="fas fa-arrow-right"></i> Manage QR Codes</a>
+                <a href="#"><i class="fas fa-arrow-right"></i> Instructions</a>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Support</h4>
+                <a href="#"><i class="fas fa-arrow-right"></i> Contact Us</a>
+                <a href="faq.html"><i class="fas fa-arrow-right"></i> FAQ</a>
+                <a href="#"><i class="fas fa-arrow-right"></i> Privacy Policy</a>
+                <a href="#"><i class="fas fa-arrow-right"></i> Terms of Service</a>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <div class="made-with-love">
+                Made with <i class="fas fa-heart"></i> by Notion Community, VIT Bhopal
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const themeToggle = document.getElementById("mode-toggle");
+
+        if (!themeToggle) {
+            console.error("theme-toggle not found!");
+            return;
+        }
+
+        // Default to light mode if no theme is set
+        if (!localStorage.getItem("theme")) {
+            localStorage.setItem("theme", "light");
+        }
+
+        // Apply saved theme
+        if (localStorage.getItem("theme") === "dark") {
+            document.body.classList.add("dark-mode");
+            themeToggle.checked = true;
+        } else {
+            document.body.classList.remove("dark-mode");
+        }
+
+        // Toggle theme on checkbox change
+        themeToggle.addEventListener("change", () => {
+            if (themeToggle.checked) {
+                document.body.classList.add("dark-mode");
+                localStorage.setItem("theme", "dark");
+            } else {
+                document.body.classList.remove("dark-mode");
+                localStorage.setItem("theme", "light");
+            }
+        });
+    });
+
+    </script>
+</body>
+</html>
