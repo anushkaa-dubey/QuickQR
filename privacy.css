@@ -1,0 +1,30 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    font-family: 'Poppins', sans-serif;
+    background-color: #f1f1f1;
+}
+
+
+.Pcontainer{
+    background-color: var(--surface-color);
+    border-radius: var(--border-radius);
+    box-shadow: -2px 8px 12px -1px rgb(0 0 0 / 0.2), -1px 4px 8px -2px rgb(0 0 0 / 0.2);
+    width: 70%;
+    margin: 2% auto;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+}
+p{
+    font-size: 15px;
+    color: var(--text-color);
+    background-color: var(--p-card);
+    margin: 10px 0;
+    border-radius: 10px;
+    padding: 10px;
+}

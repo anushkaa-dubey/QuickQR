@@ -11,6 +11,8 @@
     --border-radius: 10px;
     --box-shadow: 0 4px 10px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
     --transition: all 0.3s ease;
+    --p-card: #efeff3;
+    --p-color: #efeff3;
     
 }
 
@@ -45,6 +47,8 @@ body.dark-mode {
     --success-color: #66bb6a;
     background-color: var(--background-color);
     color: var(--secondary-color);
+    --p-card: #222248;
+    --p-color: #00001a;
 }
 
 .header{
