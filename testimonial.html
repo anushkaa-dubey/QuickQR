@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Professional QR Code Generator with customization options">
+    <!-- Firebase Script Starts-->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <!-- Firebase Script Ends -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="./testimonial.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="./images/favicon.png" type="image/x-icon">
+    <title>Notion Quick QR</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="script.js" defer></script>
+    <script src="./testimonial.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/qr-scanner/qr-scanner.umd.min.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Update the header section -->
+        <header class="header">
+            <button class="hamburger-menu" aria-label="Open menu">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <div class="logo">
+                <a href="index.html" class="logo-link">
+                    <div class="logo-icon">
+                        <i class="fas fa-qrcode"></i>
+                        <i class="fas fa-wand-magic-sparkles overlay-icon"></i>
+                    </div>
+                    <h1>QuickQR</h1>
+                </a>
+            </div>
+        
+            <!-- Regular auth section (hidden on mobile) -->
+            <div class="auth-section">
+                <div class="auth-btn-container">
+                    <button id="loginBtn" class="auth-btn">
+                        <i class="fas fa-user"></i> Login
+                    </button>
+                    <div id="dropdownMenu" class="dropdown-menu" style="display: none;">
+                        <button id="manageQRBtn" class="dropdown-item">Manage QR Codes</button>
+                        <button id="logoutBtn" class="dropdown-item">Logout</button>
+                    </div>
+                </div>
+                <button id="howToUseBtn" class="auth-btn">
+                    <a href="./instruction.html">How to use ?</a>
+                </button>
+                <!-- Move theme toggle button here -->
+                <button id="theme-toggle" class="theme-btn">
+                    <i class="fas fa-lightbulb"></i>
+                </button>
+            </div>
+        
+            <!-- Mobile theme toggle -->
+            <button id="mobile-theme-toggle" class="theme-btn mobile-only">
+                <i class="fas fa-lightbulb"></i>
+            </button>
+        
+            <div id="toast" class="toast"></div>
+        </header>
+        
+        <!-- After the header, add the sidebar and overlay -->
+        <div class="sidebar-overlay"></div>
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <a href="index.html" class="logo-link">
+                        <div class="logo-icon">
+                            <i class="fas fa-qrcode"></i>
+                            <i class="fas fa-wand-magic-sparkles overlay-icon"></i>
+                        </div>
+                        <h1>QuickQR</h1>
+                    </a>
+                </div>
+                <button class="sidebar-close" aria-label="Close menu">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="index.html" class="sidebar-link" id="sidebar-home">
+                    <i class="fas fa-home"></i>
+                    Home
+                </a>
+                <a href="instruction.html" class="sidebar-link" id="sidebar-instructions">
+                    <i class="fas fa-question-circle"></i>
+                    How to Use
+                </a>
+                <a href="#" class="sidebar-link" id="sidebar-login">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Login
+                </a>
+                <a href="#" class="sidebar-link" id="sidebar-signup">
+                    <i class="fas fa-user-plus"></i>
+                    Sign Up
+                </a>
+                <!-- Add these new items that will only show when logged in -->
+                <a href="#" class="sidebar-link sidebar-auth-item" id="sidebar-manage" style="display: none;">
+                    <i class="fas fa-qrcode"></i>
+                    Manage QR Codes
+                </a>
+                <a href="#" class="sidebar-link sidebar-auth-item" id="sidebar-logout" style="display: none;">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </a>
+            </nav>
+        </div>
+        <!-- Testimonials section -->
+<section id="testimonials" class="testimonials">
+    <div class="testimonial-container">
+        <h1 class="section-title"><b>What People Are Saying</b></h1>
+        <div class="testimonial-grid initial-testimonials">
+            <div class="testimonial-card blue">
+                <div class="rating">⭐⭐⭐⭐⭐</div>
+                <p class="testimonial-text">Super fast and hassle-free! I created a QR code for my Tech in seconds and downloaded it with just one click. </p>
+                <div class="profile">
+                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Ananya Sharma" class="profile-img">
+                    <div class="profile-info">
+                        <h4>Tina Jonas</h4>
+                        <div class="role">Tech Enthusiast</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testimonial-card red">
+                <div class="rating">⭐⭐⭐⭐⭐</div>
+                <p class="testimonial-text">This tool is incredibly easy to use! No ads, no sign-ups—just instant QR codes whenever I need them.</p>
+                <div class="profile">
+                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Karthik Raj" class="profile-img">
+                    <div class="profile-info">
+                        <h4>Karthik Raj</h4>
+                        <div class="role">Event Attendee</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testimonial-card green">
+                <div class="rating">⭐⭐⭐⭐⭐</div>
+                <p class="testimonial-text">I love how lightweight this QR generator is. It works smoothly on my phone and laptop without any lag. </p>
+                <div class="profile">
+                    <img src="https://randomuser.me/api/portraits/women/45.jpg" alt="Priya Reddy" class="profile-img">
+                    <div class="profile-info">
+                        <h4>Seetha Pragna</h4>
+                        <div class="role">Software Engineer</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testimonial-card purple">
+                <div class="rating">⭐⭐⭐⭐⭐</div>
+                <p class="testimonial-text">A perfect solution for quick QR code creation! I use it daily for sharing links and digital business cards.</p>
+                <div class="profile">
+                    <img src="https://randomuser.me/api/portraits/men/67.jpg" alt="Ravi Kumar" class="profile-img">
+                    <div class="profile-info">
+                        <h4>Ravi Kumar</h4>
+                        <div class="role">Event Organizer</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="testimonial-grid hidden extra-testimonials">
+            <!-- Additional testimonials from your second page -->
+            <div class="testimonial-card blue">
+                <div class="rating">⭐⭐⭐⭐⭐</div>
+                <p class="testimonial-text">This QR code generator is a game-changer! The simplicity and instant download feature make it my go-to tool. </p>
+                <div class="profile">
+                    <img src="https://randomuser.me/api/portraits/men/22.jpg" alt="Lance Jarvis" class="profile-img">
+                    <div class="profile-info">
+                        <h4>Lance Jarvis</h4>
+                        <div class="role">Marketing Director</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testimonial-card red">
+                <div class="rating">⭐⭐⭐⭐⭐</div>
+                <p class="testimonial-text">I’ve tried many QR code generators, but this one is the best—clean interface, fast performance, and no unnecessary steps.</p>
+                <div class="profile">
+                    <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Sarah Chen" class="profile-img">
+                    <div class="profile-info">
+                        <h4>Priyanka Chopra</h4>
+                        <div class="role">Actor</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testimonial-card green">
+                <div class="rating">⭐⭐⭐⭐⭐</div>
+                <p class="testimonial-text">Absolutely love this tool! It’s so convenient for generating high-quality QR codes on the go.</p>
+                <div class="profile">
+                    <img src="https://randomuser.me/api/portraits/men/46.jpg" alt="Sarah Chen" class="profile-img">
+                    <div class="profile-info">
+                        <h4>Nick Jonas</h4>
+                        <div class="role">Singer</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testimonial-card purple">
+                <div class="rating">⭐⭐⭐⭐⭐</div>
+                <p class="testimonial-text">No complicated settings, just pure efficiency! This web-based QR generator is exactly what I needed.</p>
+                <div class="profile">
+                    <img src="https://randomuser.me/api/portraits/men/21.jpg" alt="Sarah Chen" class="profile-img">
+                    <div class="profile-info">
+                        <h4>Michael Angolo</h4>
+                        <div class="role">Event Coordinator</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button id="see-more-btn" class="see-more-btn">
+            See More <i class="fas fa-chevron-down"></i>
+        </button>
+    </div>
+</section>
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-brand">
+            <div class="footer-logo">
+                <div class="logo-icon">
+                    <i class="fas fa-qrcode"></i>
+                    <i class="fas fa-wand-magic-sparkles overlay-icon"></i>
+                </div>
+                QuickQR
+            </div>
+            <p class="footer-description">
+                Simplifying QR code generation with powerful customization and seamless sharing. 
+                Create, manage, and share QR codes effortlessly.
+            </p>
+            <div class="footer-social">
+                <a href="https://www.instagram.com/notion.vit/" target="_blank" class="social-link">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://www.linkedin.com/company/notion_vit/" target="_blank" class="social-link">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+                <a href="https://github.com/notion-vit" target="_blank" class="social-link">
+                    <i class="fab fa-github"></i>
+                </a>
+            </div>
+        </div>
+        
+        <div class="footer-links">
+            <h4>Quick Links</h4>
+            <a href="#"><i class="fas fa-arrow-right"></i> Home</a>
+            <a href="#"><i class="fas fa-arrow-right"></i> Generate QR</a>
+            <a href="#"><i class="fas fa-arrow-right"></i> Manage QR Codes</a>
+            <a href="#"><i class="fas fa-arrow-right"></i> Instructions</a>
+        </div>
+        
+        <div class="footer-links">
+            <h4>Support</h4>
+            <a href="#"><i class="fas fa-arrow-right"></i> Contact Us</a>
+            <a href="faq.html"><i class="fas fa-arrow-right"></i> FAQ</a>
+            <a href="privacy.html"><i class="fas fa-arrow-right"></i> Privacy Policy</a>
+            <a href="terms.html"><i class="fas fa-arrow-right"></i> Terms of Service</a>
+        </div>
+    </div>
+    
+    <div class="footer-bottom">
+        <div class="made-with-love">
+            Made with <i class="fas fa-heart"></i> by Notion Community, VIT Bhopal
+        </div>
+    </div>
+</footer>
+</div>
+</body>
+</html>
