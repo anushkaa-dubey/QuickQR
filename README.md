@@ -132,7 +132,6 @@ Guidelines
 
 Thanks to these amazing people for their contributions! 🚀  
 
-- [@anushkaa-dubey](https://github.com/anushkaa-dubey)  
 - [@CoderYUI](https://github.com/CoderYUI)  
 - [@msv6264](https://github.com/msv6264)  
 - [@Garvanand](https://github.com/Garvanand)  
