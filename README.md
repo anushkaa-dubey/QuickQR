@@ -127,3 +127,25 @@ Guidelines
 - Android Club: For organizing AcWoC'25 and fostering open source contributions.
 - Contributors: A big thank you to everyone who has contributed to this project!
 - Project by Notion Community, VIT Bhopal
+
+## Contributors ✨
+
+Thanks to these amazing people for their contributions! 🚀  
+
+- [@anushkaa-dubey](https://github.com/anushkaa-dubey)  
+- [@CoderYUI](https://github.com/CoderYUI)  
+- [@msv6264](https://github.com/msv6264)  
+- [@Garvanand](https://github.com/Garvanand)  
+- [@ak-0283](https://github.com/ak-0283)  
+- [@Brijeshthummar02](https://github.com/Brijeshthummar02)  
+- [@verma-jaanvi](https://github.com/verma-jaanvi)  
+- [@dhairyagothi](https://github.com/dhairyagothi)  
+- [@5uhani](https://github.com/5uhani)  
+- [@monu808](https://github.com/monu808)  
+- [@Jotthecode](https://github.com/Jotthecode)  
+- [@NishantRana07](https://github.com/NishantRana07)  
+- [@MukulMutreja](https://github.com/MukulMutreja)  
+- [@Nikhil7704](https://github.com/Nikhil7704)  
+- [@pragna7](https://github.com/pragna7)  
+
+💖 Thank you for your valuable contributions!  
